@@ -4,6 +4,20 @@ The genotype\_conversion\_file\_builder is a pipeline for determining the genome
 
 Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as "position" and "conversion" files, respectively.
 
+## Quick start 
+
+Make sure you have installed the required dependencies listed at the end of this document. 
+
+Install the Nextflow runtime by running the following command: 
+
+    $ curl -fsSL get.nextflow.io | bash
+
+When done, you can execute the genotype_conversion_file_builder pipeline by entering the following command:
+
+    $ ./nextflow run genotype_conversion_file_builder
+
+By default the pipeline is executed by using a small dataset included with the project. Check the *Pipeline parameters* section below to see how to process your input data.
+
 ## Input
 
 The pipeline requires an Illumina or Affymetrix manifest file and reference genome as input.
@@ -140,20 +154,6 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,A,A,A,A,T,REF
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,B,G,G,G,C,ALT
 ```
 
-## Quick start 
-
-Make sure you have installed the required dependencies listed at the end of this document. 
-
-Install the Nextflow runtime by running the following command: 
-
-    $ curl -fsSL get.nextflow.io | bash
-
-When done, you can execute the genotype_conversion_file_builder pipeline by entering the following command:
-
-    $ ./nextflow run genotype_conversion_file_builder
-
-By default the pipeline is executed by using a small dataset included with the project. Check the *Pipeline parameters* section below to see how to process your input data.
-
 ## Pipeline parameters
 
 ##### --manifest
@@ -171,6 +171,19 @@ By default the pipeline is executed by using a small dataset included with the p
 ##### --outdir
 
   * Output directory to hold the results (default: genotype\_conversion\_file\_builder/results)
+
+##### --chunksize
+
+  * Number of variant sequences to process per BLAST job (default: 10000)
+
+##### Sample commands
+
+    $ ./nextflow run genotype_conversion_file_builder \
+    --manifest BovineSNP50_v3_A1.csv \
+    --reference ARS-UCD1.2_Btau5.0.1Y.fa \
+    --species bos_taurus \
+    --outdir results 
+
 
 ## Output folder structure
 
