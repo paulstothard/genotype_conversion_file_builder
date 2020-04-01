@@ -5,7 +5,7 @@ params.reference = "$baseDir/data/reference.fa"
 params.species = 'all'
 params.outdir = "$baseDir/results"
 
-params.chunkSize = 1000
+params.chunksize = 10000
 params.dev = false
 params.number_of_inputs = 2000
 
@@ -25,8 +25,8 @@ if( !file(params.reference).exists() ) {
  * Check for existence of BLAST database for reference sequence
  * Create the BLAST database if it doesn't exist
  */
-blast_db = [file(params.reference).parent, file(params.reference).name].join(File.separator) + '.nin'
-if ( !file(blast_db).exists() ) {
+blastDb = [file(params.reference).parent, file(params.reference).name].join(File.separator) + '.nin'
+if ( !file(blastDb).exists() ) {
 
   println "Building BLAST database for ${params.reference}"
   
@@ -39,14 +39,14 @@ if ( !file(blast_db).exists() ) {
   println "Std Out: ${proc.in.text}" 
 } 
 
-db_name = file(params.reference).name
-db_dir = file(params.reference).parent
+dbName = file(params.reference).name
+dbDir = file(params.reference).parent
 
-reference_name = file(params.reference).getBaseName().replaceAll(/\./, "_")
-panel_name = file(params.manifest).getBaseName().replaceAll(/\./, "_")
-output_name = panel_name + '.' + reference_name
+referenceName = file(params.reference).getBaseName().replaceAll(/\./, "_")
+panelName = file(params.manifest).getBaseName().replaceAll(/\./, "_")
+outputName = panelName + '.' + referenceName
 
-final_outdir = file([params.outdir, params.species, reference_name].join(File.separator))
+finalOutDir = file([params.outdir, params.species, referenceName].join(File.separator))
 
 Channel.fromPath(params.manifest).set{ manifest_output_ch }
     
@@ -93,7 +93,7 @@ process split_csv {
         cat ID_seq_no_header > ID_seq_no_header_sample
     fi
     
-    cat ID_seq_no_header_sample | split -l !{params.chunkSize} - split_
+    cat ID_seq_no_header_sample | split -l !{params.chunksize} - split_
     for file in split_*
     do
         echo -e "Name,Sequence" > tmp_file
@@ -129,13 +129,13 @@ process csv_to_fasta {
 process blast {
     input:
     path 'sequence.fasta' from csv_to_fasta_output_ch
-    path db from db_dir
+    path db from dbDir
     
     output:
     file 'top_hits.txt' into blast_output_ch
     
     """
-    blastn -db $db/$db_name -query sequence.fasta \\
+    blastn -db $db/$dbName -query sequence.fasta \\
     -outfmt '7 delim=, qseqid qseq sseqid sstart send sstrand sseq' -perc_identity 90 \\
     -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
     grep -m1 "^# Fields:" blast_result > temp
@@ -182,17 +182,17 @@ process final_report {
    """
    build_conversion_file_and_position_file.pl -m $x -b merged_hits.txt \\
    -c conversion.txt -p position.txt \\
-   -i 'SPECIES=$params.species' 'REF=$reference_name' 'PANEL=$panel_name' \\
+   -i 'SPECIES=$params.species' 'REF=$referenceName' 'PANEL=$panelName' \\
    -v > alignment.txt
    """
 
 }
     
 final_report_output_ch_1
-   .collectFile(name: output_name + '.conversion.csv', storeDir: final_outdir)
+   .collectFile(name: outputName + '.conversion.csv', storeDir: finalOutDir)
 
 final_report_output_ch_2
-   .collectFile(name: output_name + '.position.csv', storeDir: final_outdir)
+   .collectFile(name: outputName + '.position.csv', storeDir: finalOutDir)
 
 final_report_output_ch_3
-   .collectFile(name: output_name + '.alignment.txt', storeDir: final_outdir)
+   .collectFile(name: outputName + '.alignment.txt', storeDir: finalOutDir)
