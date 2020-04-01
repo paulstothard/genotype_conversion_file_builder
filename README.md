@@ -1,4 +1,4 @@
-#genotype\_conversion\_file\_builder
+# genotype\_conversion\_file\_builder
 
 The genotype\_conversion\_file\_builder is a pipeline for determining the genome location and transformation rules for the variants described in Illumina or Affymetrix genotype panel manifest files.
 
@@ -154,25 +154,25 @@ When done, you can execute the genotype_conversion_file_builder pipeline by ente
 
 By default the pipeline is executed by using a small dataset included with the project. Check the *Pipeline parameters* section below to see how to process your input data.
 
-##Pipeline parameters
+## Pipeline parameters
 
-#####--manifest
+##### --manifest
 
   * The manifest file (default: genotype\_conversion\_file\_builder/data/sample\_manifest.fa).
 
-#####--reference
+##### --reference
 
   * The reference genome (default: genotype\_conversion\_file\_builder/data/reference.fa).
 
-#####--species
+##### --species
 
   * Name of the species (used for organizing output files) (default: all)
 
-#####--outdir
+##### --outdir
 
   * Output directory to hold the results (default: results)
 
-##Output folder structure
+## Output folder structure
 
 ```
 outdir
@@ -182,7 +182,7 @@ outdir
           ├── manifest.reference.position
 ```
 
-##Dependencies
+## Dependencies
 
 * Nextflow (20.01.0 or higher)
 * Perl
