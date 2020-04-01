@@ -1,24 +1,23 @@
 #!/bin/env nextflow
 
-params.in = "$baseDir/data/BovineSNP50_v3_A1.csv"
-//params.in = "$baseDir/data/Axiom_GW_Bos_SNP_1_na34_annot.csv"
-params.db = "$baseDir/data/ARS-UCD1.2_Btau5.0.1Y.fa"
-params.species = 'bos_taurus'
-params.chunkSize = 1000
+params.manifest = "$baseDir/data/manifest.csv"
+params.reference = "$baseDir/data/reference.fa"
+params.species = 'all'
 params.outdir = 'results'
+params.chunkSize = 1000
 params.dev = false
 params.number_of_inputs = 2000
 
-db_name = file(params.db).name
-db_dir = file(params.db).parent
+db_name = file(params.reference).name
+db_dir = file(params.reference).parent
 
-reference_name = file(params.db).getBaseName().replaceAll(/\./, "_")
-panel_name = file(params.in).getBaseName().replaceAll(/\./, "_")
+reference_name = file(params.reference).getBaseName().replaceAll(/\./, "_")
+panel_name = file(params.manifest).getBaseName().replaceAll(/\./, "_")
 output_name = panel_name + '.' + reference_name
 
 final_outdir = file([params.outdir, params.species, reference_name].join(File.separator))
 
-Channel.fromPath(params.in).set{ variants_ch }
+Channel.fromPath(params.manifest).set{ variants_ch }
     
 process split_csv {
     input:
@@ -134,7 +133,7 @@ process merge_blast {
     """
 }
 
-Channel.fromPath(params.in).set{ manifest_ch }
+Channel.fromPath(params.manifest).set{ manifest_ch }
 
 process final_report {
    
