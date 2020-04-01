@@ -43,8 +43,8 @@ process split_csv {
         rm -f affymetrix
     else
         #Illumina
-        #Keep everything after [Assay] and before [Control] line in Illumina manifest
-        awk -F, '/^\\[Assay\\]/{flag=1;next}/^\\[Controls\\]/{flag=0}flag' csv > illumina
+        #Keep everthing except lines before IlmnID line and after [Control] line in Illumina manifest
+        awk -F, '/^IlmnID/{flag=1;print;next}/^\\[Controls\\]/{flag=0}flag' csv > illumina
         #Keep Name and SourceSeq columns without header
         awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 { print $ix["Name"]"," $ix["SourceSeq"] }' illumina > ID_seq_no_header
         rm -f illumina
