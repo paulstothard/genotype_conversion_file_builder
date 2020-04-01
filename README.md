@@ -158,7 +158,7 @@ By default the pipeline is executed by using a small dataset included with the p
 
 ##### --manifest
 
-  * The manifest file (default: genotype\_conversion\_file\_builder/data/sample\_manifest.fa).
+  * The manifest file (default: genotype\_conversion\_file\_builder/data/manifest.csv).
 
 ##### --reference
 
