@@ -25,7 +25,7 @@ ccgtcaaaggtcttttgccgagatgactactacaaccgtatagacaaagcgtgcacatta
 catggggagtacctacttccagaacctgtgtcttcctagt
 ```
 
-manifest.csv - an artifical Illumina manifest file describing five SNPs. 
+manifest.csv - an artifical Illumina manifest file describing five SNPs: 
 
 ```
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
@@ -38,11 +38,11 @@ SNP5-0_T_R_1511657699,SNP5,TOP,[A/C],0032703444,CTACATCCCAGTTCTCTGCTTACTTACTAGCA
 
 The flanking sequence of each SNP was derived from the reference.fa sequence such that the locations of the SNPs are as follows:
 
-* SNP1 is located at position 300 on the forward strand
-* SNP2 is located at position 700 on the forward strand
-* SNP3 is located at position 900 on the forward strand
-* SNP4 is located at position 200 on the reverse strand
-* SNP5 is located at position 800 on the reverse strand
+* SNP1: position 300 on the forward strand
+* SNP2: position 700 on the forward strand
+* SNP3: position 900 on the forward strand
+* SNP4: position 200 on the reverse strand
+* SNP5: position 800 on the reverse strand
 
 ```
       1       2   3   Forward strand SNP positions
