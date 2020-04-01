@@ -99,15 +99,15 @@ sub write_output_files {
             print $POSFILE "#$info\n";
         }
     }
-
+    print $POSFILE "#\n";
     print $POSFILE "#Variant position file generated on " . $time . ".\n";
     print $POSFILE
-"#Using genotype_convert.pl, written by Paul Stothard, stothard\@ualberta.ca.\n";
-
+"#Using genotype_conversion_file_builder, written by Paul Stothard, stothard\@ualberta.ca.\n";
+    print $POSFILE "#\n";
     print $POSFILE "#There is one data row per marker in the manifest file.\n";
     print $POSFILE "#Marker number = " . scalar( @{$output} ) . ".\n";
     print $POSFILE "#Data rows = " . scalar( @{$output} ) . ".\n";
-    print $POSFILE "####################:\n";
+    print $POSFILE "#\n";
     print $POSFILE "#Column descriptions:\n";
     print $POSFILE "#marker_name - name of marker, from manifest file.\n";
     print $POSFILE
@@ -119,7 +119,7 @@ sub write_output_files {
 "#VCF_REF - allele observed on forward strand of reference genome, determined using BLAST.\n";
     print $POSFILE
 "#VCF_ALT - the non-reference allele(s), also transformed to forward strand of reference genome.\n";
-    print $POSFILE "####################:\n";
+    print $POSFILE "#\n";
 
     print $POSFILE join $delim,
       @{
@@ -155,34 +155,36 @@ sub write_output_files {
             print $CONFILE "#$info\n";
         }
     }
-
+    print $CONFILE "#\n";
     print $CONFILE "#Genotype conversion file generated on " . $time . ".\n";
     print $CONFILE
-"#Using genotype_convert.pl, written by Paul Stothard, stothard\@ualberta.ca.\n";
-
+"#Using genotype_conversion_file_builder, written by Paul Stothard, stothard\@ualberta.ca.\n";
+    print $CONFILE "#\n";
     print $CONFILE
       "#There are two data rows per marker in the manifest file.\n";
     print $CONFILE "#Marker number = " . scalar( @{$output} ) . ".\n";
     print $CONFILE "#Data rows = " . 2 * scalar( @{$output} ) . ".\n";
+    print $CONFILE "#\n";
     print $CONFILE
-"#One row contains the various representations of allele A ('allele A' referring to \n"
-      . "#'allele A' in Illumina's A/B allele nomenclature).\n";
+"#One row contains the various representations of allele A ('allele A' referring to\n" .
+"#'allele A' in Illumina's A/B allele nomenclature).\n";
     print $CONFILE
-"#One row contains the various representations of allele B ('allele B' referring to \n"
-      . "#'allele B' in Illumina's A/B allele nomenclature).\n";
+"#The other row contains the various representations of allele B ('allele B' referring to\n" .
+"#'allele B' in Illumina's A/B allele nomenclature).\n";
+    print $CONFILE "#\n";
     print $CONFILE
-"#To transform a marker's genotype from one representation to another (e.g. a genotype of\n"
-      . "#'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to 'TOP' format):\n";
+"#To transform a marker's genotype from one representation to another (e.g. a genotype of\n" .
+"#'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to 'TOP' format):\n";
     print $CONFILE "#1. Find the two rows for marker 'ARS-BFGL-BAC-10867'.\n";
     print $CONFILE
-"#2. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the\n"
-      . "#value of 'FORWARD' is 'G': the 'TOP' transformation is simply the value in the 'TOP'\n"
-      . "#column of this row.\n";
+"#2. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the\n" .
+"#value of 'FORWARD' is 'G': the 'TOP' transformation is simply the value in the 'TOP'\n" .
+"#column of this row.\n";
     print $CONFILE
-"#3. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the\n"
-      . "#value of 'FORWARD' is 'C': the 'TOP' transformation is simply the value in the 'TOP'\n"
-      . "#column of this row.\n";
-    print $CONFILE "####################:\n";
+"#3. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the\n" .
+"#value of 'FORWARD' is 'C': the 'TOP' transformation is simply the value in the 'TOP'\n" .
+"#column of this row.\n";
+    print $CONFILE "#\n";
     print $CONFILE "#Column descriptions:\n";
     print $CONFILE "#marker_name - name of marker, from manifest file.\n";
     print $CONFILE
@@ -192,14 +194,14 @@ sub write_output_files {
     print $CONFILE "#FORWARD - allele in Illumina's FORWARD format.\n";
     print $CONFILE "#DESIGN - allele in Illumina's DESIGN format.\n";
     print $CONFILE
-"#PLUS - allele in Illumina's PLUS format. This value is not parsed from the manifest file\n"
-      . "#but instead determined by BLAST between the variant flanking sequence and the reference\n"
-      . "#genome. This value represents how the allele would appear on the forward strand of the\n"
-      . "#reference genome.\n";
+"#PLUS - allele in Illumina's PLUS format. This value is not parsed from the manifest file\n" .
+"#but instead determined by BLAST between the variant flanking sequence and the reference\n" .
+"#genome. This value represents how the allele would appear on the forward strand of the\n" .
+"#reference genome if the reference genome had this allele.\n";
     print $CONFILE
-"#VCF - 'REF' if this allele appears on the forward strand of the reference genome, 'ALT'\n"
-      . "#if it does not. Value determined \n";
-    print $CONFILE "####################:\n";
+"#VCF - a value of 'REF' indicates that this allele appears on the forward strand of the \n" . 
+"reference genome, while a value of 'ALT' indicates that it does not.\n";
+    print $CONFILE "#\n";
 
     print $CONFILE join $delim,
       @{
