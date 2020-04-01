@@ -170,7 +170,7 @@ By default the pipeline is executed by using a small dataset included with the p
 
 ##### --outdir
 
-  * Output directory to hold the results (default: results)
+  * Output directory to hold the results (default: genotype\_conversion\_file\_builder/results)
 
 ## Output folder structure
 
