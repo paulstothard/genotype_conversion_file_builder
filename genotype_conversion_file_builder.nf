@@ -3,7 +3,8 @@
 params.manifest = "$baseDir/data/manifest.csv"
 params.reference = "$baseDir/data/reference.fa"
 params.species = 'all'
-params.outdir = 'results'
+params.outdir = "$baseDir/results"
+
 params.chunkSize = 1000
 params.dev = false
 params.number_of_inputs = 2000
@@ -17,11 +18,11 @@ output_name = panel_name + '.' + reference_name
 
 final_outdir = file([params.outdir, params.species, reference_name].join(File.separator))
 
-Channel.fromPath(params.manifest).set{ variants_ch }
+Channel.fromPath(params.manifest).set{ manifest_output_ch }
     
 process split_csv {
     input:
-    path 'csv' from variants_ch
+    path 'csv' from manifest_output_ch
 
     output:
     file 'split_*' into split_csv_output_ch
@@ -76,8 +77,7 @@ process csv_to_fasta {
     path 'csv_part' from split_csv_output_ch.flatten()
     
     output:
-    file 'sequence.fasta' into csv_to_fasta_output_ch_1
-    file 'sequence.fasta' into csv_to_fasta_output_ch_2    
+    file 'sequence.fasta' into csv_to_fasta_output_ch
     
     shell:
     '''
@@ -92,18 +92,13 @@ process csv_to_fasta {
 
 }
 
-csv_to_fasta_output_ch_1
-   .collectFile(name: output_name + '.fasta', storeDir: final_outdir)
-
-
 process blast {
     input:
-    path 'sequence.fasta' from csv_to_fasta_output_ch_2
+    path 'sequence.fasta' from csv_to_fasta_output_ch
     path db from db_dir
     
     output:
-    file 'top_hits.txt' into blast_output_ch_1
-    file 'top_hits.txt' into blast_output_ch_2
+    file 'top_hits.txt' into blast_output_ch
     
     """
     blastn -db $db/$db_name -query sequence.fasta -outfmt '7 delim=, qseqid qseq sseqid sstart send sstrand sseq' -perc_identity 90 -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
@@ -115,21 +110,23 @@ process blast {
     """
 }
 
-blast_output_ch_1
-   .collectFile(name: output_name + '.blast.csv', storeDir: final_outdir, keepHeader: true, skip: 1)
-
 process merge_blast {
 
     input:
-    file '*.txt' from blast_output_ch_2.collect()
+    file '*.txt' from blast_output_ch.collect()
     
     output:
     file 'merged_hits.txt' into merge_blast_output_ch
     
     """
-    head -1 1.txt > all
-    tail -n +2 -q *.txt >> all
-    mv all merged_hits.txt
+    #If there is one top_hits.txt file it is staged as .txt
+    if [ -f .txt ]; then
+        cp .txt merged_hits.txt
+    else
+        head -1 1.txt > all
+        tail -n +2 -q *.txt >> all
+        mv all merged_hits.txt
+    fi
     """
 }
 
