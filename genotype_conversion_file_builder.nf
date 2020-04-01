@@ -9,6 +9,36 @@ params.chunkSize = 1000
 params.dev = false
 params.number_of_inputs = 2000
 
+
+/*
+ * Check for existence of files
+ */
+if( !file(params.manifest).exists() ) {
+  exit 1, "The specified manifest file does not exist: ${params.manifest}"
+}
+
+if( !file(params.reference).exists() ) {
+  exit 1, "The specified reference file does not exist: ${params.reference}"
+}
+
+/*
+ * Check for existence of BLAST database for reference sequence
+ * Create the BLAST database if it doesn't exist
+ */
+blast_db = [file(params.reference).parent, file(params.reference).name].join(File.separator) + '.nin'
+if ( !file(blast_db).exists() ) {
+
+  println "Building BLAST database for ${params.reference}"
+  
+  def command = "makeblastdb -in $params.reference -dbtype nucl"
+  def proc = command.execute()
+  proc.waitFor()              
+
+  println "Process exit code: ${proc.exitValue()}"
+  println "Std Err: ${proc.err.text}"
+  println "Std Out: ${proc.in.text}" 
+} 
+
 db_name = file(params.reference).name
 db_dir = file(params.reference).parent
 
@@ -166,4 +196,3 @@ final_report_output_ch_2
 
 final_report_output_ch_3
    .collectFile(name: output_name + '.alignment.txt', storeDir: final_outdir)
-  
