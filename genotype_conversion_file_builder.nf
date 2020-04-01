@@ -40,14 +40,18 @@ process split_csv {
         #Keep everything except comment lines in Affymetrix manifest
         grep -v '^#' csv > affymetrix
         #Print Affy SNP ID and Flank columns without header
-        awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 { print $ix["\\"Affy SNP ID\\""]"," $ix["\\"Flank\\""] }' affymetrix > ID_seq_no_header
+        awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 \\
+        { print $ix["\\"Affy SNP ID\\""]"," $ix["\\"Flank\\""] }' \\
+        affymetrix > ID_seq_no_header
         rm -f affymetrix
     else
         #Illumina
-        #Keep everthing except lines before IlmnID line and after [Control] line in Illumina manifest
+        #Keep everthing except lines before IlmnID line and after [Control] line in 
+        #Illumina manifest
         awk -F, '/^IlmnID/{flag=1;print;next}/^\\[Controls\\]/{flag=0}flag' csv > illumina
         #Keep Name and SourceSeq columns without header
-        awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 { print $ix["Name"]"," $ix["SourceSeq"] }' illumina > ID_seq_no_header
+        awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 \\
+        { print $ix["Name"]"," $ix["SourceSeq"] }' illumina > ID_seq_no_header
         rm -f illumina
     fi
     
@@ -101,7 +105,9 @@ process blast {
     file 'top_hits.txt' into blast_output_ch
     
     """
-    blastn -db $db/$db_name -query sequence.fasta -outfmt '7 delim=, qseqid qseq sseqid sstart send sstrand sseq' -perc_identity 90 -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
+    blastn -db $db/$db_name -query sequence.fasta \\
+    -outfmt '7 delim=, qseqid qseq sseqid sstart send sstrand sseq' -perc_identity 90 \\
+    -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
     grep -m1 "^# Fields:" blast_result > temp
     sed 's/# Fields: //' temp > temp2
     sed 's/, /,/g' temp2 > top_hits.txt
@@ -144,7 +150,10 @@ process final_report {
    file 'alignment.txt' into final_report_output_ch_3
    
    """
-   build_conversion_file_and_position_file.pl -m $x -b merged_hits.txt -c conversion.txt -p position.txt -i 'SPECIES=$params.species' 'REF=$reference_name' 'PANEL=$panel_name' -v > alignment.txt
+   build_conversion_file_and_position_file.pl -m $x -b merged_hits.txt \\
+   -c conversion.txt -p position.txt \\
+   -i 'SPECIES=$params.species' 'REF=$reference_name' 'PANEL=$panel_name' \\
+   -v > alignment.txt
    """
 
 }
