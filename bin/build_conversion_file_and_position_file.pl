@@ -188,7 +188,7 @@ sub write_output_files {
     print $CONFILE
 "#For Affymetrix panels, only FORWARD and PLUS values are provided. If the Affymetrix\n" .
 "#genotypes to be converted are in nucleotide format, use the values in the FORWARD\n" .
-"#column to identify each allele and then to convert the genotype into AB or PLUS format.\n"
+"#column to identify each allele and then to convert the genotype into AB or PLUS format.\n";
     print $CONFILE "#\n"; 
     print $CONFILE "#Column descriptions:\n";
     print $CONFILE "#marker_name - name of marker, from manifest file.\n";
