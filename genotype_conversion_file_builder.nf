@@ -59,30 +59,35 @@ process split_csv {
     
     shell:
     '''
+    #replace tabs with commas and remove quotes
+    perl -p -e 's/\\t/,/g;' -e 's/"//g' csv > temp1
+    
     #check if Affy manifest
     set +e
-    affy=$(grep -c -m1 '^"Probe Set ID","Affy SNP ID"' csv)
+    affy=$(grep -c -m1 '^Probe Set ID,Affy SNP ID' temp1)
     set -e
 
     #get SNP name and SourceSeq / Flank
     if [ "$affy" -gt 0 ]; then
         #Affymetrix
         #Keep everything except comment lines in Affymetrix manifest
-        grep -v '^#' csv > affymetrix
+        grep -v '^#' temp1 > affymetrix
         #Print Affy SNP ID and Flank columns without header
         awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 \\
-        { print $ix["\\"Affy SNP ID\\""]"," $ix["\\"Flank\\""] }' \\
+        { print $ix["Affy SNP ID"]"," $ix["Flank"] }' \\
         affymetrix > ID_seq_no_header
         rm -f affymetrix
+        rm -f temp1
     else
         #Illumina
         #Keep everthing except lines before IlmnID line and after [Control] line in 
         #Illumina manifest
-        awk -F, '/^IlmnID/{flag=1;print;next}/^\\[Controls\\]/{flag=0}flag' csv > illumina
+        awk -F, '/^IlmnID/{flag=1;print;next}/^\\[Controls\\]/{flag=0}flag' temp1 > illumina
         #Keep Name and SourceSeq columns without header
         awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 \\
         { print $ix["Name"]"," $ix["SourceSeq"] }' illumina > ID_seq_no_header
         rm -f illumina
+        rm -f temp1
     fi
     
     #Process subset of data depending on params.dev
@@ -93,14 +98,13 @@ process split_csv {
         cat ID_seq_no_header > ID_seq_no_header_sample
     fi
     
+    rm -f ID_seq_no_header 
     cat ID_seq_no_header_sample | split -l !{params.chunksize} - split_
     for file in split_*
     do
-        echo -e "Name,Sequence" > tmp_file
-        cat "$file" >> tmp_file
-        #Remove quotes
-        sed 's/\\"//g' tmp_file > "$file"
-        rm -f tmp_file
+        echo -e "Name,Sequence" > temp1
+        cat "$file" >> temp1
+        mv temp1 "$file"
     done
     rm -f ID_seq_no_header_sample
     '''
@@ -116,12 +120,12 @@ process csv_to_fasta {
     shell:
     '''
     #Remove header and convert csv to fasta where only 'N' in sequence is variant site
-    tail -n +2 csv_part > temp
-    awk -F, -v OFS=, 'NR>=1{gsub(/[Nn]/, "",$2)} 1' temp > temp2
+    tail -n +2 csv_part > temp1
+    awk -F, -v OFS=, 'NR>=1{gsub(/[Nn]/, "",$2)} 1' temp1 > temp2
     awk -F, -v OFS=, 'NR>=1{gsub(/\\[.*?\\]/, "N",$2)} 1' temp2 > temp3
     awk -F, -v OFS=, 'NR>=1{gsub(/[^GATCNgatcn]/, "",$2)} 1' temp3 > temp4   
     awk -F, '{print ">"$1"\\n"$2}' temp4 > sequence.fasta
-    rm -f temp temp2 temp3 temp4
+    rm -f temp1 temp2 temp3 temp4
     '''
 
 }
@@ -138,11 +142,11 @@ process blast {
     blastn -db $db/$dbName -query sequence.fasta \\
     -outfmt '7 delim=, qseqid qseq sseqid sstart send sstrand sseq' -perc_identity 90 \\
     -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
-    grep -m1 "^# Fields:" blast_result > temp
-    sed 's/# Fields: //' temp > temp2
+    grep -m1 "^# Fields:" blast_result > temp1
+    sed 's/# Fields: //' temp1 > temp2
     sed 's/, /,/g' temp2 > top_hits.txt
     grep --invert-match "^#" blast_result | awk '!seen[\$1]++' >> top_hits.txt
-    rm -f temp temp2
+    rm -f temp1 temp2
     """
 }
 
