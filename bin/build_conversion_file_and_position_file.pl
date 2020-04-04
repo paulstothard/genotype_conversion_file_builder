@@ -15,6 +15,8 @@ my %options = (
     manifest   => undef,
     position   => undef,
     conversion => undef,
+    info       => undef,
+    wide       => undef,
     verbose    => undef,
     help       => undef
 );
@@ -25,6 +27,7 @@ GetOptions(
     'm|manifest=s'   => \$options{manifest},
     'p|position=s'   => \$options{position},
     'c|conversion=s' => \$options{conversion},
+    'w|wide=s'       => \$options{wide},
     'i|info=s@{,}'   => \$options{info},
     'v|verbose'      => \$options{verbose},
     'h|help'         => \$options{help}
@@ -80,16 +83,6 @@ sub write_output_files {
     my $time  = get_time();
     my $delim = ',';
 
-    my $options_string;
-    my @options_list = ();
-    my @options_keys = keys( %{$options} );
-    foreach my $option (@options_keys) {
-        if ( defined( $options->{$option} ) ) {
-            push @options_list, $option . '=' . $options->{$option};
-        }
-    }
-    $options_string = join ';', @options_list;
-
     #write position file
     open( my $POSFILE, '>', $options->{position} )
       or die("Cannot open file '$options->{position}': $!");
@@ -103,22 +96,6 @@ sub write_output_files {
     print $POSFILE "#Variant position file generated on " . $time . ".\n";
     print $POSFILE
 "#Using genotype_conversion_file_builder, written by Paul Stothard, stothard\@ualberta.ca.\n";
-    print $POSFILE "#\n";
-    print $POSFILE "#There is one data row per marker in the manifest file.\n";
-    print $POSFILE "#Marker number = " . scalar( @{$output} ) . ".\n";
-    print $POSFILE "#Data rows = " . scalar( @{$output} ) . ".\n";
-    print $POSFILE "#\n";
-    print $POSFILE "#Column descriptions:\n";
-    print $POSFILE "#marker_name - name of marker, from manifest file.\n";
-    print $POSFILE
-      "#alt_marker_name - additional name of marker, from manifest file.\n";
-    print $POSFILE
-      "#chromosome - chromosome containing marker, determined using BLAST.\n";
-    print $POSFILE "#position - position of marker, determined using BLAST.\n";
-    print $POSFILE
-"#VCF_REF - allele observed on forward strand of reference genome, determined using BLAST.\n";
-    print $POSFILE
-"#VCF_ALT - the non-reference allele(s), also transformed to forward strand of reference genome.\n";
     print $POSFILE "#\n";
 
     print $POSFILE join $delim,
@@ -160,53 +137,6 @@ sub write_output_files {
     print $CONFILE
 "#Using genotype_conversion_file_builder, written by Paul Stothard, stothard\@ualberta.ca.\n";
     print $CONFILE "#\n";
-    print $CONFILE
-      "#There are two data rows per marker in the manifest file.\n";
-    print $CONFILE "#Marker number = " . scalar( @{$output} ) . ".\n";
-    print $CONFILE "#Data rows = " . 2 * scalar( @{$output} ) . ".\n";
-    print $CONFILE "#\n";
-    print $CONFILE
-"#One row contains the various representations of allele A ('allele A' referring to\n" .
-"#'allele A' in Illumina's A/B allele nomenclature).\n";
-    print $CONFILE
-"#The other row contains the various representations of allele B ('allele B' referring to\n" .
-"#'allele B' in Illumina's A/B allele nomenclature).\n";
-    print $CONFILE "#\n";
-    print $CONFILE
-"#To transform a marker's genotype from one representation to another (e.g. a genotype of\n" .
-"#'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to 'TOP' format):\n";
-    print $CONFILE "#1. Find the two rows for marker 'ARS-BFGL-BAC-10867'.\n";
-    print $CONFILE
-"#2. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the\n" .
-"#value of 'FORWARD' is 'G': the 'TOP' transformation is simply the value in the 'TOP'\n" .
-"#column of this row.\n";
-    print $CONFILE
-"#3. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the\n" .
-"#value of 'FORWARD' is 'C': the 'TOP' transformation is simply the value in the 'TOP'\n" .
-"#column of this row.\n";
-    print $CONFILE "#\n";
-    print $CONFILE
-"#For Affymetrix panels, only FORWARD and PLUS values are provided. If the Affymetrix\n" .
-"#genotypes to be converted are in nucleotide format, use the values in the FORWARD\n" .
-"#column to identify each allele and then to convert the genotype into AB or PLUS format.\n";
-    print $CONFILE "#\n"; 
-    print $CONFILE "#Column descriptions:\n";
-    print $CONFILE "#marker_name - name of marker, from manifest file.\n";
-    print $CONFILE
-      "#alt_marker_name - additional name of marker, from manifest file.\n";
-    print $CONFILE "#AB - allele in Illumina's A/B format.\n";
-    print $CONFILE "#TOP - allele in Illumina's TOP format.\n";
-    print $CONFILE "#FORWARD - allele in Illumina's FORWARD format.\n";
-    print $CONFILE "#DESIGN - allele in Illumina's DESIGN format.\n";
-    print $CONFILE
-"#PLUS - allele in Illumina's PLUS format. This value is not parsed from the manifest file\n" .
-"#but instead determined by BLAST between the variant flanking sequence and the reference\n" .
-"#genome. This value represents how the allele would appear on the forward strand of the\n" .
-"#reference genome if the reference genome had this allele.\n";
-    print $CONFILE
-"#VCF - a value of 'REF' indicates that this allele appears on the forward strand of the \n" . 
-"reference genome, while a value of 'ALT' indicates that it does not.\n";
-    print $CONFILE "#\n";
 
     print $CONFILE join $delim,
       @{
@@ -247,6 +177,63 @@ sub write_output_files {
     }
 
     close($CONFILE) or die("Cannot close file : $!");
+
+    if ( defined( $options->{wide} ) ) {
+
+        #write wide file
+        open( my $WIDEFILE, '>', $options->{wide} )
+          or die("Cannot open file '$options->{wide}': $!");
+
+        if ( defined( $options->{info} ) ) {
+            foreach my $info ( @{ $options->{info} } ) {
+                print $WIDEFILE "#$info\n";
+            }
+        }
+        print $WIDEFILE "#\n";
+        print $WIDEFILE "#Wide file generated on " . $time . ".\n";
+        print $WIDEFILE
+"#Using genotype_conversion_file_builder, written by Paul Stothard, stothard\@ualberta.ca.\n";
+        print $WIDEFILE "#\n";
+
+        print $WIDEFILE join $delim,
+          @{
+            [
+                'marker_name', 'alt_marker_name',
+                'chromosome',  'position',
+                'VCF_REF',     'VCF_ALT',
+                'AB_A',        'AB_B',
+                'TOP_A',       'TOP_B',
+                'FORWARD_A',   'FORWARD_B',
+                'DESIGN_A',    'DESIGN_B',
+                'PLUS_A',      'PLUS_B',
+                'VCF_A',       'VCF_B'
+            ]
+          };
+
+        print $WIDEFILE "\n";
+
+        foreach my $variant ( @{$output} ) {
+            my $values = get_column_values(
+                $variant,
+                [
+                    'Name',             'Alternative_Name',
+                    'BLAST_chromosome', 'BLAST_position',
+                    'VCF_REF',          'VCF_ALT',
+                    'A',                'B',
+                    'TOP_A',            'TOP_B',
+                    'FORWARD_A',        'FORWARD_B',
+                    'DESIGN_A',         'DESIGN_B',
+                    'PLUS_A',           'PLUS_B',
+                    'VCF_A',            'VCF_B'
+                ]
+            );
+            print $WIDEFILE join $delim, @{$values};
+            print $WIDEFILE "\n";
+        }
+        close($WIDEFILE) or die("Cannot close file : $!");
+
+    }
+
 }
 
 sub get_column_values {
@@ -1337,6 +1324,8 @@ REQUIRED ARGUMENTS:
       Output CSV file to create describing how to convert between genotype formats.
       
 OPTIONAL ARGUMENTS:
+   -w, --wide [FILE]
+      Output CSV file to create describing position and conversion information.
    -i, --info [STRINGS]
       Additional text to appear in the header of output files.
    -v, --verbose

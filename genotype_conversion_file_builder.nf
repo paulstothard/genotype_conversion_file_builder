@@ -181,11 +181,12 @@ process final_report {
    output:
    file 'conversion.txt' into final_report_output_ch_1
    file 'position.txt' into final_report_output_ch_2
-   file 'alignment.txt' into final_report_output_ch_3
+   file 'wide.txt' into final_report_output_ch_3
+   file 'alignment.txt' into final_report_output_ch_4
    
    """
    build_conversion_file_and_position_file.pl -m $x -b merged_hits.txt \\
-   -c conversion.txt -p position.txt \\
+   -c conversion.txt -p position.txt -w wide.txt \\
    -i 'SPECIES=$params.species' 'REF=$referenceName' 'PANEL=$panelName' \\
    -v > alignment.txt
    """
@@ -197,6 +198,9 @@ final_report_output_ch_1
 
 final_report_output_ch_2
    .collectFile(name: outputName + '.position.csv', storeDir: finalOutDir)
-
+   
 final_report_output_ch_3
+   .collectFile(name: outputName + '.wide.csv', storeDir: finalOutDir)
+
+final_report_output_ch_4
    .collectFile(name: outputName + '.alignment.txt', storeDir: finalOutDir)

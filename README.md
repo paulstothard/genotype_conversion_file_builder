@@ -2,7 +2,7 @@
 
 The genotype\_conversion\_file\_builder is a pipeline for determining the genome location and transformation rules for the variants described in Illumina or Affymetrix genotype panel manifest files.
 
-Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as "position" and "conversion" files, respectively.
+Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as "position" and "conversion" files, respectively. A third "wide" file provides the combined position and conversion information in a format that can be easily converted to files used by downstream tools like plink.
 
 ## Quick start 
 
@@ -22,7 +22,7 @@ By default the pipeline is executed by using a small dataset included with the p
 
 The pipeline requires an Illumina or Affymetrix manifest file and reference genome as input.
 
-### Sample Illumina manifest file content:
+#### Sample Illumina manifest file content:
 
 ```
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
@@ -38,7 +38,7 @@ ARS-BFGL-BAC-10867-0_B_F_1511658130,ARS-BFGL-BAC-10867,BOT,[G/C],0058642429,TAAT
 ARS-BFGL-BAC-10919-0_T_F_1511658221,ARS-BFGL-BAC-10919,TOP,[A/G],0031683470,TTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC,,,3,14,31267746,diploid,Bos taurus,UM3,0,TOP,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC[A/G]CTTGGTGTTCAAGGAAGTCTCTGCACTCTGGCCATCGGGACTATCATGTTCAAGCTTGAG,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC[A/G]CTTGGTGTTCAAGGAAGTCTCTGCACTCTGGCCATCGGGACTATCATGTTCAAGCTTGAG,1241
 ```
 
-### Sample Affymetrix manifest / annotation file content:
+#### Sample Affymetrix manifest / annotation file content:
 
 ```
 Probe Set ID	Affy SNP ID	dbSNP RS ID	Chromosome	Physical Position	Strand	Flank	Allele A	Allele B	cust_snpid	ChrX pseudo-autosomal region 1	ChrX pseudo-autosomal region 2	Genetic Map
@@ -54,7 +54,7 @@ AX-116661930	Affx-115319167	---	---	---	+	GGGACCAGCTCCACCCCACTCCAGGGCCCGGTGAC[C/
 AX-116661931	Affx-114835802	---	---	---	+	GGAACTCGGCCAGCACCGATGGAGTCCCAGGTTTC[A/G]AAGCTCCTGCTGCATTGAGGAGACTGGTCCAAAGG	A	G	"2""WU_10_2_1_813652"	---	---	---
 ```
 
-### Sample reference genome file content:
+#### Sample reference genome file content:
 
 ```
 >1 dna:chromosome chromosome:Sscrofa11.1:1:1:274330532:1 REF
@@ -74,20 +74,20 @@ GCTGCAGCTGCCAGCTTACGCTACAGCAACACCAGATCCAGTTGTATCTGTGGCCTTTGC
 
 ### Position file:
 
-The position file describes the location of the markers on the new reference genome.
+The position file describes the location of each marker on the new reference genome.
 
 There is one data row per marker in the input manifest file.
 
 The columns are as follows:
 
-* marker\_name - name of marker, from manifest file.
-* alt\_marker\_name - additional name of marker, from manifest file.
-* chromosome - chromosome containing marker, determined using BLAST.
-* position - position of marker, determined using BLAST.
-* VCF\_REF - allele observed on forward strand of reference genome, determined using BLAST.
-* VCF\_ALT - the non-reference allele(s), also transformed to forward strand of reference genome.
+* marker\_name - the name of the marker, from the manifest file.
+* alt\_marker\_name - the additional name of the marker, from the manifest file.
+* chromosome - the chromosome containing the marker, determined using BLAST.
+* position - the position of the marker on the chromosome, determined using BLAST.
+* VCF\_REF - the allele observed on the forward strand of the reference genome at this position. This allele usually matches on of the two alleles described in the manifest file (when they are transformed to the forward strand of the reference), but not always.
+* VCF\_ALT - one or both of the allele described in the manifest file, transformed to the forward strand of the reference genome. In most cases, there is one allele in this column, as the other matches the allele in the VCF_REF column and thus is not considered an alternate (i.e. non-reference) allele. However, in cases where neither allele is observed in the reference genome sequence, both alleles appear here, separated by a forward slash, e.g. "A/G". 
 
-### Sample position file content:
+#### Sample position file content:
 
 ```
 marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT
@@ -117,18 +117,20 @@ To transform a marker's genotype from one representation to another (e.g. a geno
 2. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the value of 'FORWARD' is 'G': the 'TOP' transformation is simply the value in the 'TOP' column of this row.
 3. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the value of 'FORWARD' is 'C': the 'TOP' transformation is simply the value in the 'TOP' column of this row.
 
+Note that TOP, FORWARD, and DESIGN values are not provided for Affymetrix panels.
+
 The columns are as follows:
 
-* marker\_name - name of marker, from manifest file.
-* alt\_marker\_name - additional name of marker, from manifest file.
-* AB - allele in Illumina's A/B format.
-* TOP - allele in Illumina's TOP format.
-* FORWARD - allele in Illumina's FORWARD format.
-* DESIGN - allele in Illumina's DESIGN format.
-* PLUS - allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by BLAST between the variant flanking sequence and the reference genome. This value represents how the allele would appear on the forward strand of the reference genome if the reference genome had this allele.
+* marker\_name - the name of the marker, from the manifest file.
+* alt\_marker\_name - the additional name of the marker, from the manifest file.
+* AB - the allele in Illumina's A/B format.
+* TOP - the allele in Illumina's TOP format.
+* FORWARD - the allele in Illumina's FORWARD format.
+* DESIGN - the allele in Illumina's DESIGN format.
+* PLUS - the allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
 * VCF - a value of 'REF' in this column indicates that this allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
 
-### Sample conversion file content:
+#### Sample conversion file content:
 
 ```
 marker_name,alt_marker_name,AB,TOP,FORWARD,DESIGN,PLUS,VCF
@@ -152,6 +154,39 @@ ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130,A,C,G,G,G,ALT
 ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130,B,G,C,C,C,REF
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,A,A,A,A,T,REF
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,B,G,G,G,C,ALT
+```
+
+### Wide file:
+
+The wide file describes the location of each marker on the new reference genome, and provides the various representations of the A and B alleles. 
+
+There is one data row per marker in the input manifest file.
+
+The columns are as follows:
+
+* marker\_name - the name of the marker, from the manifest file.
+* alt\_marker\_name - the additional name of the marker, from the manifest file.
+* chromosome - the chromosome containing the marker, determined using BLAST.
+* position - the position of the marker on the chromosome, determined using BLAST.
+* VCF\_REF - the allele observed on the forward strand of the reference genome at this position. This allele usually matches on of the two alleles described in the manifest file (when they are transformed to the forward strand of the reference), but not always.
+* VCF\_ALT - one or both of the allele described in the manifest file, transformed to the forward strand of the reference genome. In most cases, there is one allele in this column, as the other matches the allele in the VCF_REF column and thus is not considered an alternate (i.e. non-reference) allele. However, in cases where neither allele is observed in the reference genome sequence, both alleles appear here, separated by a forward slash, e.g. "A/G". 
+* AB_A - the A allele in Illumina's A/B format.
+* AB_B - the B allele in Illumina's A/B format.
+* TOP_A - the A allele in Illumina's TOP format.
+* TOP_B - the B allele in Illumina's TOP format.
+* FORWARD_A - the A allele in Illumina's FORWARD format.
+* FORWARD_B - the B allele in Illumina's FORWARD format.
+* DESIGN_A - the A allele in Illumina's DESIGN format.
+* DESIGN_B - the A allele in Illumina's DESIGN format.
+* PLUS_A - the A allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
+* PLUS_B - the B allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
+* VCF_A - a value of 'REF' in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
+* VCF_B - a value of 'REF' in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
+
+#### Sample wide file content:
+
+```
+
 ```
 
 ## Pipeline parameters
@@ -191,8 +226,9 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,B,G,G,G,C,ALT
 outdir
   ├── species                     
       ├── reference             
-          ├── manifest.reference.conversion
-          ├── manifest.reference.position
+          ├── manifest.reference.conversion.csv
+          ├── manifest.reference.position.csv
+          ├── manifest.reference.wide.csv
 ```
 
 ## Dependencies
