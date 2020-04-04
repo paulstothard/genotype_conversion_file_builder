@@ -7,6 +7,7 @@ params.outdir = "$baseDir/results"
 
 params.chunksize = 10000
 params.dev = false
+params.align = false
 params.number_of_inputs = 2000
 
 
@@ -182,13 +183,17 @@ process final_report {
    file 'conversion.txt' into final_report_output_ch_1
    file 'position.txt' into final_report_output_ch_2
    file 'wide.txt' into final_report_output_ch_3
-   file 'alignment.txt' into final_report_output_ch_4
+   file 'alignment.txt' optional true into final_report_output_ch_4
    
    """
    build_conversion_file_and_position_file.pl -m $x -b merged_hits.txt \\
    -c conversion.txt -p position.txt -w wide.txt \\
    -i 'SPECIES=$params.species' 'REF=$referenceName' 'PANEL=$panelName' \\
    -v > alignment.txt
+   
+   if [ '$params.align' == 'false' ]; then
+     rm alignment.txt
+   fi
    """
 
 }
