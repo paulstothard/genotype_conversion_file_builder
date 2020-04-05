@@ -141,8 +141,8 @@ process blast {
     
     """
     blastn -db $db/$dbName -query sequence.fasta \\
-    -outfmt '7 delim=, qseqid qseq sseqid sstart send sstrand sseq' -perc_identity 90 \\
-    -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
+    -outfmt '7 delim=, qseqid qseq sseqid salltitles sstart send sstrand sseq' \\
+    -perc_identity 90 -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
     grep -m1 "^# Fields:" blast_result > temp1
     sed 's/# Fields: //' temp1 > temp2
     sed 's/, /,/g' temp2 > top_hits.txt

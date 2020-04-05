@@ -641,10 +641,8 @@ sub get_basic_blast_results {
         return \%results;
     }
 
-    my $chr = $blast_result_hash->{subject_id};
-
     $results{chromosome} = parse_chromosome( $blast_result_hash->{subject_id},
-        $blast_result_hash->{salltitles} );
+        $blast_result_hash->{subject_titles} );
     $results{strand} = $blast_result_hash->{subject_strand};
 
     my %h = ();
@@ -716,11 +714,11 @@ sub get_basic_blast_results {
 
 sub parse_chromosome {
     my $subject_id = shift;
-    my $salltitles = shift;
+    my $subject_titles = shift;
 
 #subject_id is text before first white space, or text before second | character
 #salltitles is text after subject_id in FASTA title
-#Example FASTA titles
+#Example FASTA titles (note that white space will be replaced by underscore)
 #>gnl|UMD3.1|GJ057971.1 GPS_000342411.1 NW_003098716.1
 #>NKLS02000031.1 Bos taurus breed Hereford isolate L1 Dominette 01449 registration number 42190680 Leftover_ScbfJmS_1, whole genome shotgun sequence
 #>JH118944.1 dna:scaffold scaffold:Sscrofa10.2:JH118944.1:1:594937:1 REF
@@ -742,13 +740,13 @@ sub parse_chromosome {
     if ( $subject_id =~ m/^([\dA-Z]{1,2})$/ ) {
         $chromosome = $1;
     }
-    elsif ( $salltitles =~ m/[Cc]hromosome\s([\dA-Z]{1,2})\s/ ) {
+    elsif ( $subject_titles =~ m/Chromosome_([\dA-Z]{1,2})_/ ) {
         $chromosome = $1;
     }
     elsif ( $subject_id =~ m/^([^\|]{5,})$/ ) {
         $chromosome = $1;
     }
-    elsif ( $salltitles =~ m/\s([^\|]{5,})$/ ) {
+    elsif ( $subject_titles =~ m/_([^\|]{5,})$/ ) {
         $chromosome = $1;
     }
     else {
