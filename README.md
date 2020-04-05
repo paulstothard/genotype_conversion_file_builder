@@ -2,7 +2,7 @@
 
 The genotype\_conversion\_file\_builder is a pipeline for determining the genome location and transformation rules for the variants described in Illumina or Affymetrix genotype panel manifest files.
 
-Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as "position" and "conversion" files, respectively. A third "wide" file provides the position and conversion information together in a format that can be easily converted to files used by downstream tools like PLINK.
+Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as **position** and **conversion** files, respectively. An additional **wide** file provides the position and conversion information together in a format that can be easily converted to files used by downstream tools like PLINK.
 
 ## Quick start 
 
@@ -74,7 +74,7 @@ GCTGCAGCTGCCAGCTTACGCTACAGCAACACCAGATCCAGTTGTATCTGTGGCCTTTGC
 
 ### Position file
 
-The position file describes the location of each marker on the new reference genome.
+The **position** file describes the location of each marker on the new reference genome.
 
 There is one data row per marker in the input manifest file.
 
@@ -86,6 +86,8 @@ The columns are as follows:
 * position - the position of the marker on the chromosome, determined using BLAST.
 * VCF\_REF - the allele observed on the forward strand of the reference genome at this position. This allele usually matches on of the two alleles described in the manifest file (when they are transformed to the forward strand of the reference), but not always.
 * VCF\_ALT - one or both of the allele described in the manifest file, transformed to the forward strand of the reference genome. In most cases, there is one allele in this column, as the other matches the allele in the VCF_REF column and thus is not considered an alternate (i.e. non-reference) allele. However, in cases where neither allele is observed in the reference genome sequence, both alleles appear here, separated by a forward slash, e.g. "A/G". 
+
+Note: Indel positions and alleles are described according to the [VCF specification] (https://samtools.github.io/hts-specs/VCFv4.2.pdf). 
 
 #### Sample position file content
 
@@ -105,7 +107,7 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,14,29573682,T,C
 
 ### Conversion file
 
-The conversion file describes how genotypes can be converted from one format to another, including to the forward strand of the new reference genome (the PLUS format).
+The **conversion** file describes how genotypes can be converted from one format to another, including to the forward strand of the new reference genome (the PLUS format).
 
 There are two data rows per marker in the manifest file.
 
@@ -129,6 +131,8 @@ The columns are as follows:
 * DESIGN - the allele in Illumina's DESIGN format.
 * PLUS - the allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
 * VCF - a value of 'REF' in this column indicates that this allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
+
+Note: Indel alleles in the TOP, FORWARD, DESIGN, and PLUS columns are given as D (deletion) or I (insertion).
 
 #### Sample conversion file content
 
@@ -158,7 +162,7 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,B,G,G,G,C,ALT
 
 ### Wide file
 
-The wide file describes the location of each marker on the new reference genome, and provides the various representations of the A and B alleles. 
+The **wide** file describes the location of each marker on the new reference genome, and provides the various representations of the A and B alleles. 
 
 There is one data row per marker in the input manifest file.
 
@@ -183,6 +187,10 @@ The columns are as follows:
 * VCF_A - a value of 'REF' in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
 * VCF_B - a value of 'REF' in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
 
+Note: Indel positions and alleles (in the VCF\_REF and VCF\_ALT columns) are described according to the [VCF specification] (https://samtools.github.io/hts-specs/VCFv4.2.pdf).
+
+Note: Indel alleles in the TOP, FORWARD, DESIGN, and PLUS columns are given as D (deletion) or I (insertion).
+
 #### Sample wide file content
 
 ```
@@ -199,9 +207,168 @@ ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130,14,32554055,C,G,A,B,C,G,G
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,14,29573682,T,C,A,B,A,G,A,G,A,G,T,C,REF,ALT
 ```
 
+### Alignment file
+
+The optional **aligment** file shows how BLAST alignments were parsed to determine variant position and alleles for use in the other output files.
+
+#### Sample alignment file content
+
+```
+========================================================================================
+ABCA12,ABCA12_r2-1_T_F_2277749139
+ABCA12
+Type: SNP
+      QUERY ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGNGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT
+    TO LEFT                                                                                                                                                                         103030488|
+  103030311 ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGTGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT 103030670
+      PROBE                                                                                                                                                                                    <<<
+      RULER          |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         
+    ALLELE1                                                                                                                                                                                   C
+    ALLELE2                                                                                                                                                                                   T
+   POSITION                                                                                                                                                                          103030489|
+        REF                                                                                                                                                                                   T
+    VCF_REF                                                                                                                                                                                   T
+    VCF_ALT                                                                                                                                                                                   C
+========================================================================================
+APAF1,APAF1_dup-1_B_F_2327661418
+APAF1
+Type: SNP
+      QUERY CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGNAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT
+    TO LEFT                                                    62810244|
+   62810185 CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGCAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT 62810305
+      PROBE                                                          >>>
+      RULER      |         |         |         |         |         |     
+    ALLELE1                                                             T
+    ALLELE2                                                             C
+   POSITION                                                     62810245|
+        REF                                                             C
+    VCF_REF                                                             C
+    VCF_ALT                                                             T
+========================================================================================
+ARS-BFGL-BAC-10172,ARS-BFGL-BAC-10172_dup-0_T_F_2328966397
+ARS-BFGL-BAC-10172
+Type: SNP
+      QUERY TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATNACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
+    TO LEFT                                                     5342657|
+    5342598 TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATCACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG 5342718
+      PROBE                                                              <<<
+      RULER   |         |         |         |         |         |        
+    ALLELE1                                                             C
+    ALLELE2                                                             T
+   POSITION                                                      5342658|
+        REF                                                             C
+    VCF_REF                                                             C
+    VCF_ALT                                                             T
+========================================================================================
+ARS-BFGL-BAC-1020,ARS-BFGL-BAC-1020-0_B_R_1511662870
+ARS-BFGL-BAC-1020
+Type: SNP
+      QUERY TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGNACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
+    TO LEFT                                                     6889655|
+    6889596 TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGTACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC 6889716
+      PROBE                                                          >>>
+      RULER     |         |         |         |         |         |      
+    ALLELE1                                                             C
+    ALLELE2                                                             T
+   POSITION                                                      6889656|
+        REF                                                             T
+    VCF_REF                                                             T
+    VCF_ALT                                                             C
+========================================================================================
+ARS-BFGL-BAC-10245,ARS-BFGL-BAC-10245-0_B_F_1511658502
+ARS-BFGL-BAC-10245
+Type: SNP
+      QUERY TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCANAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
+    TO LEFT                                                    30124133|
+   30124074 TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCAGAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG 30124194
+      PROBE                                                              <<<
+      RULER       |         |         |         |         |         |    
+    ALLELE1                                                             G
+    ALLELE2                                                             A
+   POSITION                                                     30124134|
+        REF                                                             G
+    VCF_REF                                                             G
+    VCF_ALT                                                             A
+========================================================================================
+ARS-BFGL-BAC-10345,ARS-BFGL-BAC-10345_dup-0_T_F_2328966403
+ARS-BFGL-BAC-10345
+Type: SNP
+      QUERY TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTNTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
+    TO LEFT                                                     5105726|
+    5105667 TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTTTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC 5105787
+      PROBE                                                              <<<
+      RULER    |         |         |         |         |         |       
+    ALLELE1                                                             G
+    ALLELE2                                                             T
+   POSITION                                                      5105727|
+        REF                                                             T
+    VCF_REF                                                             T
+    VCF_ALT                                                             G
+========================================================================================
+ARS-BFGL-BAC-10375,ARS-BFGL-BAC-10375_dup-0_T_F_2328966405
+ARS-BFGL-BAC-10375
+Type: SNP
+      QUERY TAAAAGCATTTTTAAAACAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATANTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA
+    TO LEFT                                                     5587749|
+    5587690 TAAAAGCATTTTTAAAATAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATAGTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA 5587810
+      PROBE                                                          >>>
+      RULER |         |         |         |         |         |         |
+    ALLELE1                                                             A
+    ALLELE2                                                             G
+   POSITION                                                      5587750|
+        REF                                                             G
+    VCF_REF                                                             G
+    VCF_ALT                                                             A
+========================================================================================
+ARS-BFGL-BAC-10591,ARS-BFGL-BAC-10591_dup-0_T_F_2328966407
+ARS-BFGL-BAC-10591
+Type: SNP
+      QUERY AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCNAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
+    TO LEFT                                                    15956823|
+   15956764 AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCAAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA 15956884
+      PROBE                                                          >>>
+      RULER       |         |         |         |         |         |    
+    ALLELE1                                                             A
+    ALLELE2                                                             G
+   POSITION                                                     15956824|
+        REF                                                             A
+    VCF_REF                                                             A
+    VCF_ALT                                                             G
+========================================================================================
+ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130
+ARS-BFGL-BAC-10867
+Type: SNP
+      QUERY ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCANAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA
+    TO LEFT                                                    32554054|
+   32553995 ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCACAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA 32554115
+      PROBE                                                          >>>
+      RULER      |         |         |         |         |         |     
+    ALLELE1                                                             C
+    ALLELE2                                                             G
+   POSITION                                                     32554055|
+        REF                                                             C
+    VCF_REF                                                             C
+    VCF_ALT                                                             G
+========================================================================================
+ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221
+ARS-BFGL-BAC-10919
+Type: SNP
+      QUERY CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGNGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
+    TO LEFT                                                    29573681|
+   29573622 CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGTGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT 29573742
+      PROBE                                                              <<<
+      RULER         |         |         |         |         |         |  
+    ALLELE1                                                             C
+    ALLELE2                                                             T
+   POSITION                                                     29573682|
+        REF                                                             T
+    VCF_REF                                                             T
+    VCF_ALT                                                             C
+```
+
 ## Creating new output formats
 
-The wide output format can easily be manipulated using standard command-line utilites in order to generate other useful formats.
+The **wide** output format can easily be manipulated using standard command-line utilites in order to generate other useful formats.
 
 ### To create a MAP file for PLINK
 
@@ -215,7 +382,7 @@ The second command recodes chromosomes to integers (the specific recoding needed
 
     $ cat temp | awk '{ $1 = ($1 == "X" ? 30 : $1); $1 = ($1 == "Y" ? 31 : $1); $1 = ($1 == "MT" ? 32 : $1); $1 = (match($1, /[^0-9]/) ? 0 : $1 )}  1' OFS="\t" > manifest.reference.map
     
-Using the sample wide file output above as input, these commands produce the following:
+Using the sample **wide** file output above as input, these commands produce the following:
 
 ```
 2	ABCA12	0	103030489
@@ -278,6 +445,7 @@ outdir
           ├── manifest.reference.conversion.csv
           ├── manifest.reference.position.csv
           ├── manifest.reference.wide.csv
+          ├── manifest.reference.alignment.txt
 ```
 
 ## Dependencies

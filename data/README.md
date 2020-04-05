@@ -1,4 +1,4 @@
-# Test data files:
+# Test data files
 
 The test dataset consists of the following:
 
@@ -52,7 +52,7 @@ The flanking sequence of each SNP was derived from the reference.fa sequence suc
     4           5     Reverse strand SNP positions
 ```
 
-The expected position file content for this test data is as follows:
+The expected **position** file content for this test data is as follows:
 
 ```
 marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT
@@ -63,7 +63,7 @@ SNP4,SNP4_dup-0_B_F_2328966441,1,200,A,G
 SNP5,SNP5-0_T_R_1511657699,1,800,T,G
 ```
 
-The expected conversion file content for this test data is as follows:
+The expected **conversion** file content for this test data is as follows:
 
 ```
 marker_name,alt_marker_name,AB,TOP,FORWARD,DESIGN,PLUS,VCF
@@ -79,7 +79,7 @@ SNP5,SNP5-0_T_R_1511657699,A,A,T,A,T,REF
 SNP5,SNP5-0_T_R_1511657699,B,C,G,C,G,ALT
 ```
 
-The expected wide file content for this test data is as follows:
+The expected **wide** file content for this test data is as follows:
 
 ```
 marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT,AB_A,AB_B,TOP_A,TOP_B,FORWARD_A,FORWARD_B,DESIGN_A,DESIGN_B,PLUS_A,PLUS_B,VCF_A,VCF_B
@@ -89,3 +89,84 @@ SNP3,SNP3-0_B_F_1511657910,1,900,G,T,A,B,A,C,T,G,T,G,T,G,ALT,REF
 SNP4,SNP4_dup-0_B_F_2328966441,1,200,A,G,A,B,A,G,T,C,T,C,A,G,REF,ALT
 SNP5,SNP5-0_T_R_1511657699,1,800,T,G,A,B,A,C,T,G,A,C,T,G,REF,ALT
 ```
+
+The expected optional **alignment** file content for this test data is as follows (to generate this file, use the --align option):
+
+```
+========================================================================================
+SNP1,SNP1-0_T_F_1511658221
+SNP1
+Type: SNP
+      QUERY ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATNTCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
+    TO LEFT                                                                                                 299|
+        200 ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATATCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT 400
+      PROBE                                                                                                  >>>
+      RULER |         |         |         |         |         |         |         |         |         |         |
+    ALLELE1                                                                                                     A
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  300|
+        REF                                                                                                     A
+    VCF_REF                                                                                                     A
+    VCF_ALT                                                                                                     G
+========================================================================================
+SNP2,SNP2-0_B_F_1511663050
+SNP2
+Type: SNP
+      QUERY ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTANAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
+    TO LEFT                                                                                                 699|
+        600 ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTATAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT 800
+      PROBE                                                                                                  >>>
+      RULER |         |         |         |         |         |         |         |         |         |         |
+    ALLELE1                                                                                                     T
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  700|
+        REF                                                                                                     T
+    VCF_REF                                                                                                     T
+    VCF_ALT                                                                                                     G
+========================================================================================
+SNP3,SNP3-0_B_F_1511657910
+SNP3
+Type: SNP
+      QUERY TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTANCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
+    TO LEFT                                                                                                 899|
+        800 TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAGCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT 1000
+      PROBE                                                                                                  >>>
+      RULER |         |         |         |         |         |         |         |         |         |         |
+    ALLELE1                                                                                                     T
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  900|
+        REF                                                                                                     G
+    VCF_REF                                                                                                     G
+    VCF_ALT                                                                                                     T
+========================================================================================
+SNP4,SNP4_dup-0_B_F_2328966441
+SNP4
+Type: SNP
+      QUERY AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAANCAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
+    TO LEFT                                                                                                 199|
+        100 AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAAACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA 300
+      PROBE                                                                                                      <<<
+      RULER |         |         |         |         |         |         |         |         |         |         |
+    ALLELE1                                                                                                     G
+    ALLELE2                                                                                                     A
+   POSITION                                                                                                  200|
+        REF                                                                                                     A
+    VCF_REF                                                                                                     A
+    VCF_ALT                                                                                                     G
+========================================================================================
+SNP5,SNP5-0_T_R_1511657699
+SNP5
+Type: SNP
+      QUERY TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTNAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
+    TO LEFT                                                                                                 799|
+        700 TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTTAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG 900
+      PROBE                                                                                                      <<<
+      RULER |         |         |         |         |         |         |         |         |         |         |
+    ALLELE1                                                                                                     T
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  800|
+        REF                                                                                                     T
+    VCF_REF                                                                                                     T
+    VCF_ALT                                                                                                     G
+```
+
