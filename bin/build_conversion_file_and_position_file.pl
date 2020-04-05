@@ -15,9 +15,9 @@ my %options = (
     manifest   => undef,
     position   => undef,
     conversion => undef,
-    info       => undef,
     wide       => undef,
-    verbose    => undef,
+    alignment  => undef,
+    info       => undef,
     help       => undef
 );
 
@@ -28,8 +28,8 @@ GetOptions(
     'p|position=s'   => \$options{position},
     'c|conversion=s' => \$options{conversion},
     'w|wide=s'       => \$options{wide},
+    'a|alignment=s'  => \$options{alignment},
     'i|info=s@{,}'   => \$options{info},
-    'v|verbose'      => \$options{verbose},
     'h|help'         => \$options{help}
 );
 
@@ -234,6 +234,44 @@ sub write_output_files {
 
     }
 
+    if ( defined( $options->{alignment} ) ) {
+
+        #write alignment file
+        open( my $ALIGNFILE, '>', $options->{alignment} )
+          or die("Cannot open file '$options->{alignment}': $!");
+
+        if ( defined( $options->{info} ) ) {
+            foreach my $info ( @{ $options->{info} } ) {
+                print $ALIGNFILE "#$info\n";
+            }
+        }
+        print $ALIGNFILE "#\n";
+        print $ALIGNFILE "#Alignment file generated on " . $time . ".\n";
+        print $ALIGNFILE
+"#Using genotype_conversion_file_builder, written by Paul Stothard, stothard\@ualberta.ca.\n";
+        print $ALIGNFILE "#\n";
+
+        foreach my $variant ( @{$output} ) {
+            my $values = get_column_values( $delim, $variant,
+                [ 'Name', 'Alternative_Name', ] );
+
+            print $ALIGNFILE
+"========================================================================================\n";
+            print $ALIGNFILE join $delim, @{$values};
+
+            if (defined($output->{alignment})) {
+              print $ALIGNFILE $output->{alignment} . "\n";
+            }
+            else {
+              print $ALIGNFILE "No alignment obtained." . "\n";
+            }
+
+            print $ALIGNFILE "\n";
+        }
+        close($ALIGNFILE) or die("Cannot close file : $!");
+
+    }
+
 }
 
 sub get_column_values {
@@ -296,7 +334,8 @@ sub get_genotype_conversion_hash {
         'VCF_A'                           => undef,
         'VCF_B'                           => undef,
         'A'                               => 'A',
-        'B'                               => 'B'
+        'B'                               => 'B',
+        'alignment'                       => undef
     );
 
     if ( defined( $manifest_entry->{IlmnID} ) ) {
@@ -386,8 +425,9 @@ sub populate_conversion_hash_illumina {
     $output_hash->{BLAST_position}   = $basic_blast_results->{position};
     $output_hash->{Reference_allele_forward_strand} =
       $basic_blast_results->{reference_base_forward_strand};
-    $output_hash->{VCF_REF} = $basic_blast_results->{VCF_REF};
-    $output_hash->{VCF_ALT} = $basic_blast_results->{VCF_ALT};
+    $output_hash->{VCF_REF}   = $basic_blast_results->{VCF_REF};
+    $output_hash->{VCF_ALT}   = $basic_blast_results->{VCF_ALT};
+    $output_hash->{alignment} = $basic_blast_results->{alignment};
 
     if ( ( $output_hash->{AB_A} eq 'I' ) || ( $output_hash->{AB_A} eq 'D' ) ) {
         $output_hash->{is_indel} = 1;
@@ -533,6 +573,7 @@ sub populate_conversion_hash_affymetrix {
     $output_hash->{BLAST_position}   = $basic_blast_results->{position};
     $output_hash->{Reference_allele_forward_strand} =
       $basic_blast_results->{reference_base_forward_strand};
+    $output_hash->{alignment} = $basic_blast_results->{alignment};
 
     $output_hash->{VCF_REF} = $basic_blast_results->{VCF_REF};
     $output_hash->{VCF_ALT} = $basic_blast_results->{VCF_ALT};
@@ -632,7 +673,8 @@ sub get_basic_blast_results {
         position                      => undef,
         reference_base_forward_strand => undef,
         VCF_REF                       => undef,
-        VCF_ALT                       => undef
+        VCF_ALT                       => undef,
+        alignment                     => undef
     );
 
     #look for hit by Alternative_Name then Name
@@ -712,8 +754,9 @@ sub get_basic_blast_results {
     $results{position} = $alignment_result->{position};
     $results{reference_base_forward_strand} =
       $alignment_result->{reference_base};
-    $results{VCF_REF} = $alignment_result->{VCF_REF};
-    $results{VCF_ALT} = $alignment_result->{VCF_ALT};
+    $results{VCF_REF}   = $alignment_result->{VCF_REF};
+    $results{VCF_ALT}   = $alignment_result->{VCF_ALT};
+    $results{alignment} = $alignment_result->{alignment};
     return \%results;
 }
 
@@ -768,7 +811,8 @@ sub build_alignment {
         position       => undef,
         reference_base => undef,    #D/I for indel, base for SNP
         VCF_REF        => undef,
-        VCF_ALT        => undef
+        VCF_ALT        => undef,
+        alignment      => undef
     );
 
     my $is_snp;
@@ -1189,11 +1233,7 @@ sub build_alignment {
 
     }
 
-    push @alignment, "\n";
-
-    if ( $options->{verbose} ) {
-        print join "", @alignment;
-    }
+    $result{alignment} = join "", @alignment;
 
     $result{position}       = $position;
     $result{reference_base} = $reference_base;
@@ -1366,11 +1406,11 @@ REQUIRED ARGUMENTS:
 OPTIONAL ARGUMENTS:
    -w, --wide [FILE]
       Output CSV file to create describing position and conversion information.
+   -a, --alignment [FILE]
+      Output text file showing how BLAST alignments were used to determine variant 
+      position and alleles.
    -i, --info [STRINGS]
       Additional text to appear in the header of output files.
-   -v, --verbose
-      Print information showing how BLAST alignments were used to determine variant
-      position and alleles.
    -h, --help
       Show this message.
 

@@ -189,7 +189,7 @@ process final_report {
    build_conversion_file_and_position_file.pl -m $x -b merged_hits.txt \\
    -c conversion.txt -p position.txt -w wide.txt \\
    -i 'SPECIES=$params.species' 'REF=$referenceName' 'PANEL=$panelName' \\
-   -v > alignment.txt
+   -a alignment.txt
    
    if [ '$params.align' == 'false' ]; then
      rm alignment.txt
