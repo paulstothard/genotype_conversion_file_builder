@@ -8,7 +8,7 @@ params.outdir = "$baseDir/results"
 params.chunksize = 10000
 params.dev = false
 params.align = false
-params.number_of_inputs = 2000
+params.number_of_inputs = 100
 
 
 /*

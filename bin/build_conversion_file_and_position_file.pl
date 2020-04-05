@@ -253,20 +253,21 @@ sub write_output_files {
 
         foreach my $variant ( @{$output} ) {
             my $values = get_column_values( $delim, $variant,
-                [ 'Name', 'Alternative_Name', ] );
+                [ 'Name', 'Alternative_Name' ] );
 
             print $ALIGNFILE
 "========================================================================================\n";
             print $ALIGNFILE join $delim, @{$values};
+            print $ALIGNFILE "\n";
 
-            if (defined($output->{alignment})) {
-              print $ALIGNFILE $output->{alignment} . "\n";
+            if (defined($variant->{alignment})) {
+              my $alignment = $variant->{alignment};
+              $alignment =~ s/\s+$//g;
+              print $ALIGNFILE $alignment . "\n";
             }
             else {
               print $ALIGNFILE "No alignment obtained." . "\n";
             }
-
-            print $ALIGNFILE "\n";
         }
         close($ALIGNFILE) or die("Cannot close file : $!");
 
