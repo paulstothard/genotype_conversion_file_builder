@@ -2,7 +2,7 @@
 
 The genotype\_conversion\_file\_builder is a pipeline for determining the genome location and transformation rules for the variants described in Illumina or Affymetrix genotype panel manifest files.
 
-Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as "position" and "conversion" files, respectively. A third "wide" file provides the combined position and conversion information in a format that can be easily converted to files used by downstream tools like plink.
+Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotpes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as "position" and "conversion" files, respectively. A third "wide" file provides the position and conversion information together in a format that can be easily converted to files used by downstream tools like PLINK.
 
 ## Quick start 
 
@@ -22,7 +22,7 @@ By default the pipeline is executed by using a small dataset included with the p
 
 The pipeline requires an Illumina or Affymetrix manifest file and reference genome as input.
 
-#### Sample Illumina manifest file content:
+#### Sample Illumina manifest file content
 
 ```
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
@@ -38,7 +38,7 @@ ARS-BFGL-BAC-10867-0_B_F_1511658130,ARS-BFGL-BAC-10867,BOT,[G/C],0058642429,TAAT
 ARS-BFGL-BAC-10919-0_T_F_1511658221,ARS-BFGL-BAC-10919,TOP,[A/G],0031683470,TTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC,,,3,14,31267746,diploid,Bos taurus,UM3,0,TOP,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC[A/G]CTTGGTGTTCAAGGAAGTCTCTGCACTCTGGCCATCGGGACTATCATGTTCAAGCTTGAG,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC[A/G]CTTGGTGTTCAAGGAAGTCTCTGCACTCTGGCCATCGGGACTATCATGTTCAAGCTTGAG,1241
 ```
 
-#### Sample Affymetrix manifest / annotation file content:
+#### Sample Affymetrix manifest / annotation file content
 
 ```
 Probe Set ID	Affy SNP ID	dbSNP RS ID	Chromosome	Physical Position	Strand	Flank	Allele A	Allele B	cust_snpid	ChrX pseudo-autosomal region 1	ChrX pseudo-autosomal region 2	Genetic Map
@@ -54,7 +54,7 @@ AX-116661930	Affx-115319167	---	---	---	+	GGGACCAGCTCCACCCCACTCCAGGGCCCGGTGAC[C/
 AX-116661931	Affx-114835802	---	---	---	+	GGAACTCGGCCAGCACCGATGGAGTCCCAGGTTTC[A/G]AAGCTCCTGCTGCATTGAGGAGACTGGTCCAAAGG	A	G	"2""WU_10_2_1_813652"	---	---	---
 ```
 
-#### Sample reference genome file content:
+#### Sample reference genome file content
 
 ```
 >1 dna:chromosome chromosome:Sscrofa11.1:1:1:274330532:1 REF
@@ -72,7 +72,7 @@ GCTGCAGCTGCCAGCTTACGCTACAGCAACACCAGATCCAGTTGTATCTGTGGCCTTTGC
 
 ## Output
 
-### Position file:
+### Position file
 
 The position file describes the location of each marker on the new reference genome.
 
@@ -87,7 +87,7 @@ The columns are as follows:
 * VCF\_REF - the allele observed on the forward strand of the reference genome at this position. This allele usually matches on of the two alleles described in the manifest file (when they are transformed to the forward strand of the reference), but not always.
 * VCF\_ALT - one or both of the allele described in the manifest file, transformed to the forward strand of the reference genome. In most cases, there is one allele in this column, as the other matches the allele in the VCF_REF column and thus is not considered an alternate (i.e. non-reference) allele. However, in cases where neither allele is observed in the reference genome sequence, both alleles appear here, separated by a forward slash, e.g. "A/G". 
 
-#### Sample position file content:
+#### Sample position file content
 
 ```
 marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT
@@ -103,7 +103,7 @@ ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130,14,32554055,C,G
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,14,29573682,T,C
 ```
 
-### Conversion file:
+### Conversion file
 
 The conversion file describes how genotypes can be converted from one format to another, including to the forward strand of the new reference genome (the PLUS format).
 
@@ -130,7 +130,7 @@ The columns are as follows:
 * PLUS - the allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
 * VCF - a value of 'REF' in this column indicates that this allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
 
-#### Sample conversion file content:
+#### Sample conversion file content
 
 ```
 marker_name,alt_marker_name,AB,TOP,FORWARD,DESIGN,PLUS,VCF
@@ -156,7 +156,7 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,A,A,A,A,T,REF
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,B,G,G,G,C,ALT
 ```
 
-### Wide file:
+### Wide file
 
 The wide file describes the location of each marker on the new reference genome, and provides the various representations of the A and B alleles. 
 
@@ -183,10 +183,51 @@ The columns are as follows:
 * VCF_A - a value of 'REF' in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
 * VCF_B - a value of 'REF' in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of 'ALT' indicates that it does not.
 
-#### Sample wide file content:
+#### Sample wide file content
 
 ```
+marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT,AB_A,AB_B,TOP_A,TOP_B,FORWARD_A,FORWARD_B,DESIGN_A,DESIGN_B,PLUS_A,PLUS_B,VCF_A,VCF_B
+ABCA12,ABCA12_r2-1_T_F_2277749139,2,103030489,T,C,A,B,A,G,A,G,A,G,T,C,REF,ALT
+APAF1,APAF1_dup-1_B_F_2327661418,5,62810245,C,T,A,B,A,G,T,C,T,C,T,C,ALT,REF
+ARS-BFGL-BAC-10172,ARS-BFGL-BAC-10172_dup-0_T_F_2328966397,14,5342658,C,T,A,B,A,G,A,G,A,G,T,C,ALT,REF
+ARS-BFGL-BAC-1020,ARS-BFGL-BAC-1020-0_B_R_1511662870,14,6889656,T,C,A,B,A,G,A,G,T,C,T,C,REF,ALT
+ARS-BFGL-BAC-10245,ARS-BFGL-BAC-10245-0_B_F_1511658502,14,30124134,G,A,A,B,A,G,T,C,T,C,A,G,ALT,REF
+ARS-BFGL-BAC-10345,ARS-BFGL-BAC-10345_dup-0_T_F_2328966403,14,5105727,T,G,A,B,A,C,A,C,A,C,T,G,REF,ALT
+ARS-BFGL-BAC-10375,ARS-BFGL-BAC-10375_dup-0_T_F_2328966405,14,5587750,G,A,A,B,A,G,A,G,A,G,A,G,ALT,REF
+ARS-BFGL-BAC-10591,ARS-BFGL-BAC-10591_dup-0_T_F_2328966407,14,15956824,A,G,A,B,A,G,A,G,A,G,A,G,REF,ALT
+ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130,14,32554055,C,G,A,B,C,G,G,C,G,C,G,C,ALT,REF
+ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,14,29573682,T,C,A,B,A,G,A,G,A,G,T,C,REF,ALT
+```
 
+## Creating new output formats
+
+The wide output format can easily be manipulated using standard command-line utilites in order to generate other useful formats.
+
+### To create a MAP file for PLINK
+
+For example, the two commands below can be used to generate a MAP file for PLINK. 
+
+The first command does the following: skip comment lines; skip the header row; and, when position information is available, print the position, marker name, '0', and chromosome:
+
+    $ cat manifest.reference.wide.csv | grep -v '#' | tail -n +2 | awk -F, '{ if ($4 != "") { print $3,$1,'0',$4 } }' OFS="\t" > temp
+
+The second command recodes chromosomes to integers (the specific recoding needed will depend on the species and chromosome names obtained). Specifically, it changes 'X' to '30', 'Y' to '31', 'MT' to '32', and any non-integer-represented chromosomes remaining to '0':
+
+    $ cat temp | awk '{ $1 = ($1 == "X" ? 30 : $1); $1 = ($1 == "Y" ? 31 : $1); $1 = ($1 == "MT" ? 32 : $1); $1 = (match($1, /[^0-9]/) ? 0 : $1 )}  1' OFS="\t" > manifest.reference.map
+    
+Using the sample wide file output above as input, these commands produce the following:
+
+```
+2	ABCA12	0	103030489
+5	APAF1	0	62810245
+14	ARS-BFGL-BAC-10172	0	5342658
+14	ARS-BFGL-BAC-1020	0	6889656
+14	ARS-BFGL-BAC-10245	0	30124134
+14	ARS-BFGL-BAC-10345	0	5105727
+14	ARS-BFGL-BAC-10375	0	5587750
+14	ARS-BFGL-BAC-10591	0	15956824
+14	ARS-BFGL-BAC-10867	0	32554055
+14	ARS-BFGL-BAC-10919	0	29573682
 ```
 
 ## Pipeline parameters
@@ -210,6 +251,14 @@ The columns are as follows:
 ##### --chunksize
 
   * Number of variant sequences to process per BLAST job (default: 10000)
+
+##### --dev 
+
+  * Whether to process a small number of markers and then exit (default: false)
+
+##### --align
+
+  * Whether to include an alignment file in the output showing how BLAST alignments were parsed to determine position, allele, and strand information (default: false)  
 
 ##### Sample commands
 
