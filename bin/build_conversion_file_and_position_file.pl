@@ -642,16 +642,10 @@ sub get_basic_blast_results {
     }
 
     my $chr = $blast_result_hash->{subject_id};
-    if (   ( $chr =~ /ref\|([^\|]+)\|/ )
-        || ( $chr =~ /Chromosome_([^_]+)/ )
-        || ( $chr =~ /\|([^\|]+)$/ )
-        || ( $chr =~ /^([\dA-Z]{1,2})$/ ) )
-    {
-        $chr = $1;
-    }
 
-    $results{chromosome} = $chr;
-    $results{strand}     = $blast_result_hash->{subject_strand};
+    $results{chromosome} = parse_chromosome( $blast_result_hash->{subject_id},
+        $blast_result_hash->{salltitles} );
+    $results{strand} = $blast_result_hash->{subject_strand};
 
     my %h = ();
     $h{query_id} = $blast_result_hash->{query_id};
@@ -718,6 +712,49 @@ sub get_basic_blast_results {
     $results{VCF_REF} = $alignment_result->{VCF_REF};
     $results{VCF_ALT} = $alignment_result->{VCF_ALT};
     return \%results;
+}
+
+sub parse_chromosome {
+    my $subject_id = shift;
+    my $salltitles = shift;
+
+#subject_id is text before first white space, or text before second | character
+#salltitles is text after subject_id in FASTA title
+#Example FASTA titles
+#>gnl|UMD3.1|GJ057971.1 GPS_000342411.1 NW_003098716.1
+#>NKLS02000031.1 Bos taurus breed Hereford isolate L1 Dominette 01449 registration number 42190680 Leftover_ScbfJmS_1, whole genome shotgun sequence
+#>JH118944.1 dna:scaffold scaffold:Sscrofa10.2:JH118944.1:1:594937:1 REF
+#>9 dna:chromosome chromosome:Sscrofa10.2:9:1:153670197:1 REF
+#>MT dna:chromosome chromosome:Sscrofa10.2:MT:1:16613:1 REF
+#>X dna:primary_assembly primary_assembly:USMARCv1.0:X:1:126604238:1 REF
+#>Y dna:primary_assembly primary_assembly:USMARCv1.0:Y:1:36677040:1 REF
+#>NPJO01000021.1 dna:primary_assembly primary_assembly:USMARCv1.0:NPJO01000021.1:1:3171300:1 REF
+#>gnl|UMD3.1|GK000007.2 Chromosome 7 AC_000164.1
+#>gnl|UMD3.1|GK000008.2 Chromosome 8 AC_000165.1
+#>gnl|UMD3.1|GK000009.2 Chromosome 9 AC_000166.1
+#>gnl|UMD3.1|AY526085.1 Chromosome MT NC_006853.1
+#>gnl|UMD3.1|GJ057185.1 GPS_000341625.1 NW_003097930.1
+#>gnl|UMD3.1|GJ057186.1 GPS_000341626.1 NW_003097931.1
+#>gnl|UMD3.1|GJ057187.1 GPS_000341627.1 NW_003097932.1
+
+    my $chromosome = undef;
+
+    if ( $subject_id =~ m/^([\dA-Z]{1,2})$/ ) {
+        $chromosome = $1;
+    }
+    elsif ( $salltitles =~ m/[Cc]hromosome\s([\dA-Z]{1,2})\s/ ) {
+        $chromosome = $1;
+    }
+    elsif ( $subject_id =~ m/^([^\|]{5,})$/ ) {
+        $chromosome = $1;
+    }
+    elsif ( $salltitles =~ m/\s([^\|]{5,})$/ ) {
+        $chromosome = $1;
+    }
+    else {
+        $chromosome = $subject_id;
+    }
+    return $chromosome;
 }
 
 sub build_alignment {
