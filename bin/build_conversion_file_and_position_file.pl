@@ -111,7 +111,7 @@ sub write_output_files {
 
     foreach my $variant ( @{$output} ) {
         my $values = get_column_values(
-            $variant,
+            $delim, $variant,
             [
                 'Name',             'Alternative_Name',
                 'BLAST_chromosome', 'BLAST_position',
@@ -152,7 +152,7 @@ sub write_output_files {
 
     foreach my $variant ( @{$output} ) {
         my $values_A = get_column_values(
-            $variant,
+            $delim, $variant,
             [
                 'Name',      'Alternative_Name',
                 'A',         'TOP_A',
@@ -164,7 +164,7 @@ sub write_output_files {
         print $CONFILE "\n";
 
         my $values_B = get_column_values(
-            $variant,
+            $delim, $variant,
             [
                 'Name',      'Alternative_Name',
                 'B',         'TOP_B',
@@ -214,7 +214,7 @@ sub write_output_files {
 
         foreach my $variant ( @{$output} ) {
             my $values = get_column_values(
-                $variant,
+                $delim, $variant,
                 [
                     'Name',             'Alternative_Name',
                     'BLAST_chromosome', 'BLAST_position',
@@ -237,13 +237,16 @@ sub write_output_files {
 }
 
 sub get_column_values {
+    my $delim   = shift;
     my $variant = shift;
     my $keys    = shift;
     my @values  = ();
 
     foreach my $key ( @{$keys} ) {
         if ( ( defined( $variant->{$key} ) ) && ( $variant->{$key} ne '?' ) ) {
-            push @values, $variant->{$key};
+            my $value = $variant->{$key};
+            $value =~ s/$delim//g;
+            push @values, $value;
         }
         else {
             push @values, '';
@@ -641,8 +644,10 @@ sub get_basic_blast_results {
         return \%results;
     }
 
-    $results{chromosome} = parse_chromosome( $blast_result_hash->{subject_id},
-        $blast_result_hash->{subject_titles} );
+    $results{chromosome} = parse_chromosome(
+        $blast_result_hash->{subject_id},
+        $blast_result_hash->{subject_titles}
+    );
     $results{strand} = $blast_result_hash->{subject_strand};
 
     my %h = ();
@@ -713,7 +718,7 @@ sub get_basic_blast_results {
 }
 
 sub parse_chromosome {
-    my $subject_id = shift;
+    my $subject_id     = shift;
     my $subject_titles = shift;
 
 #subject_id is text before first white space, or text before second | character
