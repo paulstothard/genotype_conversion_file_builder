@@ -260,13 +260,13 @@ sub write_output_files {
             print $ALIGNFILE join $delim, @{$values};
             print $ALIGNFILE "\n";
 
-            if (defined($variant->{alignment})) {
-              my $alignment = $variant->{alignment};
-              $alignment =~ s/\s+$//g;
-              print $ALIGNFILE $alignment . "\n";
+            if ( defined( $variant->{alignment} ) ) {
+                my $alignment = $variant->{alignment};
+                $alignment =~ s/\s+$//g;
+                print $ALIGNFILE $alignment . "\n";
             }
             else {
-              print $ALIGNFILE "No alignment obtained." . "\n";
+                print $ALIGNFILE "No alignment obtained." . "\n";
             }
         }
         close($ALIGNFILE) or die("Cannot close file : $!");
@@ -553,7 +553,9 @@ sub populate_conversion_hash_affymetrix {
     $output_hash->{Name}             = $manifest_entry->{Probe_Set_ID};
     $output_hash->{Alternative_Name} = $manifest_entry->{Affy_SNP_ID};
     $output_hash->{SNP} =
-      '[' . $manifest_entry->{A} . '/' . $manifest_entry->{B} . ']';
+        '['
+      . $manifest_entry->{Allele_A} . '/'
+      . $manifest_entry->{Allele_B} . ']';
 
     $output_hash->{flanking} = $manifest_entry->{Flank};
 
@@ -562,8 +564,8 @@ sub populate_conversion_hash_affymetrix {
         $output_hash->{second_allele_from_flank} = $2;
     }
 
-    $output_hash->{AB_A} = $manifest_entry->{A};
-    $output_hash->{AB_B} = $manifest_entry->{B};
+    $output_hash->{AB_A} = $manifest_entry->{Allele_A};
+    $output_hash->{AB_B} = $manifest_entry->{Allele_B};
 
     #next do BLAST-based values
     my $basic_blast_results =
@@ -598,8 +600,8 @@ sub populate_conversion_hash_affymetrix_snp {
     my $manifest_entry = shift;
     my $output_hash    = shift;
 
-    $output_hash->{FORWARD_A} = $manifest_entry->{A};
-    $output_hash->{FORWARD_B} = $manifest_entry->{B};
+    $output_hash->{FORWARD_A} = $manifest_entry->{Allele_A};
+    $output_hash->{FORWARD_B} = $manifest_entry->{Allele_B};
 
     #use the BLAST results to determine PLUS_A and PLUS_B
     if ( defined( $output_hash->{BLAST_strand} ) ) {
@@ -619,13 +621,17 @@ sub populate_conversion_hash_affymetrix_indel {
     my $options        = shift;
     my $manifest_entry = shift;
     my $output_hash    = shift;
+
 }
 
 sub set_vcf_a_and_b {
     my $output_hash = shift;
 
     if ( $output_hash->{is_snp} ) {
-        if ( defined( $output_hash->{Reference_allele_forward_strand} ) ) {
+        if (   ( defined( $output_hash->{Reference_allele_forward_strand} ) )
+            && ( defined( $output_hash->{VCF_REF} ) ) )
+        {
+
             if ( $output_hash->{PLUS_A} eq $output_hash->{VCF_REF} ) {
                 $output_hash->{VCF_A} = 'REF';
                 $output_hash->{VCF_B} = 'ALT';
@@ -641,7 +647,9 @@ sub set_vcf_a_and_b {
         }
     }
     elsif ( $output_hash->{is_indel} ) {
-        if ( defined( $output_hash->{Reference_allele_forward_strand} ) ) {
+        if (   ( defined( $output_hash->{Reference_allele_forward_strand} ) )
+            && ( defined( $output_hash->{VCF_REF} ) ) )
+        {
             if ( $output_hash->{PLUS_A} eq
                 $output_hash->{Reference_allele_forward_strand} )
             {
@@ -991,8 +999,21 @@ sub build_alignment {
             }
             else {
                 #No probe information
-                $position       = "?";
-                $reference_base = "?";
+                #$position       = "?";
+                #$reference_base = "?";
+                #Use position to the left
+                $position = $subject_position_left_of_variant;
+                my $char_pos = $query_chars_from_left;
+                while (( $reference_base eq '?' )
+                    && ( $char_pos > 0 ) )
+                {
+                    $char_pos--;
+                    if ( substr( $h->{subject_seq}, $char_pos, 1 ) ne '-' ) {
+                        $reference_base =
+                          substr( $h->{subject_seq}, $char_pos, 1 );
+                        last;
+                    }
+                }
             }
         }
     }
@@ -1294,7 +1315,7 @@ sub csv_to_array_of_hashes {
         if (
             ( !($columns_found) )
             && ( $line =~
-m/(IlmnID,Name,IlmnStrand|"Probe Set ID","Affy SNP ID"|query id,query seq)/
+m/(IlmnID,Name,IlmnStrand|"Probe Set ID","Affy SNP ID"|query id,query seq|Probe Set ID\s+Affy SNP ID)/
             )
           )
         {
