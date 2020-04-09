@@ -999,20 +999,67 @@ sub build_alignment {
             }
             else {
                 #No probe information
-                #$position       = "?";
-                #$reference_base = "?";
-                #Use position to the left
-                $position = $subject_position_left_of_variant;
-                my $char_pos = $query_chars_from_left;
-                while (( $reference_base eq '?' )
+
+                #Examine base to the right and base to the left
+                #Then choose the position that gives most consistent genotype
+                my $position_to_the_right =
+                  $subject_position_left_of_variant + 1;
+                my $reference_base_to_the_right = '?';
+                my $position_to_the_left = $subject_position_left_of_variant;
+                my $reference_base_to_the_left = '?';
+                my $char_pos;
+
+                #Position to the right
+                $char_pos = $query_chars_from_left;
+                while (( $reference_base_to_the_right eq '?' )
+                    && ( $char_pos < length( $h->{subject_seq} ) ) )
+                {
+                    $char_pos++;
+                    if ( substr( $h->{subject_seq}, $char_pos, 1 ) ne '-' ) {
+                        $reference_base_to_the_right =
+                          substr( $h->{subject_seq}, $char_pos, 1 );
+                        last;
+                    }
+                }
+
+                #Position to the left
+                $char_pos = $query_chars_from_left;
+                while (( $reference_base_to_the_left eq '?' )
                     && ( $char_pos > 0 ) )
                 {
                     $char_pos--;
                     if ( substr( $h->{subject_seq}, $char_pos, 1 ) ne '-' ) {
-                        $reference_base =
+                        $reference_base_to_the_left =
                           substr( $h->{subject_seq}, $char_pos, 1 );
                         last;
                     }
+                }
+
+                #Compare reference bases to the alleles
+                my $left_is_consistent  = 0;
+                my $right_is_consistent = 0;
+                if (   ( $reference_base_to_the_left eq $h->{allele1} )
+                    || ( $reference_base_to_the_left eq $h->{allele2} ) )
+                {
+                    $left_is_consistent = 1;
+                }
+                if (   ( $reference_base_to_the_right eq $h->{allele1} )
+                    || ( $reference_base_to_the_right eq $h->{allele2} ) )
+                {
+                    $right_is_consistent = 1;
+                }
+
+                if ($left_is_consistent) {
+                    $position       = $position_to_the_left;
+                    $reference_base = $reference_base_to_the_left;
+                }
+                elsif ($right_is_consistent) {
+                    $position       = $position_to_the_right;
+                    $reference_base = $reference_base_to_the_right;
+                }
+                else {
+                    $position       = $position_to_the_left;
+                    $reference_base = $reference_base_to_the_left;
                 }
             }
         }

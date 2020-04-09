@@ -89,7 +89,7 @@ The columns are as follows:
 
 Note: Indel positions and alleles are described according to the [VCF specification] (https://samtools.github.io/hts-specs/VCFv4.2.pdf).
 
-Note: In cases where the SNP aligns with a gap in the reference genome, probe information in the manifest file is examined, to determine whether the base on the left or right side of the gap is assayed by the probe. In cases where probe information is not available, the position of the first base to the left is used.
+Note: In cases where the SNP aligns with a gap in the reference genome, probe information in the manifest file is examined, to determine whether the base on the left or right side of the gap is assayed by the probe, and the position and reference base are selected accordingly. In cases where probe information is not available, the reference base to the left and right are examined. If the left base matches one of the SNP alleles, it is selected as VCF\_REF and its position is used as the position value. If the left base does not match one of the SNP alleles but the right base does, the right base is selected as VCF\_REF and its position is used. If neither the left or right bases match one of the alleles, then the left base and position are used.
 
 #### Sample position file content
 
@@ -191,7 +191,7 @@ The columns are as follows:
 
 Note: Indel positions and alleles (in the VCF\_REF and VCF\_ALT columns) are described according to the [VCF specification] (https://samtools.github.io/hts-specs/VCFv4.2.pdf).
 
-Note: In cases where the SNP aligns with a gap in the reference genome, probe information in the manifest file is examined, to determine whether the base on the left or right side of the gap is assayed by the probe. In cases where probe information is not available, the position of the first base to the left is used.
+Note: In cases where the SNP aligns with a gap in the reference genome, probe information in the manifest file is examined, to determine whether the base on the left or right side of the gap is assayed by the probe, and the position and reference base are selected accordingly. In cases where probe information is not available, the reference base to the left and right are examined. If the left base matches one of the SNP alleles, it is selected as VCF_REF and its position is used as the position value. If the left base does not match one of the SNP alleles but the right base does, the right base is selected as VCF_REF and its position is used. If neither the left or right bases match one of the alleles, then the left base and position are used.
 
 Note: Indel alleles in the TOP, FORWARD, DESIGN, and PLUS columns are given as D (deletion) or I (insertion).
 
