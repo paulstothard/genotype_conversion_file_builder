@@ -1000,6 +1000,22 @@ sub build_alignment {
             else {
                 #No probe information
 
+#AX-116661957,Affx-114697984
+#Affx-114697984
+#Type: SNP
+#      QUERY ACTGAGGCCCATGAGCTGGCTGCTTTTTCTGTCAGNCCCTCTAGAGTTTTTTGGGGGATTAAATACATACT
+#    TO LEFT                            1373121|
+#    1373087 ACTGAGGCCCATGAGCTGGCTGCTTTTTCTGTCAG-CCCTCTAGAGTTTTTTGGGGGATTAAATACATACT 1373156
+#      RULER    |         |         |         |
+#    ALLELE1                                     C
+#    ALLELE2                                     T
+#   POSITION                              1373122|
+#        REF                                     C
+#    VCF_REF                                     C
+#    VCF_ALT                                     T
+
+
+
                 #Examine base to the right and base to the left
                 #Then choose the position that gives most consistent genotype
                 my $position_to_the_right =
