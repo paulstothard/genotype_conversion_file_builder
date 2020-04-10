@@ -223,151 +223,150 @@ ABCA12,ABCA12_r2-1_T_F_2277749139
 ABCA12
 Type: SNP
       QUERY ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGNGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT
-    TO LEFT                                                                                                                                                                         103030488|
-  103030311 ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGTGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT 103030670
-      PROBE                                                                                                                                                                                    <<<
-      RULER          |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         
+    SUBJECT ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGTGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT
+      PROBE                                                                                                                                                                                    GATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAG
+  103030311          |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                                                                                                                                                   C
     ALLELE2                                                                                                                                                                                   T
    POSITION                                                                                                                                                                          103030489|
         REF                                                                                                                                                                                   T
     VCF_REF                                                                                                                                                                                   T
     VCF_ALT                                                                                                                                                                                   C
+Determination type: RIGHT_PROBE_SNP
 ========================================================================================
 APAF1,APAF1_dup-1_B_F_2327661418
 APAF1
 Type: SNP
       QUERY CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGNAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT
-    TO LEFT                                                    62810244|
-   62810185 CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGCAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT 62810305
-      PROBE                                                          >>>
-      RULER      |         |         |         |         |         |     
+    SUBJECT CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGCAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT
+      PROBE           ATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGG
+   62810185      |         |         |         |         |         |         |         |         |         |         |         |     
     ALLELE1                                                             T
     ALLELE2                                                             C
    POSITION                                                     62810245|
         REF                                                             C
     VCF_REF                                                             C
     VCF_ALT                                                             T
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-10172,ARS-BFGL-BAC-10172_dup-0_T_F_2328966397
 ARS-BFGL-BAC-10172
 Type: SNP
       QUERY TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATNACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
-    TO LEFT                                                     5342657|
-    5342598 TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATCACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG 5342718
-      PROBE                                                              <<<
-      RULER   |         |         |         |         |         |        
+    SUBJECT TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATCACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
+      PROBE                                                              ACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACC
+    5342598   |         |         |         |         |         |         |         |         |         |         |         |        
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                      5342658|
         REF                                                             C
     VCF_REF                                                             C
     VCF_ALT                                                             T
+Determination type: RIGHT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-1020,ARS-BFGL-BAC-1020-0_B_R_1511662870
 ARS-BFGL-BAC-1020
 Type: SNP
       QUERY TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGNACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
-    TO LEFT                                                     6889655|
-    6889596 TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGTACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC 6889716
-      PROBE                                                          >>>
-      RULER     |         |         |         |         |         |      
+    SUBJECT TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGTACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
+      PROBE           GGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAG
+    6889596     |         |         |         |         |         |         |         |         |         |         |         |      
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                      6889656|
         REF                                                             T
     VCF_REF                                                             T
     VCF_ALT                                                             C
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-10245,ARS-BFGL-BAC-10245-0_B_F_1511658502
 ARS-BFGL-BAC-10245
 Type: SNP
       QUERY TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCANAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
-    TO LEFT                                                    30124133|
-   30124074 TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCAGAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG 30124194
-      PROBE                                                              <<<
-      RULER       |         |         |         |         |         |    
+    SUBJECT TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCAGAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
+      PROBE                                                              AGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCG
+   30124074       |         |         |         |         |         |         |         |         |         |         |         |    
     ALLELE1                                                             G
     ALLELE2                                                             A
    POSITION                                                     30124134|
         REF                                                             G
     VCF_REF                                                             G
     VCF_ALT                                                             A
+Determination type: RIGHT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-10345,ARS-BFGL-BAC-10345_dup-0_T_F_2328966403
 ARS-BFGL-BAC-10345
 Type: SNP
       QUERY TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTNTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
-    TO LEFT                                                     5105726|
-    5105667 TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTTTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC 5105787
-      PROBE                                                              <<<
-      RULER    |         |         |         |         |         |       
+    SUBJECT TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTTTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
+      PROBE                                                              TAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGT
+    5105667    |         |         |         |         |         |         |         |         |         |         |         |       
     ALLELE1                                                             G
     ALLELE2                                                             T
    POSITION                                                      5105727|
         REF                                                             T
     VCF_REF                                                             T
     VCF_ALT                                                             G
+Determination type: RIGHT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-10375,ARS-BFGL-BAC-10375_dup-0_T_F_2328966405
 ARS-BFGL-BAC-10375
 Type: SNP
       QUERY TAAAAGCATTTTTAAAACAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATANTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA
-    TO LEFT                                                     5587749|
-    5587690 TAAAAGCATTTTTAAAATAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATAGTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA 5587810
-      PROBE                                                          >>>
-      RULER |         |         |         |         |         |         |
+    SUBJECT TAAAAGCATTTTTAAAATAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATAGTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA
+    5587690 |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                      5587750|
         REF                                                             G
     VCF_REF                                                             G
     VCF_ALT                                                             A
+Determination type: UNAMBIGUOUS_ALIGNMENT_SNP
 ========================================================================================
 ARS-BFGL-BAC-10591,ARS-BFGL-BAC-10591_dup-0_T_F_2328966407
 ARS-BFGL-BAC-10591
 Type: SNP
       QUERY AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCNAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
-    TO LEFT                                                    15956823|
-   15956764 AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCAAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA 15956884
-      PROBE                                                          >>>
-      RULER       |         |         |         |         |         |    
+    SUBJECT AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCAAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
+      PROBE           AAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGC
+   15956764       |         |         |         |         |         |         |         |         |         |         |         |    
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                     15956824|
         REF                                                             A
     VCF_REF                                                             A
     VCF_ALT                                                             G
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130
 ARS-BFGL-BAC-10867
 Type: SNP
       QUERY ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCANAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA
-    TO LEFT                                                    32554054|
-   32553995 ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCACAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA 32554115
-      PROBE                                                          >>>
-      RULER      |         |         |         |         |         |     
+    SUBJECT ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCACAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA
+      PROBE            TAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCA
+   32553995      |         |         |         |         |         |         |         |         |         |         |         |     
     ALLELE1                                                             C
     ALLELE2                                                             G
    POSITION                                                     32554055|
         REF                                                             C
     VCF_REF                                                             C
     VCF_ALT                                                             G
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221
 ARS-BFGL-BAC-10919
 Type: SNP
       QUERY CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGNGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
-    TO LEFT                                                    29573681|
-   29573622 CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGTGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT 29573742
-      PROBE                                                              <<<
-      RULER         |         |         |         |         |         |  
+    SUBJECT CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGTGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
+      PROBE                                                              GCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAA
+   29573622         |         |         |         |         |         |         |         |         |         |         |         |  
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                     29573682|
         REF                                                             T
     VCF_REF                                                             T
     VCF_ALT                                                             C
+Determination type: RIGHT_PROBE_SNP
 ```
 
 ## Creating new output formats

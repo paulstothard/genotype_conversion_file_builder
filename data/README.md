@@ -98,75 +98,75 @@ SNP1,SNP1-0_T_F_1511658221
 SNP1
 Type: SNP
       QUERY ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATNTCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
-    TO LEFT                                                                                                 299|
-        200 ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATATCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT 400
-      PROBE                                                                                                  >>>
-      RULER |         |         |         |         |         |         |         |         |         |         |
+    SUBJECT ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATATCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
+      PROBE ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTAT
+        200 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                                                                     A
     ALLELE2                                                                                                     G
    POSITION                                                                                                  300|
         REF                                                                                                     A
     VCF_REF                                                                                                     A
     VCF_ALT                                                                                                     G
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 SNP2,SNP2-0_B_F_1511663050
 SNP2
 Type: SNP
       QUERY ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTANAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
-    TO LEFT                                                                                                 699|
-        600 ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTATAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT 800
-      PROBE                                                                                                  >>>
-      RULER |         |         |         |         |         |         |         |         |         |         |
+    SUBJECT ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTATAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
+      PROBE ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTA
+        600 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                                                                     T
     ALLELE2                                                                                                     G
    POSITION                                                                                                  700|
         REF                                                                                                     T
     VCF_REF                                                                                                     T
     VCF_ALT                                                                                                     G
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 SNP3,SNP3-0_B_F_1511657910
 SNP3
 Type: SNP
       QUERY TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTANCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
-    TO LEFT                                                                                                 899|
-        800 TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAGCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT 1000
-      PROBE                                                                                                  >>>
-      RULER |         |         |         |         |         |         |         |         |         |         |
+    SUBJECT TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAGCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
+      PROBE TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTA
+        800 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                                                                     T
     ALLELE2                                                                                                     G
    POSITION                                                                                                  900|
         REF                                                                                                     G
     VCF_REF                                                                                                     G
     VCF_ALT                                                                                                     T
+Determination type: LEFT_PROBE_SNP
 ========================================================================================
 SNP4,SNP4_dup-0_B_F_2328966441
 SNP4
 Type: SNP
       QUERY AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAANCAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
-    TO LEFT                                                                                                 199|
-        100 AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAAACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA 300
-      PROBE                                                                                                      <<<
-      RULER |         |         |         |         |         |         |         |         |         |         |
+    SUBJECT AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAAACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
+      PROBE                                                                                                      CAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
+        100 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                                                                     G
     ALLELE2                                                                                                     A
    POSITION                                                                                                  200|
         REF                                                                                                     A
     VCF_REF                                                                                                     A
     VCF_ALT                                                                                                     G
+Determination type: RIGHT_PROBE_SNP
 ========================================================================================
 SNP5,SNP5-0_T_R_1511657699
 SNP5
 Type: SNP
       QUERY TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTNAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
-    TO LEFT                                                                                                 799|
-        700 TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTTAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG 900
-      PROBE                                                                                                      <<<
-      RULER |         |         |         |         |         |         |         |         |         |         |
+    SUBJECT TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTTAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
+      PROBE                                                                                                      AGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
+        700 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
     ALLELE1                                                                                                     T
     ALLELE2                                                                                                     G
    POSITION                                                                                                  800|
         REF                                                                                                     T
     VCF_REF                                                                                                     T
     VCF_ALT                                                                                                     G
+Determination type: RIGHT_PROBE_SNP
 ```
 
