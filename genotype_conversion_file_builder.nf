@@ -146,7 +146,7 @@ process blast {
     grep -m1 "^# Fields:" blast_result > temp1
     sed 's/# Fields: //' temp1 > temp2
     sed 's/, /,/g' temp2 > top_hits.txt
-    grep --invert-match "^#" blast_result | awk '!seen[\$1]++' >> top_hits.txt
+    grep --invert-match "^#" blast_result | awk -F, '!seen[\$1]++' >> top_hits.txt
     rm -f temp1 temp2
     """
 }
