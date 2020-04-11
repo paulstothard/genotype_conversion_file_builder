@@ -1039,7 +1039,7 @@ sub add_formatted_snp_alignment {
 
     #add ruler
     my $ruler_position = $h->{s_start};
-    my @ruler            = ();
+    my @ruler          = ();
 
     for my $c ( split //, $h->{subject_seq} ) {
         if ( ( $ruler_position % 10 == 0 ) && ( $c =~ m/[GATCN]/i ) ) {
@@ -1059,8 +1059,7 @@ sub add_formatted_snp_alignment {
 
     #stop here if no position available
     if ( !( defined( $alignment_info->{assayed_position} ) ) ) {
-        push @alignment,
-          "Determination type: UNDETERMINED_SNP\n";
+        push @alignment, "Determination type: UNDETERMINED_SNP\n";
         $result->{alignment} = join "", @alignment;
         return;
     }
@@ -1226,7 +1225,7 @@ sub build_alignment_snp {
                 $alignment_info{assayed_position} =
                   $assayed_position_by_right_probe;
                 $alignment_info{right_probe_sequence} = $h->{probe_seq};
-                $alignment_info{determination_type}   = 'PARTIAL_RIGHT_PROBE_SNP';
+                $alignment_info{determination_type} = 'PARTIAL_RIGHT_PROBE_SNP';
                 add_formatted_snp_alignment( $options, $h, $result,
                     \%alignment_info );
                 return $result;
@@ -1397,7 +1396,7 @@ sub build_alignment_indel {
 
     #add ruler
     my $ruler_position = $h->{s_start};
-    my @ruler            = ();
+    my @ruler          = ();
 
     for my $c ( split //, $h->{subject_seq} ) {
         if ( ( $ruler_position % 10 == 0 ) && ( $c =~ m/[GATCN]/i ) ) {
@@ -1459,7 +1458,7 @@ sub build_alignment_indel {
             $subject_chars_to_and_including_n );
 
         $position = $position - $shift_left;
- 
+
         $determination_type = 'REFERENCE_INSERTION_INDEL';
 
     }
@@ -1479,7 +1478,7 @@ sub build_alignment_indel {
 
         $position = $position - $shift_left;
 
-       $determination_type = 'REFERENCE_DELETION_INDEL';
+        $determination_type = 'REFERENCE_DELETION_INDEL';
 
     }
 
@@ -1549,10 +1548,9 @@ sub build_alignment_indel {
     push @alignment, sprintf( "%${char_count}s", "$result->{VCF_ALT}" );
     push @alignment, "\n";
 
-    push @alignment,
-      "Determination type: $determination_type\n";
+    push @alignment, "Determination type: $determination_type\n";
 
-    $result->{alignment} = join "", @alignment;
+    $result->{alignment}      = join "", @alignment;
     $result->{position}       = $position;
     $result->{reference_base} = $reference_base;
 
@@ -1626,6 +1624,11 @@ m/(IlmnID,Name,IlmnStrand|"Probe Set ID","Affy SNP ID"|query id,query seq|Probe 
         my @values = @{ _split($line) };
 
         if ( scalar(@values) ne scalar(@columns) ) {
+            print "skipping this record because it is length "
+              . scalar(@values)
+              . " while I expect length "
+              . scalar(@columns) . "\n";
+            print Dumper (@values);
             next;
         }
 
@@ -1645,12 +1648,25 @@ sub _split {
         @values = split( /\t/, $line );
     }
     else {
-        @values = split( /\,/, $line );
+        #      @values = split( /\,/, $line );
+        @values = @{ _split_comma($line) };
     }
     foreach (@values) {
         $_ = clean_value($_);
     }
     return \@values;
+}
+
+sub _split_comma {
+    my $text = shift;
+    my @new  = ();
+    push( @new, $+ ) while $text =~ m{
+                  "([^\"\\]*(?:\\.[^\"\\]*)*)",? # groups the phrase inside the quotes
+                | ([^,]+),?
+                | ,
+          }gx;
+    push( @new, undef ) if substr( $text, -1, 1 ) eq ',';
+    return \@new;
 }
 
 sub clean_value {
