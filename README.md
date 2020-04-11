@@ -412,23 +412,27 @@ Using the sample **wide** file output above as input, these commands produce the
 
 ##### --species
 
-  * Name of the species (used for organizing output files) (default: all)
+  * Name of the species (used for organizing output files) (default: all).
 
 ##### --outdir
 
-  * Output directory to hold the results (default: genotype\_conversion\_file\_builder/results)
+  * Output directory to hold the results (default: genotype\_conversion\_file\_builder/results).
 
 ##### --chunksize
 
-  * Number of variant sequences to process per BLAST job (default: 10000)
+  * Number of variant sequences to process per BLAST job (default: 10000).
 
 ##### --dev 
 
-  * Whether to process a small number of markers and then exit (default: false)
+  * Whether to process a small number of markers and then exit (default: false).
 
 ##### --align
 
-  * Whether to include an alignment file in the output showing how BLAST alignments were parsed to determine position, allele, and strand information (default: false)  
+  * Whether to include an alignment file in the output directory showing how BLAST alignments were parsed to determine position, allele, and strand information (default: false).
+
+##### --blast   
+
+  * Whether to include a BLAST results file in the output directory (default: false).
 
 ##### Sample commands
 
@@ -449,6 +453,7 @@ outdir
           ├── manifest.reference.position.csv
           ├── manifest.reference.wide.csv
           ├── manifest.reference.alignment.txt
+          ├── manifest.reference.blast.txt
 ```
 
 ## Dependencies

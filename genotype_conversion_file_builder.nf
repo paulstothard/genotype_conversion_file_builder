@@ -8,6 +8,7 @@ params.outdir = "$baseDir/results"
 params.chunksize = 10000
 params.dev = false
 params.align = false
+params.blast = false
 params.number_of_inputs = 100
 
 
@@ -157,7 +158,8 @@ process merge_blast {
     file '*.txt' from blast_output_ch.collect()
     
     output:
-    file 'merged_hits.txt' into merge_blast_output_ch
+    file 'merged_hits.txt' into merge_blast_output_ch_1
+    file 'blast.txt' optional true into merge_blast_output_ch_2
     
     """
     #If there is one top_hits.txt file it is staged as .txt
@@ -168,15 +170,21 @@ process merge_blast {
         tail -n +2 -q *.txt >> all
         mv all merged_hits.txt
     fi
+    if [ '$params.blast' == 'true' ]; then
+        cp merged_hits.txt blast.txt
+    fi
     """
 }
+
+merge_blast_output_ch_2
+   .collectFile(name: outputName + '.blast.txt', storeDir: finalOutDir)
 
 Channel.fromPath(params.manifest).set{ manifest_ch }
 
 process final_report {
    
    input:
-   path 'merged_hits.txt' from merge_blast_output_ch
+   path 'merged_hits.txt' from merge_blast_output_ch_1
    path x from manifest_ch
    
    output:
@@ -192,7 +200,7 @@ process final_report {
    -a alignment.txt
    
    if [ '$params.align' == 'false' ]; then
-     rm alignment.txt
+       rm alignment.txt
    fi
    """
 
