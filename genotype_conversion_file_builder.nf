@@ -177,7 +177,7 @@ process merge_blast {
 }
 
 merge_blast_output_ch_2
-   .collectFile(name: outputName + '.blast.txt', storeDir: finalOutDir)
+   .collectFile(name: outputName + '.blast.csv', storeDir: finalOutDir)
 
 Channel.fromPath(params.manifest).set{ manifest_ch }
 
