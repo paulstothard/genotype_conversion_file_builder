@@ -6,7 +6,6 @@
 use warnings;
 use strict;
 use Data::Dumper;
-use File::Temp;
 use Getopt::Long;
 
 #initialize options
@@ -795,566 +794,6 @@ sub parse_chromosome {
     return $chromosome;
 }
 
-sub get_assayed_position_by_left_probe {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $probe         = shift;
-
-    $subject =~ s/\-//g;
-    my $position;
-
-    if ( $subject =~ m/$probe/ ) {
-        $position = $subject_start + $+[0];
-    }
-    return $position;
-}
-
-sub get_assayed_position_by_left_probe_partial {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $probe         = shift;
-
-    my $min_probe_length = 5;
-    my $position;
-    while ( length($probe) >= $min_probe_length ) {
-        $position =
-          get_assayed_position_by_left_probe( $subject, $subject_start,
-            $probe );
-        if ( defined($position) ) {
-            return $position;
-        }
-        $probe = substr( $probe, -1 * ( length($probe) - 1 ) );
-    }
-    return $position;
-}
-
-sub get_assayed_position_by_right_probe {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $probe         = shift;
-
-    $subject =~ s/\-//g;
-    my $position;
-
-    if ( $subject =~ m/$probe/ ) {
-        $position = $subject_start + $-[0] - 1;
-    }
-    return $position;
-}
-
-sub get_assayed_position_by_right_probe_partial {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $probe         = shift;
-
-    my $min_probe_length = 5;
-    my $position;
-    while ( length($probe) >= $min_probe_length ) {
-        $position =
-          get_assayed_position_by_right_probe( $subject, $subject_start,
-            $probe );
-        if ( defined($position) ) {
-            return $position;
-        }
-        $probe = substr( $probe, 0, -1 );
-    }
-    return $position;
-}
-
-sub convert_subject_position_to_alignment_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    my $current_position = $subject_start - 1;
-    my $char_count       = 0;
-    for my $c ( split //, $subject ) {
-        $char_count++;
-        if ( $c =~ m/[GATCN]/i ) {
-            $current_position++;
-        }
-        if ( $current_position == $position ) {
-            return $char_count;
-        }
-    }
-}
-
-sub convert_alignment_position_to_subject_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    my $current_position = $subject_start - 1;
-    my $char_count       = 0;
-    for my $c ( split //, $subject ) {
-        $char_count++;
-        if ( $c =~ m/[GATCN]/i ) {
-            $current_position++;
-        }
-        if ( $char_count == $position ) {
-            return $current_position;
-        }
-    }
-}
-
-sub get_subject_char_at_subject_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    $subject =~ s/\-//g;
-    my $current_position = $subject_start - 1;
-    for my $c ( split //, $subject ) {
-        $current_position++;
-        if ( $current_position == $position ) {
-            return $c;
-        }
-    }
-}
-
-sub get_subject_char_at_alignment_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    my $current_position = 0;
-    for my $c ( split //, $subject ) {
-        $current_position++;
-        if ( $current_position == $position ) {
-            return $c;
-        }
-    }
-}
-
-sub get_query_char_at_alignment_position {
-    my $query    = shift;
-    my $position = shift;
-
-    my $current_position = 0;
-    for my $c ( split //, $query ) {
-        $current_position++;
-        if ( $current_position == $position ) {
-            return $c;
-        }
-    }
-}
-
-sub padding_to_base_before_subject_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    my $alignment_position =
-      convert_subject_position_to_alignment_position( $subject, $subject_start,
-        $position );
-
-    my $alignment_position_to_left = $alignment_position;
-    my $aligned_char               = '-';
-    while (( $aligned_char eq '-' )
-        && ( $alignment_position_to_left > 0 ) )
-    {
-        $alignment_position_to_left--;
-        $aligned_char =
-          get_subject_char_at_alignment_position( $subject, $subject_start,
-            $alignment_position_to_left );
-    }
-
-    return $alignment_position_to_left;
-}
-
-sub spaces_to_base_after_subject_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    my $alignment_position =
-      convert_subject_position_to_alignment_position( $subject, $subject_start,
-        $position );
-    my $alignment_position_to_right = $alignment_position;
-    my $aligned_char                = '-';
-    while (( $aligned_char eq '-' )
-        && ( $alignment_position_to_right <= length($subject) ) )
-    {
-        $alignment_position_to_right++;
-        $aligned_char =
-          get_subject_char_at_alignment_position( $subject, $subject_start,
-            $alignment_position_to_right );
-    }
-
-    return $alignment_position_to_right - 1;
-}
-
-sub padding_to_subject_position {
-    my $subject       = shift;
-    my $subject_start = shift;
-    my $position      = shift;
-
-    my $alignment_position =
-      convert_subject_position_to_alignment_position( $subject, $subject_start,
-        $position );
-
-    return $alignment_position;
-}
-
-sub add_formatted_snp_alignment {
-    my $options        = shift;
-    my $h              = shift;
-    my $result         = shift;
-    my $alignment_info = shift;
-
-    my $p = $options->{alignment_padding};
-
-    my @alignment = ();
-
-    push @alignment, "$h->{query_id}\n";
-    push @alignment, "Type: SNP\n";
-
-    push @alignment, sprintf( "%${p}s", "QUERY " );
-    push @alignment, "$h->{query_seq}\n";
-
-    push @alignment, sprintf( "%${p}s", "SUBJECT " );
-    push @alignment, "$h->{subject_seq}\n";
-
-    if ( defined( $alignment_info->{left_probe_sequence} ) ) {
-        my $padding_to_base_before_subject_position =
-          padding_to_base_before_subject_position( $h->{subject_seq},
-            $h->{s_start}, $alignment_info->{assayed_position} );
-        push @alignment, sprintf( "%${p}s", "PROBE " );
-        push @alignment,
-          sprintf( "%${padding_to_base_before_subject_position}s",
-            "$alignment_info->{left_probe_sequence}" );
-        push @alignment, "\n";
-    }
-
-    if ( defined( $alignment_info->{right_probe_sequence} ) ) {
-        my $spaces_to_base_after_subject_position =
-          spaces_to_base_after_subject_position( $h->{subject_seq},
-            $h->{s_start}, $alignment_info->{assayed_position} );
-
-        push @alignment, sprintf( "%${p}s", "PROBE " );
-        push @alignment, "" . " " x ($spaces_to_base_after_subject_position);
-        push @alignment, "$alignment_info->{right_probe_sequence}";
-        push @alignment, "\n";
-    }
-
-    #add ruler
-    my $ruler_position = $h->{s_start};
-    my @ruler          = ();
-
-    for my $c ( split //, $h->{subject_seq} ) {
-        if ( ( $ruler_position % 10 == 0 ) && ( $c =~ m/[GATCN]/i ) ) {
-            push @ruler, "|";
-        }
-        else {
-            push @ruler, " ";
-        }
-        if ( $c =~ m/[GATCN]/i ) {
-            $ruler_position++;
-        }
-    }
-
-    push @alignment, sprintf( "%${p}s", "$h->{s_start} " );
-    push @alignment, sprintf( "%${p}s", join "", @ruler );
-    push @alignment, "\n";
-
-    #stop here if no position available
-    if ( !( defined( $alignment_info->{assayed_position} ) ) ) {
-        push @alignment, "Determination type: UNDETERMINED_SNP\n";
-        $result->{alignment} = join "", @alignment;
-        return;
-    }
-
-    my $padding_to_subject_position =
-      padding_to_subject_position( $h->{subject_seq}, $h->{s_start},
-        $alignment_info->{assayed_position} );
-
-    my $subject_char =
-      get_subject_char_at_subject_position( $h->{subject_seq}, $h->{s_start},
-        $alignment_info->{assayed_position} );
-
-    push @alignment, sprintf( "%${p}s", "ALLELE1 " );
-    push @alignment,
-      sprintf( "%${padding_to_subject_position}s", "$h->{allele1}" );
-    push @alignment, "\n";
-
-    push @alignment, sprintf( "%${p}s", "ALLELE2 " );
-    push @alignment,
-      sprintf( "%${padding_to_subject_position}s", "$h->{allele2}" );
-    push @alignment, "\n";
-
-    push @alignment, sprintf( "%${p}s", "POSITION " );
-    push @alignment,
-      sprintf( "%${padding_to_subject_position}s",
-        "$alignment_info->{assayed_position}|" );
-    push @alignment, "\n";
-
-    push @alignment, sprintf( "%${p}s", "REF " );
-    push @alignment,
-      sprintf( "%${padding_to_subject_position}s", "$subject_char" );
-    push @alignment, "\n";
-
-    if ( $subject_char eq $h->{allele1} ) {
-        $result->{VCF_REF} = $h->{allele1};
-        $result->{VCF_ALT} = $h->{allele2};
-    }
-    elsif ( $subject_char eq $h->{allele2} ) {
-        $result->{VCF_REF} = $h->{allele2};
-        $result->{VCF_ALT} = $h->{allele1};
-    }
-    else {
-        $result->{VCF_REF} = $subject_char;
-        $result->{VCF_ALT} = $h->{allele1} . '/' . $h->{allele2};
-    }
-
-    push @alignment, sprintf( "%${p}s", "VCF_REF " );
-    push @alignment,
-      sprintf( "%${padding_to_subject_position}s", "$result->{VCF_REF}" );
-    push @alignment, "\n";
-
-    push @alignment, sprintf( "%${p}s", "VCF_ALT " );
-    push @alignment,
-      sprintf( "%${padding_to_subject_position}s", "$result->{VCF_ALT}" );
-    push @alignment, "\n";
-
-    push @alignment,
-      "Determination type: $alignment_info->{determination_type}\n";
-
-    $result->{alignment}      = join "", @alignment;
-    $result->{position}       = $alignment_info->{assayed_position};
-    $result->{reference_base} = $subject_char;
-}
-
-sub build_alignment_snp {
-    my $options = shift;
-    my $h       = shift;
-    my $result  = shift;
-
-    #use left probe
-    if ( ( defined( $h->{probe_seq} ) ) && ( $h->{probe_side} eq 'LEFT' ) ) {
-
-        my $assayed_position_by_left_probe =
-          get_assayed_position_by_left_probe( $h->{subject_seq}, $h->{s_start},
-            $h->{probe_seq} );
-        if ( defined($assayed_position_by_left_probe) ) {
-            my %alignment_info = ();
-            $alignment_info{assayed_position} = $assayed_position_by_left_probe;
-            $alignment_info{left_probe_sequence} = $h->{probe_seq};
-            $alignment_info{determination_type}  = 'LEFT_PROBE_SNP';
-            add_formatted_snp_alignment( $options, $h, $result,
-                \%alignment_info );
-            return $result;
-        }
-    }
-
-    #use right probe
-    if ( ( defined( $h->{probe_seq} ) ) && ( $h->{probe_side} eq 'RIGHT' ) ) {
-        my $assayed_position_by_right_probe =
-          get_assayed_position_by_right_probe( $h->{subject_seq},
-            $h->{s_start}, $h->{probe_seq} );
-        if ( defined($assayed_position_by_right_probe) ) {
-            my %alignment_info = ();
-            $alignment_info{assayed_position} =
-              $assayed_position_by_right_probe;
-            $alignment_info{right_probe_sequence} = $h->{probe_seq};
-            $alignment_info{determination_type}   = 'RIGHT_PROBE_SNP';
-            add_formatted_snp_alignment( $options, $h, $result,
-                \%alignment_info );
-            return $result;
-        }
-    }
-
-    #use alignment with no gaps
-    if (   ( !( $h->{subject_seq} =~ m/\-/ ) )
-        && ( !( $h->{query_seq} =~ m/\-/ ) ) )
-    {
-        if ( $h->{query_seq} =~ m/^([^N]*)N/i ) {
-            my $alignment_position_variant = length($1) + 1;
-            my %alignment_info             = ();
-            $alignment_info{assayed_position} =
-              convert_alignment_position_to_subject_position( $h->{subject_seq},
-                $h->{s_start}, $alignment_position_variant );
-            $alignment_info{determination_type} = 'UNAMBIGUOUS_ALIGNMENT_SNP';
-            add_formatted_snp_alignment( $options, $h, $result,
-                \%alignment_info );
-            return $result;
-        }
-    }
-
-    #use shortened left probe to allow more matches
-    if ( ( defined( $h->{probe_seq} ) ) && ( $h->{probe_side} eq 'LEFT' ) ) {
-        my $assayed_position_by_left_probe =
-          get_assayed_position_by_left_probe_partial( $h->{subject_seq},
-            $h->{s_start}, $h->{probe_seq} );
-
-        if ( defined($assayed_position_by_left_probe) ) {
-
-            my $alignment_position =
-              convert_subject_position_to_alignment_position( $h->{subject_seq},
-                $h->{s_start}, $assayed_position_by_left_probe );
-            my $query_base =
-              get_query_char_at_alignment_position( $h->{query_seq},
-                $alignment_position );
-            if ( ( $query_base eq 'N' ) || ( $query_base eq '-' ) ) {
-                my %alignment_info = ();
-                $alignment_info{assayed_position} =
-                  $assayed_position_by_left_probe;
-                $alignment_info{left_probe_sequence} = $h->{probe_seq};
-                $alignment_info{determination_type}  = 'PARTIAL_LEFT_PROBE_SNP';
-                add_formatted_snp_alignment( $options, $h, $result,
-                    \%alignment_info );
-                return $result;
-            }
-        }
-    }
-
-    #use shortened right probe to allow more matches
-    if ( ( defined( $h->{probe_seq} ) ) && ( $h->{probe_side} eq 'RIGHT' ) ) {
-        my $assayed_position_by_right_probe =
-          get_assayed_position_by_right_probe_partial( $h->{subject_seq},
-            $h->{s_start}, $h->{probe_seq} );
-        if ( defined($assayed_position_by_right_probe) ) {
-
-            my $alignment_position =
-              convert_subject_position_to_alignment_position( $h->{subject_seq},
-                $h->{s_start}, $assayed_position_by_right_probe );
-            my $query_base =
-              get_query_char_at_alignment_position( $h->{query_seq},
-                $alignment_position );
-            if ( ( $query_base eq 'N' ) || ( $query_base eq '-' ) ) {
-                my %alignment_info = ();
-                $alignment_info{assayed_position} =
-                  $assayed_position_by_right_probe;
-                $alignment_info{right_probe_sequence} = $h->{probe_seq};
-                $alignment_info{determination_type} = 'PARTIAL_RIGHT_PROBE_SNP';
-                add_formatted_snp_alignment( $options, $h, $result,
-                    \%alignment_info );
-                return $result;
-            }
-        }
-    }
-
-#use alignment where variant aligns with subject base but there are some gaps in alignment
-    if ( $h->{query_seq} =~ m/^([^N]*)N/i ) {
-        my $alignment_position_variant = length($1) + 1;
-        my $subject_char_at_alignment_position =
-          get_subject_char_at_alignment_position( $h->{subject_seq},
-            $h->{s_start}, $alignment_position_variant );
-        if ( $subject_char_at_alignment_position ne '-' ) {
-            my %alignment_info = ();
-            $alignment_info{assayed_position} =
-              convert_alignment_position_to_subject_position( $h->{subject_seq},
-                $h->{s_start}, $alignment_position_variant );
-            $alignment_info{determination_type} = 'GAPPED_ALIGNMENT_SNP';
-            add_formatted_snp_alignment( $options, $h, $result,
-                \%alignment_info );
-            return $result;
-        }
-    }
-
-    #alignments where variant aligns with gap
-    if ( $h->{query_seq} =~ m/^([^N]*)N/i ) {
-        my $alignment_position_variant = length($1) + 1;
-        my $subject_char_at_alignment_position =
-          get_subject_char_at_alignment_position( $h->{subject_seq},
-            $h->{s_start}, $alignment_position_variant );
-
-        if ( $subject_char_at_alignment_position eq '-' ) {
-
-            #find first subject base to left
-            my $position_to_left = $alignment_position_variant;
-            my $base_to_left     = '-';
-
-            while (( $position_to_left > 0 )
-                && ( $base_to_left eq '-' ) )
-            {
-                $position_to_left--;
-                $base_to_left =
-                  get_subject_char_at_alignment_position( $h->{subject_seq},
-                    $h->{s_start}, $position_to_left );
-            }
-
-            my $position_to_right = $alignment_position_variant;
-            my $base_to_right     = '-';
-
-            while (( $position_to_right <= length( $h->{subject_seq} ) )
-                && ( $base_to_right eq '-' ) )
-            {
-                $position_to_right++;
-                $base_to_right =
-                  get_subject_char_at_alignment_position( $h->{subject_seq},
-                    $h->{s_start}, $position_to_right );
-            }
-
-            #Compare reference bases to the alleles
-            my $left_is_consistent  = 0;
-            my $right_is_consistent = 0;
-
-            if (   ( $base_to_left eq $h->{allele1} )
-                || ( $base_to_left eq $h->{allele2} ) )
-            {
-                $left_is_consistent = 1;
-            }
-            if (   ( $base_to_right eq $h->{allele1} )
-                || ( $base_to_right eq $h->{allele2} ) )
-            {
-                $right_is_consistent = 1;
-            }
-
-            if ( ($left_is_consistent) && ( !($right_is_consistent) ) ) {
-                my %alignment_info = ();
-                $alignment_info{assayed_position} =
-                  convert_alignment_position_to_subject_position(
-                    $h->{subject_seq}, $h->{s_start}, $position_to_left );
-                $alignment_info{determination_type} =
-                  'ALIGNMENT_TO_GAP_INFORMATIVE_ALLELES_SNP';
-                add_formatted_snp_alignment( $options, $h, $result,
-                    \%alignment_info );
-                return $result;
-            }
-            elsif ( ($right_is_consistent) && ( !($left_is_consistent) ) ) {
-                my %alignment_info = ();
-                $alignment_info{assayed_position} =
-                  convert_alignment_position_to_subject_position(
-                    $h->{subject_seq}, $h->{s_start}, $position_to_right );
-                $alignment_info{determination_type} =
-                  'ALIGNMENT_TO_GAP_INFORMATIVE_ALLELES_SNP';
-                add_formatted_snp_alignment( $options, $h, $result,
-                    \%alignment_info );
-                return $result;
-            }
-            elsif ( ($right_is_consistent) && ($left_is_consistent) ) {
-                my %alignment_info = ();
-                $alignment_info{assayed_position} =
-                  convert_alignment_position_to_subject_position(
-                    $h->{subject_seq}, $h->{s_start}, $position_to_left );
-                $alignment_info{determination_type} =
-'ALIGNMENT_TO_GAP_UNINFORMATIVE_ALLELES_BOTH_SIDES_CONSISTENT_SNP';
-                add_formatted_snp_alignment( $options, $h, $result,
-                    \%alignment_info );
-                return $result;
-            }
-            elsif ( !($right_is_consistent) && ( !($left_is_consistent) ) ) {
-                my %alignment_info = ();
-                $alignment_info{assayed_position} =
-                  convert_alignment_position_to_subject_position(
-                    $h->{subject_seq}, $h->{s_start}, $position_to_left );
-                $alignment_info{determination_type} =
-'ALIGNMENT_TO_GAP_UNINFORMATIVE_ALLELES_BOTH_SIDES_INCONSISTENT_SNP';
-                add_formatted_snp_alignment( $options, $h, $result,
-                    \%alignment_info );
-                return $result;
-            }
-
-        }
-    }
-
-    my %alignment_info = ();
-    $alignment_info{determination_type} = 'UNDETERMINED_SNP';
-    add_formatted_snp_alignment( $options, $h, $result, \%alignment_info );
-
-    return $result;
-}
-
 sub build_alignment {
     my $options = shift;
     my $h       = shift;
@@ -1367,220 +806,557 @@ sub build_alignment {
         alignment      => undef
     );
 
-    if ( ( $h->{allele1} ne '-' ) && ( $h->{allele2} ne '-' ) ) {
-        return build_alignment_snp( $options, $h, \%result );
-    }
-    else {
-        return build_alignment_indel( $options, $h, \%result );
-    }
-
-}
-
-sub build_alignment_indel {
-    my $options = shift;
-    my $h       = shift;
-    my $result  = shift;
-
     my $p = $options->{alignment_padding};
 
-    my @alignment = ();
+    my $query_seq     = $h->{query_seq};
+    my $subject_seq   = $h->{subject_seq};
+    my $subject_start = $h->{s_start};
+    my $query_id      = $h->{query_id};
+    my $allele1       = $h->{allele1};
+    my $allele2       = $h->{allele2};
+    my $left_probe_seq;
+    my $right_probe_seq;
 
-    push @alignment, "$h->{query_id}\n";
-    push @alignment, "Type: INDEL\n";
-
-    push @alignment, sprintf( "%${p}s", "QUERY " );
-    push @alignment, "$h->{query_seq}\n";
-
-    push @alignment, sprintf( "%${p}s", "SUBJECT " );
-    push @alignment, "$h->{subject_seq}\n";
-
-    #add ruler
-    my $ruler_position = $h->{s_start};
-    my @ruler          = ();
-
-    for my $c ( split //, $h->{subject_seq} ) {
-        if ( ( $ruler_position % 10 == 0 ) && ( $c =~ m/[GATCN]/i ) ) {
-            push @ruler, "|";
-        }
-        else {
-            push @ruler, " ";
-        }
-        if ( $c =~ m/[GATCN]/i ) {
-            $ruler_position++;
-        }
+    if ( ( defined( $h->{probe_side} ) ) && ( $h->{probe_side} eq 'LEFT' ) ) {
+        $left_probe_seq = $h->{probe_seq};
+    }
+    if ( ( defined( $h->{probe_side} ) ) && ( $h->{probe_side} eq 'RIGHT' ) ) {
+        $right_probe_seq = $h->{probe_seq};
     }
 
-    push @alignment, sprintf( "%${p}s", "$h->{s_start} " );
+    my $variant_type;
+    if ( ( $allele1 ne '-' ) && ( $allele2 ne '-' ) ) {
+        $variant_type = 'SNP';
+    }
+    else {
+        $variant_type = 'INDEL';
+    }
+
+    my %column_hash  = ();
+    my %subject_hash = ();
+
+    my @query_seq   = split //, $query_seq;
+    my @subject_seq = split //, $subject_seq;
+
+    ( my $subject_seq_no_gaps = $subject_seq ) =~ s/\-//g;
+    my $left_probe_match;
+    my $right_probe_match;
+    my $determination_type;
+
+    my $subject_no_gaps_position_string = 0;
+    my $subject_no_gaps_position_genome = $subject_start;
+    my $N_column                        = undef;
+    my $previous_gaps                   = 0;
+    my $gaps_since_N                    = 0;
+    for ( my $i = 0 ; $i < scalar(@subject_seq) ; $i++ ) {
+        my %column = (
+            gaps_linking_to_N               => undef,
+            query_char                      => undef,
+            query_base                      => undef,
+            subject_char                    => undef,
+            subject_base                    => undef,
+            subject_no_gaps_position_string => undef,
+            ruler_char                      => undef
+        );
+        my %subject =
+          ( base => undef, position_chromosome => undef, column => undef );
+        $column{subject_char} = $subject_seq[$i];
+        $column{query_char}   = $query_seq[$i];
+
+        if ( $subject_no_gaps_position_genome % 10 == 0 ) {
+            $column{ruler_char} = '|';
+        }
+        elsif ( $subject_no_gaps_position_genome % 5 == 0 ) {
+            $column{ruler_char} = '.';
+        }
+        else {
+            $column{ruler_char} = ' ';
+        }
+
+        if ( $column{subject_char} =~ m/[A-Z]/i ) {
+            $column{subject_base} = $column{subject_char};
+            $column{subject_no_gaps_position_string} =
+              $subject_no_gaps_position_string;
+            $subject{base}                = $column{subject_char};
+            $subject{position_chromosome} = $subject_no_gaps_position_genome;
+            $subject{column}              = $i;
+            $subject_hash{$subject_no_gaps_position_string} = \%subject;
+            $subject_no_gaps_position_string++;
+            $subject_no_gaps_position_genome++;
+        }
+
+        if ( $column{query_char} =~ m/[GATC]/i ) {
+            $column{query_base} = $column{query_char};
+            $previous_gaps = 0;
+        }
+        elsif ( $column{query_char} eq 'N' ) {
+            $column{query_base} = $column{query_char};
+            $N_column = $i;
+            my $column_index   = $i - 1;
+            my $number_of_gaps = $previous_gaps;
+            while ( ( $number_of_gaps > 0 ) && ( $column_index >= 0 ) ) {
+                $number_of_gaps--;
+                $column_hash{$column_index}->{gaps_linking_to_N} =
+                  $previous_gaps - $number_of_gaps;
+                $column_index--;
+            }
+            $previous_gaps = 0;
+        }
+        else {
+            $previous_gaps++;
+            if (   ( defined($N_column) )
+                && ( ( $i - $N_column ) == $previous_gaps ) )
+            {
+                $column{gaps_linking_to_N} = $previous_gaps;
+            }
+        }
+        $column_hash{$i} = \%column;
+    }
+
+    my $subject_variant_position_string_coord;
+    my $indel_ref;
+    my $indel_alt;
+
+    if ( !defined($N_column) ) {
+        return \%result;
+    }
+
+    if ( $variant_type eq 'SNP' ) {
+        if ( ( !( $subject_seq =~ m/\-/ ) ) && ( !( $query_seq =~ m/\-/ ) ) ) {
+            $subject_variant_position_string_coord =
+              $column_hash{$N_column}->{subject_no_gaps_position_string};
+            $determination_type = 'ALIGNMENT_NO_GAPS';
+        }
+
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( defined($left_probe_seq) ) )
+        {
+            if ( $subject_seq_no_gaps =~ m/$left_probe_seq/ ) {
+                $subject_variant_position_string_coord = $+[0];
+                $left_probe_match                      = $+[0] - 1;
+            }
+            $determination_type = 'LEFT_PROBE_MATCH';
+        }
+
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( defined($right_probe_seq) ) )
+        {
+            if ( $subject_seq_no_gaps =~ m/$right_probe_seq/ ) {
+                $subject_variant_position_string_coord = $-[0] - 1;
+                $right_probe_match                     = $-[0];
+            }
+            $determination_type = 'RIGHT_PROBE_MATCH';
+        }
+
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( defined($left_probe_seq) ) )
+        {
+            my $min_probe_length = 3;
+            my $partial_left_probe_seq =
+              substr( $left_probe_seq, -1 * ( length($left_probe_seq) - 1 ) );
+            while ( length($partial_left_probe_seq) >= $min_probe_length ) {
+                while ( $subject_seq_no_gaps =~ m/$partial_left_probe_seq/g ) {
+                    my $match_position = $+[0];
+                    if ( $match_position < length($subject_seq_no_gaps) ) {
+                        my $match_column =
+                          $subject_hash{$match_position}->{column};
+                        my $match_column_hash = $column_hash{$match_column};
+                        if (
+                            (
+                                ( $match_column_hash->{query_char} eq 'N' )
+                                || (
+                                    defined(
+                                        $match_column_hash->{gaps_linking_to_N}
+                                    )
+                                )
+                            )
+                            && ( $match_column <= $N_column )
+                          )
+                        {
+                            $subject_variant_position_string_coord =
+                              $match_position;
+                            $left_probe_match   = $match_position - 1;
+                            $determination_type = 'LEFT_PROBE_PARTIAL_MATCH';
+                            last;
+                        }
+                    }
+                }
+                if ( defined($subject_variant_position_string_coord) ) {
+                    last;
+                }
+                $partial_left_probe_seq = substr( $partial_left_probe_seq,
+                    -1 * ( length($partial_left_probe_seq) - 1 ) );
+            }
+        }
+
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( defined($right_probe_seq) ) )
+        {
+            my $min_probe_length = 3;
+            my $partial_right_probe_seq = substr( $right_probe_seq, 0, -1 );
+            while ( length($partial_right_probe_seq) >= $min_probe_length ) {
+                while ( $subject_seq_no_gaps =~ m/$partial_right_probe_seq/g ) {
+                    my $match_position = $-[0] - 1;
+                    if ( $match_position >= 0 ) {
+                        my $match_column =
+                          $subject_hash{$match_position}->{column};
+                        my $match_column_hash = $column_hash{$match_column};
+                        if (
+                            (
+                                ( $match_column_hash->{query_char} eq 'N' )
+                                || (
+                                    defined(
+                                        $match_column_hash->{gaps_linking_to_N}
+                                    )
+                                )
+                            )
+                            && ( $match_column >= $N_column )
+                          )
+                        {
+                            $subject_variant_position_string_coord =
+                              $match_position;
+                            $right_probe_match  = $match_position + 1;
+                            $determination_type = 'RIGHT_PROBE_PARTIAL_MATCH';
+                            last;
+                        }
+                    }
+                }
+                if ( defined($subject_variant_position_string_coord) ) {
+                    last;
+                }
+                $partial_right_probe_seq =
+                  substr( $partial_right_probe_seq, 0, -1 );
+            }
+        }
+
+        #N aligns with base
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( $column_hash{$N_column}->{subject_char} ne '-' ) )
+        {
+            $subject_variant_position_string_coord =
+              $column_hash{$N_column}->{subject_no_gaps_position_string};
+            $determination_type = 'GAPPED_ALIGNMENT';
+        }
+
+        #N aligns with gap
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( $column_hash{$N_column}->{subject_char} eq '-' ) )
+        {
+            my $column_to_check = $N_column;
+            my $first_left_column_with_subject_base;
+            while ( $column_to_check > 0 ) {
+                $column_to_check--;
+                if ( $column_hash{$column_to_check}->{subject_char} ne '-' ) {
+                    $first_left_column_with_subject_base =
+                      $column_hash{$column_to_check};
+                    last;
+                }
+            }
+
+            $column_to_check = $N_column;
+            my $first_right_column_with_subject_base;
+            while ( $column_to_check < scalar( keys(%column_hash) ) ) {
+                $column_to_check++;
+                if ( $column_hash{$column_to_check}->{subject_char} ne '-' ) {
+                    $first_right_column_with_subject_base =
+                      $column_hash{$column_to_check};
+                    last;
+                }
+            }
+
+            my $left_is_consistent  = 0;
+            my $right_is_consistent = 0;
+
+            if ( defined($first_left_column_with_subject_base) ) {
+                my $left_reference_base =
+                  $first_left_column_with_subject_base->{subject_base};
+                if (   ( $left_reference_base eq $allele1 )
+                    || ( $left_reference_base eq $allele2 ) )
+                {
+                    $left_is_consistent = 1;
+                }
+            }
+            if ( defined($first_right_column_with_subject_base) ) {
+                my $right_reference_base =
+                  $first_right_column_with_subject_base->{subject_base};
+                if (   ( $right_reference_base eq $allele1 )
+                    || ( $right_reference_base eq $allele2 ) )
+                {
+                    $right_is_consistent = 1;
+                }
+            }
+            if ( ($left_is_consistent) && ( !($right_is_consistent) ) ) {
+                $subject_variant_position_string_coord =
+                  $first_left_column_with_subject_base
+                  ->{subject_no_gaps_position_string};
+                $determination_type = 'ALIGNMENT_TO_GAP_INFORMATIVE_ALLELES';
+            }
+            elsif ( ($right_is_consistent) && ( !($left_is_consistent) ) ) {
+                $subject_variant_position_string_coord =
+                  $first_right_column_with_subject_base
+                  ->{subject_no_gaps_position_string};
+                $determination_type = 'ALIGNMENT_TO_GAP_INFORMATIVE_ALLELES';
+            }
+            elsif ( ($right_is_consistent) && ($left_is_consistent) ) {
+                $subject_variant_position_string_coord =
+                  $first_left_column_with_subject_base
+                  ->{subject_no_gaps_position_string};
+                $determination_type =
+'ALIGNMENT_TO_GAP_UNINFORMATIVE_ALLELES_BOTH_SIDES_CONSISTENT';
+            }
+            elsif ( !($right_is_consistent) && ( !($left_is_consistent) ) ) {
+                $subject_variant_position_string_coord =
+                  $first_left_column_with_subject_base
+                  ->{subject_no_gaps_position_string};
+                $determination_type =
+'ALIGNMENT_TO_GAP_UNINFORMATIVE_ALLELES_BOTH_SIDES_INCONSISTENT';
+            }
+        }
+    }
+    elsif ( $variant_type eq 'INDEL' ) {
+
+        my $insertion_allele;
+
+        #seach for match to insertion allele that overlaps with N in query
+        if ( $allele1 ne '-' ) {
+            $insertion_allele = $allele1;
+        }
+        elsif ( $allele2 ne '-' ) {
+            $insertion_allele = $allele2;
+        }
+        my $insertion_match;
+        while (( $subject_seq_no_gaps =~ m/$insertion_allele/g )
+            && ( !defined($insertion_match) ) )
+        {
+            my $match_start_on_subject = $-[0];
+            my $match_end_on_subject   = $+[0] - 1;
+
+            my $match_start_column =
+              $subject_hash{$match_start_on_subject}->{column};
+            my $match_start_column_hash = $column_hash{$match_start_column};
+
+            my $match_end_column =
+              $subject_hash{$match_end_on_subject}->{column};
+            my $match_end_column_hash = $column_hash{$match_end_column};
+
+          #both start and end of match should align with N or gaps adjacent to N
+            if (
+                (
+                    ( $match_start_column_hash->{query_char} eq 'N' )
+                    || (
+                        defined(
+                            $match_start_column_hash->{gaps_linking_to_N}
+                        )
+                    )
+                )
+                && ( ( $match_end_column_hash->{query_char} eq 'N' )
+                    || (
+                        defined( $match_end_column_hash->{gaps_linking_to_N} ) )
+                )
+              )
+            {
+                $insertion_match = $match_start_column;
+            }
+        }
+        if ( defined($insertion_match) ) {
+            my $subject_seq_to_position_before_match =
+              substr( $subject_seq_no_gaps, 0, $insertion_match );
+            my $shift = 0;
+
+            #left normalize
+            if ( $subject_seq_to_position_before_match =~
+                m/(($insertion_allele)+)[\-]?$/ )
+            {
+                $shift = length($1);
+            }
+            my $left_normalized_position = $insertion_match - $shift - 1;
+            if ( $left_normalized_position >= 0 ) {
+                $subject_variant_position_string_coord =
+                  $left_normalized_position;
+                $indel_ref =
+                  $subject_hash{$subject_variant_position_string_coord}->{base}
+                  . $insertion_allele;
+                $indel_alt =
+                  $subject_hash{$subject_variant_position_string_coord}->{base};
+                $determination_type =
+                  'DETECTION_OF_INSERTION_ALLELE_AT_VARIANT_SITE';
+            }
+        }
+
+        #if insertion not detected, look for deletion
+        if (   ( !defined($subject_variant_position_string_coord) )
+            && ( $column_hash{$N_column}->{subject_char} eq '-' ) )
+        {
+            my $column_to_check = $N_column;
+            my $first_left_column_with_subject_base;
+            while ( $column_to_check > 0 ) {
+                $column_to_check--;
+                if ( $column_hash{$column_to_check}->{subject_char} ne '-' ) {
+                    $first_left_column_with_subject_base =
+                      $column_hash{$column_to_check};
+                    last;
+                }
+            }
+            if ( defined($first_left_column_with_subject_base) ) {
+                my $string_index_of_first_left_column_with_subject_base =
+                  $first_left_column_with_subject_base
+                  ->{subject_no_gaps_position_string};
+                my $subject_seq_to_position_before_match =
+                  substr( $subject_seq_no_gaps, 0,
+                    $string_index_of_first_left_column_with_subject_base + 1 );
+                my $shift = 0;
+
+                #left normalize
+                if ( $subject_seq_to_position_before_match =~
+                    m/(($insertion_allele)+)[\-]?$/ )
+                {
+                    $shift = length($1);
+                }
+                my $left_normalized_position =
+                  $string_index_of_first_left_column_with_subject_base - $shift;
+                if ( $left_normalized_position >= 0 ) {
+                    $subject_variant_position_string_coord =
+                      $left_normalized_position;
+                    $indel_ref =
+                      $subject_hash{$subject_variant_position_string_coord}
+                      ->{base};
+                    $indel_alt =
+                      $subject_hash{$subject_variant_position_string_coord}
+                      ->{base} . $insertion_allele;
+                    $determination_type =
+                      'DETECTION_OF_DELETION_ALLELE_AT_VARIANT_SITE';
+                }
+            }
+        }
+
+    }
+
+    #padding to variant base
+    my $c = $subject_hash{$subject_variant_position_string_coord}->{column} + 1;
+
+    my @alignment = ();
+    push @alignment, "$query_id\n";
+
+    if ( $variant_type eq 'SNP' ) {
+        push @alignment, "Type: SNP\n";
+    }
+    elsif ( $variant_type eq 'INDEL' ) {
+        push @alignment, "Type: INDEL\n";
+    }
+
+    push @alignment, sprintf( "%${p}s", "QUERY " );
+    push @alignment, "$query_seq\n";
+
+    push @alignment, sprintf( "%${p}s", "SUBJECT " );
+    push @alignment, "$subject_seq\n";
+
+    if ( defined($left_probe_match) ) {
+        my $left_probe_padding = $subject_hash{$left_probe_match}->{column} + 1;
+        push @alignment, sprintf( "%${p}s", "PROBE " );
+        push @alignment,
+          sprintf( "%${left_probe_padding}s", "$left_probe_seq" );
+        push @alignment, "\n";
+    }
+
+    if ( defined($right_probe_match) ) {
+        my $right_probe_padding = $subject_hash{$right_probe_match}->{column};
+        push @alignment, sprintf( "%${p}s", "PROBE " );
+        push @alignment, "" . " " x ($right_probe_padding);
+        push @alignment, "$right_probe_seq";
+        push @alignment, "\n";
+    }
+
+    my @ruler = ();
+    for ( my $i = 0 ; $i < scalar( keys(%column_hash) ) ; $i++ ) {
+        push @ruler, $column_hash{$i}->{ruler_char};
+    }
+
+    push @alignment, sprintf( "%${p}s", "$subject_start " );
     push @alignment, sprintf( "%${p}s", join "", @ruler );
     push @alignment, "\n";
 
-    if ( !( $h->{query_seq} =~ m/N/i ) ) {
-        push @alignment, "Determination type: UNDETERMINED_INDEL\n";
-        $result->{alignment} = join "", @alignment;
-        return $result;
+    #*******************************************
+    #set alignment type and return alignment
+    if ( !defined($subject_variant_position_string_coord) ) {
+        push @alignment, "Determination type: 'UNDETERMINED'\n";
+        $result{alignment} = join "", @alignment;
+        return \%result;
     }
 
-    #count from the left
-    my $query_chars_from_left = 0;
-    if ( $h->{query_seq} =~ m/^([^N]*)N/i ) {
-        $query_chars_from_left = length($1);
+    my $reference_genome_position =
+      $subject_hash{$subject_variant_position_string_coord}
+      ->{position_chromosome};
+    my $reference_genome_allele;
+
+    if ( $variant_type eq 'SNP' ) {
+        $reference_genome_allele =
+          $subject_hash{$subject_variant_position_string_coord}->{base};
     }
-    my $subject_bases_from_left = 0;
-    if ( $h->{subject_seq} =~ m/^(.{$query_chars_from_left})/ ) {
-        my $chars = $1;
-        $chars =~ s/\-//g;
-        $subject_bases_from_left = length($chars);
-    }
-
-    my $subject_position_left_of_variant =
-      $h->{s_start} + $subject_bases_from_left - 1;
-
-    my $position;
-    my $reference_base;
-
-    my $subject_base_aligned_with_variant =
-      substr( $h->{subject_seq}, $query_chars_from_left, 1 );
-
-    my $determination_type;
-
-    if ( $subject_base_aligned_with_variant =~ m/[GATCN]/ ) {
-
-        #ref genome probably has insertion allele
-        $reference_base = 'I';
-
-        #position is tricky, use the first base to the left of the variant
-        $position = $subject_position_left_of_variant;
-        my $char_pos = $query_chars_from_left;
-
-        my $subject_chars_to_and_including_n =
-          substr( $h->{subject_seq}, 0, $query_chars_from_left + 1 );
-        my $shift_left = left_normalize( $h->{allele1}, $h->{allele2},
-            $subject_chars_to_and_including_n );
-
-        $position = $position - $shift_left;
-
-        $determination_type = 'REFERENCE_INSERTION_INDEL';
-
-    }
-    elsif ( $subject_base_aligned_with_variant eq '-' ) {
-
-        #ref genome probably has deletion allele
-        $reference_base = 'D';
-
-        #position is tricky, use the first base to the left of the variant
-        $position = $subject_position_left_of_variant;
-        my $char_pos = $query_chars_from_left;
-
-        my $subject_chars_to_and_including_n =
-          substr( $h->{subject_seq}, 0, $query_chars_from_left + 1 );
-        my $shift_left = left_normalize( $h->{allele1}, $h->{allele2},
-            $subject_chars_to_and_including_n );
-
-        $position = $position - $shift_left;
-
-        $determination_type = 'REFERENCE_DELETION_INDEL';
-
-    }
-
-    if ( !( defined($position) ) ) {
-        push @alignment, "Determination type: UNDETERMINED_INDEL\n";
-        $result->{alignment} = join "", @alignment;
-        return $result;
-    }
-
-    my $subject_bases_from_left_to_position = $position - $h->{s_start} + 1;
-    my $char_count                          = 0;
-    my $base_count                          = 0;
-    my $current_position                    = $h->{s_start};
-    my $ref_base_at_position                = undef;
-    for my $c ( split //, $h->{subject_seq} ) {
-        $char_count++;
-        if ( $c =~ m/[GATCN]/i ) {
-            $base_count++;
-            $current_position++;
+    elsif ( $variant_type eq 'INDEL' ) {
+        if ( length($indel_ref) > length($indel_alt) ) {
+            $reference_genome_allele = 'I';
         }
-        if ( $base_count == $subject_bases_from_left_to_position ) {
-            $ref_base_at_position = $c;
-            last;
+        elsif ( length($indel_ref) < length($indel_alt) ) {
+            $reference_genome_allele = 'D';
         }
     }
 
-    push @alignment, sprintf( "%${p}s",          "ALLELE1 " );
-    push @alignment, sprintf( "%${char_count}s", "$h->{allele1}" );
+    push @alignment, sprintf( "%${p}s", "ALLELE1 " );
+    push @alignment, sprintf( "%${c}s", "$allele1" );
     push @alignment, "\n";
 
-    push @alignment, sprintf( "%${p}s",          "ALLELE2 " );
-    push @alignment, sprintf( "%${char_count}s", "$h->{allele2}" );
+    push @alignment, sprintf( "%${p}s", "ALLELE2 " );
+    push @alignment, sprintf( "%${c}s", "$allele2" );
     push @alignment, "\n";
 
-    push @alignment, sprintf( "%${p}s",          "POSITION " );
-    push @alignment, sprintf( "%${char_count}s", "$position|" );
+    push @alignment, sprintf( "%${p}s", "POSITION " );
+    push @alignment, sprintf( "%${c}s", "$reference_genome_position|" );
     push @alignment, "\n";
 
-    push @alignment, sprintf( "%${p}s",          "REF " );
-    push @alignment, sprintf( "%${char_count}s", "$reference_base" );
+    push @alignment, sprintf( "%${p}s", "REF " );
+    push @alignment, sprintf( "%${c}s", "$reference_genome_allele" );
     push @alignment, "\n";
 
-    my $d_allele;
-    my $i_allele;
-    if ( $h->{allele1} =~ m/\-/ ) {
-        $d_allele = $h->{allele1};
-        $i_allele = $h->{allele2};
+    my $VCF_REF;
+    my $VCF_ALT;
+
+    if ( $variant_type eq 'SNP' ) {
+        if ( $reference_genome_allele eq $allele1 ) {
+            $VCF_REF = $allele1;
+            $VCF_ALT = $allele2;
+        }
+        elsif ( $reference_genome_allele eq $allele2 ) {
+            $VCF_REF = $allele2;
+            $VCF_ALT = $allele1;
+        }
+        else {
+            $VCF_REF = $reference_genome_allele;
+            $VCF_ALT = $allele1 . '/' . $allele2;
+        }
     }
-    elsif ( $h->{allele2} =~ m/\-/ ) {
-        $d_allele = $h->{allele2};
-        $i_allele = $h->{allele1};
-    }
-    if ( $reference_base eq 'D' ) {
-        $result->{VCF_REF} = $ref_base_at_position;
-        $result->{VCF_ALT} = $ref_base_at_position . $i_allele;
-    }
-    elsif ( $reference_base eq 'I' ) {
-        $result->{VCF_REF} = $ref_base_at_position . $i_allele;
-        $result->{VCF_ALT} = $ref_base_at_position;
+    elsif ( $variant_type eq 'INDEL' ) {
+        $VCF_REF = $indel_ref;
+        $VCF_ALT = $indel_alt;
     }
 
-    push @alignment, sprintf( "%${p}s",          "VCF_REF " );
-    push @alignment, sprintf( "%${char_count}s", "$result->{VCF_REF}" );
+    push @alignment, sprintf( "%${p}s", "VCF_REF " );
+    push @alignment, sprintf( "%${c}s", "$VCF_REF" );
     push @alignment, "\n";
 
-    push @alignment, sprintf( "%${p}s",          "VCF_ALT " );
-    push @alignment, sprintf( "%${char_count}s", "$result->{VCF_ALT}" );
+    push @alignment, sprintf( "%${p}s", "VCF_ALT " );
+    push @alignment, sprintf( "%${c}s", "$VCF_ALT" );
     push @alignment, "\n";
 
     push @alignment, "Determination type: $determination_type\n";
 
-    $result->{alignment}      = join "", @alignment;
-    $result->{position}       = $position;
-    $result->{reference_base} = $reference_base;
+    my $alignment = join "", @alignment;
+    $result{position}       = $reference_genome_position;
+    $result{reference_base} = $reference_genome_allele;
+    $result{VCF_REF}        = $VCF_REF;
+    $result{VCF_ALT}        = $VCF_ALT;
+    $result{alignment}      = $alignment;
 
-    return $result;
-}
-
-sub left_normalize {
-    my $allele1 = shift;
-    my $allele2 = shift;
-    my $s_seq   = shift;
-
-    my $allele_to_shift;
-    if ( $allele1 =~ m/[GATCN]/ ) {
-        $allele_to_shift = $allele1;
-    }
-    elsif ( $allele2 =~ m/[GATCN]/ ) {
-        $allele_to_shift = $allele2;
-    }
-    if ( $s_seq =~ m/(($allele_to_shift)+)[\-]?$/ ) {
-
-        my $shift = length($1);
-
-        #if right-most char is not gap then reduce shift by 1
-        if ( $s_seq =~ /[GATCN]$/i ) {
-            $shift = $shift - 1;
-        }
-
-        return $shift;
-    }
-    return 0;
+    return \%result;
 }
 
 sub get_blast_record_hash {
@@ -1624,11 +1400,12 @@ m/(IlmnID,Name,IlmnStrand|"Probe Set ID","Affy SNP ID"|query id,query seq|Probe 
         my @values = @{ _split($line) };
 
         if ( scalar(@values) ne scalar(@columns) ) {
-            print "skipping this record because it is length "
-              . scalar(@values)
-              . " while I expect length "
-              . scalar(@columns) . "\n";
-            print Dumper (@values);
+            if ( scalar(@values) > scalar(@columns) ) {
+                print Dumper(@values);
+                die(
+"Extra columns encountered when parsing line in file '$file'"
+                );
+            }
             next;
         }
 
