@@ -99,74 +99,79 @@ SNP1
 Type: SNP
       QUERY ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATNTCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
     SUBJECT ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATATCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
-      PROBE ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTAT
-        200 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+        200 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                                                     A
     ALLELE2                                                                                                     G
    POSITION                                                                                                  300|
         REF                                                                                                     A
     VCF_REF                                                                                                     A
     VCF_ALT                                                                                                     G
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 SNP2,SNP2-0_B_F_1511663050
 SNP2
 Type: SNP
       QUERY ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTANAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
     SUBJECT ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTATAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
-      PROBE ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTA
-        600 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+        600 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                                                     T
     ALLELE2                                                                                                     G
    POSITION                                                                                                  700|
         REF                                                                                                     T
     VCF_REF                                                                                                     T
     VCF_ALT                                                                                                     G
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 SNP3,SNP3-0_B_F_1511657910
 SNP3
 Type: SNP
       QUERY TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTANCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
     SUBJECT TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAGCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
-      PROBE TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTA
-        800 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+        800 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                                                     T
     ALLELE2                                                                                                     G
    POSITION                                                                                                  900|
         REF                                                                                                     G
     VCF_REF                                                                                                     G
     VCF_ALT                                                                                                     T
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 SNP4,SNP4_dup-0_B_F_2328966441
 SNP4
 Type: SNP
       QUERY AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAANCAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
     SUBJECT AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAAACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
-      PROBE                                                                                                      CAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
-        100 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+        100 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                                                     G
     ALLELE2                                                                                                     A
    POSITION                                                                                                  200|
         REF                                                                                                     A
     VCF_REF                                                                                                     A
     VCF_ALT                                                                                                     G
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 SNP5,SNP5-0_T_R_1511657699
 SNP5
 Type: SNP
       QUERY TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTNAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
     SUBJECT TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTTAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
-      PROBE                                                                                                      AGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
-        700 |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+        700 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                                                     T
     ALLELE2                                                                                                     G
    POSITION                                                                                                  800|
         REF                                                                                                     T
     VCF_REF                                                                                                     T
     VCF_ALT                                                                                                     G
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ```
 
+The expected optional **blast** file content for this test data is as follows (to generate this file, use the --blast option):
+
+```
+query id,query seq,subject id,subject titles,s. start,s. end,subject strand,subject seq
+SNP1,ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATNTCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT,1,1 random_1000_bases,200,400,plus,ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATATCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
+SNP2,ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTANAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT,1,1 random_1000_bases,600,800,plus,ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTATAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
+SNP3,TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTANCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT,1,1 random_1000_bases,800,1000,plus,TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAGCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
+SNP4,TATAAATGGGGCTCCAAGCCGCTTCTTTCTGACCTGACCTATTATTACGTATCCCTTACGCGCTCCAACAACGGGAACCACTTGAAACTTCTATTTTTTGNTTTTGTTTGTACGGACTAGTCTTACGATGCTAATTTCCTAATCCTGGTGTGTGCCTGAGCTGTCACAGGGTAATCCAACGTAATACACCAGGTCCTCACT,1,1 random_1000_bases,300,100,minus,TATAAATGGGGCTCCAAGCCGCTTCTTTCTGACCTGACCTATTATTACGTATCCCTTACGCGCTCCAACAACGGGAACCACTTGAAACTTCTATTTTTTGTTTTTGTTTGTACGGACTAGTCTTACGATGCTAATTTCCTAATCCTGGTGTGTGCCTGAGCTGTCACAGGGTAATCCAACGTAATACACCAGGTCCTCACT
+SNP5,TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTNAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG,1,1 random_1000_bases,700,900,plus,TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTTAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
+```
