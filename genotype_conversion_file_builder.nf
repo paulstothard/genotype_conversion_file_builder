@@ -142,13 +142,15 @@ process blast {
     
     """
     blastn -db $db/$dbName -query sequence.fasta \\
-    -outfmt '7 delim=, qseqid qseq sseqid salltitles sstart send sstrand sseq' \\
+    -outfmt '7 qseqid qseq sseqid salltitles sstart send sstrand sseq' \\
     -perc_identity 90 -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
+    sed 's/,//g' blast_result > blast_result_no_commas
+    perl -p -e 's/\\t/,/g' blast_result_no_commas > blast_result
     grep -m1 "^# Fields:" blast_result > temp1
     sed 's/# Fields: //' temp1 > temp2
     sed 's/, /,/g' temp2 > top_hits.txt
     grep --invert-match "^#" blast_result | awk -F, '!seen[\$1]++' >> top_hits.txt
-    rm -f temp1 temp2
+    rm -f temp1 temp2 blast_result_no_commas blast_result
     """
 }
 
