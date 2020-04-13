@@ -224,149 +224,140 @@ ABCA12
 Type: SNP
       QUERY ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGNGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT
     SUBJECT ATAGCTGCCACAGGGAGGAAAATGGGGTCTAATGTATATTTTCACATGGAGAGTAGCAAGAGTTTCAATACAAGGAGCTCCTATGTAAATAACTTTACCATGTCGGGCAGCATCATATTTTGACATGTTAACTCGCAGGAGGAAATTATTCAGGCTGTTGAGGTAAGCTGGAAGGGAGTGATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAGATCAGTATGGTGTTCAAATAAATTAGGCAGTCTTTATATCTTACAGACTATATAATTTATATTTAAAATAAATGCACCAGTTTCCCCAGTAACTTATTCATCTTAGCAGATTATGAACCATCCACCAGAGT
-      PROBE                                                                                                                                                                                    GATAGCCTTCTGGATCATACCATACCTGTAACATTCCAAAAGAAGACAAG
-  103030311          |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |         |
+  103030311     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                                                                                                                                   C
     ALLELE2                                                                                                                                                                                   T
    POSITION                                                                                                                                                                          103030489|
         REF                                                                                                                                                                                   T
     VCF_REF                                                                                                                                                                                   T
     VCF_ALT                                                                                                                                                                                   C
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 APAF1,APAF1_dup-1_B_F_2327661418
 APAF1
 Type: SNP
       QUERY CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGNAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT
     SUBJECT CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGCAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT
-      PROBE           ATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGG
-   62810185      |         |         |         |         |         |         |         |         |         |         |         |     
+   62810185 .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                             T
     ALLELE2                                                             C
    POSITION                                                     62810245|
         REF                                                             C
     VCF_REF                                                             C
     VCF_ALT                                                             T
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10172,ARS-BFGL-BAC-10172_dup-0_T_F_2328966397
 ARS-BFGL-BAC-10172
 Type: SNP
       QUERY TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATNACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
     SUBJECT TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATCACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
-      PROBE                                                              ACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACC
-    5342598   |         |         |         |         |         |         |         |         |         |         |         |        
+    5342598   |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .   
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                      5342658|
         REF                                                             C
     VCF_REF                                                             C
     VCF_ALT                                                             T
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-1020,ARS-BFGL-BAC-1020-0_B_R_1511662870
 ARS-BFGL-BAC-1020
 Type: SNP
       QUERY TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGNACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
     SUBJECT TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGTACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
-      PROBE           GGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAG
-    6889596     |         |         |         |         |         |         |         |         |         |         |         |      
+    6889596     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    . 
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                      6889656|
         REF                                                             T
     VCF_REF                                                             T
     VCF_ALT                                                             C
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10245,ARS-BFGL-BAC-10245-0_B_F_1511658502
 ARS-BFGL-BAC-10245
 Type: SNP
       QUERY TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCANAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
     SUBJECT TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCAGAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
-      PROBE                                                              AGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCG
-   30124074       |         |         |         |         |         |         |         |         |         |         |         |    
+   30124074  .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    
     ALLELE1                                                             G
     ALLELE2                                                             A
    POSITION                                                     30124134|
         REF                                                             G
     VCF_REF                                                             G
     VCF_ALT                                                             A
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10345,ARS-BFGL-BAC-10345_dup-0_T_F_2328966403
 ARS-BFGL-BAC-10345
 Type: SNP
       QUERY TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTNTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
     SUBJECT TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTTTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
-      PROBE                                                              TAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGT
-    5105667    |         |         |         |         |         |         |         |         |         |         |         |       
+    5105667    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .  
     ALLELE1                                                             G
     ALLELE2                                                             T
    POSITION                                                      5105727|
         REF                                                             T
     VCF_REF                                                             T
     VCF_ALT                                                             G
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10375,ARS-BFGL-BAC-10375_dup-0_T_F_2328966405
 ARS-BFGL-BAC-10375
 Type: SNP
       QUERY TAAAAGCATTTTTAAAACAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATANTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA
     SUBJECT TAAAAGCATTTTTAAAATAAAGATTGATGTATAAGTACCTTGATTGCAGCCTAATGCATAGTAGATAGGATTGAAAAACAACAATCAAATATTATGCTGAATACAATCAAATATTATACAA
-    5587690 |         |         |         |         |         |         |         |         |         |         |         |         |
+    5587690 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                      5587750|
         REF                                                             G
     VCF_REF                                                             G
     VCF_ALT                                                             A
-Determination type: UNAMBIGUOUS_ALIGNMENT_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10591,ARS-BFGL-BAC-10591_dup-0_T_F_2328966407
 ARS-BFGL-BAC-10591
 Type: SNP
       QUERY AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCNAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
     SUBJECT AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCAAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
-      PROBE           AAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGC
-   15956764       |         |         |         |         |         |         |         |         |         |         |         |    
+   15956764  .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                     15956824|
         REF                                                             A
     VCF_REF                                                             A
     VCF_ALT                                                             G
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10867,ARS-BFGL-BAC-10867-0_B_F_1511658130
 ARS-BFGL-BAC-10867
 Type: SNP
       QUERY ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCANAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA
     SUBJECT ATATAACTCTTTAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCACAACATATTTAAAATTATAAGTTACAAGTAAGAGATTTTAAATTATTTTATGCATTGTTAA
-      PROBE            TAATATTTTTGATTGATTTATGCTGGAAATTTTCTCTTTGAAATGATCA
-   32553995      |         |         |         |         |         |         |         |         |         |         |         |     
+   32553995 .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                             C
     ALLELE2                                                             G
    POSITION                                                     32554055|
         REF                                                             C
     VCF_REF                                                             C
     VCF_ALT                                                             G
-Determination type: LEFT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ========================================================================================
 ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221
 ARS-BFGL-BAC-10919
 Type: SNP
       QUERY CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGNGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
     SUBJECT CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGTGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
-      PROBE                                                              GCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAA
-   29573622         |         |         |         |         |         |         |         |         |         |         |         |  
+   29573622    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |  
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                     29573682|
         REF                                                             T
     VCF_REF                                                             T
     VCF_ALT                                                             C
-Determination type: RIGHT_PROBE_SNP
+Determination type: ALIGNMENT_NO_GAPS
 ```
 
 ## Creating new output formats
@@ -453,7 +444,7 @@ outdir
           ├── manifest.reference.position.csv
           ├── manifest.reference.wide.csv
           ├── manifest.reference.alignment.txt
-          ├── manifest.reference.blast.txt
+          ├── manifest.reference.blast.csv
 ```
 
 ## Dependencies
