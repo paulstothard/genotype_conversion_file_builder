@@ -61,35 +61,37 @@ process split_csv {
     
     shell:
     '''
+    #remove commas within quoted fields
+    perl -nle  'my @new  = (); push( @new, $+ ) while $_ =~ m{"([^\\"\\\\]*(?:\\\\.[^\\"\\\\]*)*)",? | ([^,]+),? | ,}gx; push( @new, undef ) if substr( $text, -1, 1 ) eq '\\'','\\''; for(@new){s/,/ /g} print join "\\t", @new' csv > temp1
     #replace tabs with commas and remove quotes
-    perl -p -e 's/\\t/,/g;' -e 's/"//g' csv > temp1
+    perl -p -e 's/\\t/,/g;' -e 's/"//g' temp1 > temp2
     
     #check if Affy manifest
     set +e
-    affy=$(grep -c -m1 '^Probe Set ID,Affy SNP ID' temp1)
+    affy=$(grep -c -m1 '^Probe Set ID,Affy SNP ID' temp2)
     set -e
 
     #get SNP name and SourceSeq / Flank
     if [ "$affy" -gt 0 ]; then
         #Affymetrix
         #Keep everything except comment lines in Affymetrix manifest
-        grep -v '^#' temp1 > affymetrix
+        grep -v '^#' temp2 > affymetrix
         #Print Affy SNP ID and Flank columns without header
         awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 \\
         { print $ix["Affy SNP ID"]"," $ix["Flank"] }' \\
         affymetrix > ID_seq_no_header
         rm -f affymetrix
-        rm -f temp1
+        rm -f temp1 temp2
     else
         #Illumina
         #Keep everthing except lines before IlmnID line and after [Control] line in 
         #Illumina manifest
-        awk -F, '/^IlmnID/{flag=1;print;next}/^\\[Controls\\]/{flag=0}flag' temp1 > illumina
+        awk -F, '/^IlmnID/{flag=1;print;next}/^\\[Controls\\]/{flag=0}flag' temp2 > illumina
         #Keep Name and SourceSeq columns without header
         awk -F, 'NR==1 { for (i=1; i<=NF; i++) { ix[$i] = i } } NR>1 \\
         { print $ix["Name"]"," $ix["SourceSeq"] }' illumina > ID_seq_no_header
         rm -f illumina
-        rm -f temp1
+        rm -f temp1 temp2
     fi
     
     #Process subset of data depending on params.dev
