@@ -146,12 +146,20 @@ process blast {
     blastn -db $db/$dbName -query sequence.fasta \\
     -outfmt '7 qseqid qseq sseqid salltitles sstart send sstrand sseq' \\
     -perc_identity 90 -qcov_hsp_perc 90 -max_target_seqs 5 -max_hsps 1 > blast_result
-    grep -m1 "^# Fields:" blast_result > temp1
-    sed 's/# Fields: //' temp1 > temp2
+    set +e
+    header=\$(grep -m1 "^# Fields:" blast_result > temp1)
+    set -e
+    if [ "header" -gt 0 ]; then
+      sed 's/# Fields: //' temp1 > temp2
+    else
+      echo "query id,query seq,subject id,subject titles,s. start,s. end,subject strand,subject seq" > temp2
+    fi
     sed 's/, /,/g' temp2 > top_hits.txt
     sed 's/,//g' blast_result > blast_result_no_commas
     perl -p -e 's/\\t/,/g' blast_result_no_commas > blast_result
+    set +e
     grep --invert-match "^#" blast_result | awk -F, '!seen[\$1]++' >> top_hits.txt
+    set -e
     rm -f temp1 temp2 blast_result_no_commas blast_result
     """
 }
