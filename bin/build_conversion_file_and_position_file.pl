@@ -863,10 +863,14 @@ sub build_alignment {
         $column{subject_char} = $subject_seq[$i];
         $column{query_char}   = $query_seq[$i];
 
-        if ( $subject_no_gaps_position_genome % 10 == 0 ) {
+        if (   ( $subject_no_gaps_position_genome % 10 == 0 )
+            && ( $column{subject_char} =~ m/[A-Z]/i ) )
+        {
             $column{ruler_char} = '|';
         }
-        elsif ( $subject_no_gaps_position_genome % 5 == 0 ) {
+        elsif (( $subject_no_gaps_position_genome % 5 == 0 )
+            && ( $column{subject_char} =~ m/[A-Z]/i ) )
+        {
             $column{ruler_char} = '.';
         }
         else {
