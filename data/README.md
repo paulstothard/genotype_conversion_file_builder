@@ -1,6 +1,6 @@
 # Test data files
 
-The test dataset consists of the following:
+The test data set consists of the following:
 
 reference.fa - a single random DNA sequence 1000 bases in length:
 
@@ -25,7 +25,7 @@ ccgtcaaaggtcttttgccgagatgactactacaaccgtatagacaaagcgtgcacatta
 catggggagtacctacttccagaacctgtgtcttcctagt
 ```
 
-manifest.csv - an artifical Illumina manifest file describing five SNPs: 
+manifest.csv - an artificial Illumina manifest file describing five SNPs: 
 
 ```
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
