@@ -1,6 +1,6 @@
 # genotype\_conversion\_file\_builder
 
-The genotype\_conversion\_file\_builder is a pipeline for determining the genome location and transformation rules for the variants described in Illumina or Affymetrix genotype panel manifest files.
+The genotype\_conversion\_file\_builder is a pipeline for determining the genomic location and transformation rules for the variants described in Illumina or Affymetrix genotype panel manifest files.
 
 Briefly, the pipeline extracts the flanking sequence of each variant from the manifest file, and performs a BLAST search comparing each flanking sequence against a new reference genome of interest. Next, the resulting BLAST alignments are parsed in conjunction with the manifest file, to establish the position of each variant on the reference genome, and to generate simple transformation rules that can be used to convert genotypes between any of the standard formats (AB, TOP, FORWARD, DESIGN) and from any of the standard formats to the forward strand of the reference genome (PLUS). An indication of which allele is observed in the reference genome is also provided. The position information and transformation rules are written to separate files, referred to as **position** and **conversion** files, respectively. An additional **wide** file provides the position and conversion information together in a format that can be easily converted to files used by downstream tools like PLINK. See the [output file documentation](docs/README_output.md) for detailed descriptions of the output files and sample output.
 
