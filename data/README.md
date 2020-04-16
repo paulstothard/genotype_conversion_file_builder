@@ -25,7 +25,7 @@ ccgtcaaaggtcttttgccgagatgactactacaaccgtatagacaaagcgtgcacatta
 catggggagtacctacttccagaacctgtgtcttcctagt
 ```
 
-manifest.csv - an artificial Illumina manifest file describing five SNPs: 
+manifest.csv - an artificial Illumina manifest file describing five SNPs:
 
 ```
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
@@ -36,7 +36,8 @@ SNP4_dup-0_B_F_2328966441,SNP4,BOT,[T/C],0039612441,TATAAATGGGGCTCCAAGCCGCTTCTTT
 SNP5-0_T_R_1511657699,SNP5,TOP,[A/C],0032703444,CTACATCCCAGTTCTCTGCTTACTTACTAGCACCCCGGGGCACTACTGTTAGCTTGCGTCACAGGTAAATAATAAACATAATTCTGGCGTCGTTACGCCT,,,3,10,26527257,diploid,Bos taurus,UM3,0,BOT,TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGT[T/G]AGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG,CTACATCCCAGTTCTCTGCTTACTTACTAGCACCCCGGGGCACTACTGTTAGCTTGCGTCACAGGTAAATAATAAACATAATTCTGGCGTCGTTACGCCT[A/C]ACTAGCTCTACCTGTGCACCGTGTGTCGCGGGCCCGGTCCGGGTACCATAACGCGCAGGGGAAACGCTCATAATCCTATGCCGCATCTGGCGACGAGTTA,1241
 ```
 
-The flanking sequence of each SNP was derived from the reference.fa sequence such that the locations of the SNPs are as follows:
+The flanking sequence of each SNP was derived from the reference.fa sequence
+such that the locations of the SNPs are as follows:
 
 * SNP1: position 300 on the forward strand
 * SNP2: position 700 on the forward strand
@@ -46,7 +47,7 @@ The flanking sequence of each SNP was derived from the reference.fa sequence suc
 
 ```
       1       2   3   Forward strand SNP positions
-  a a a t c a t t g t Forward strand bases     
+  a a a t c a t t g t Forward strand bases
 0_1_2_3_4_5_6_7_8_9_0 Base positions (100 bases)
   t t t a g t a a c a Reverse strand bases
     4           5     Reverse strand SNP positions
@@ -90,7 +91,8 @@ SNP4,SNP4_dup-0_B_F_2328966441,1,200,A,G,A,B,A,G,T,C,T,C,A,G,REF,ALT
 SNP5,SNP5-0_T_R_1511657699,1,800,T,G,A,B,A,C,T,G,A,C,T,G,REF,ALT
 ```
 
-The expected optional **alignment** file content for this test data is as follows (to generate this file, use the --align option):
+The expected optional **alignment** file content for this test data is as
+follows (to generate this file, use the --align option):
 
 ```
 ========================================================================================
@@ -165,7 +167,8 @@ Type: SNP
 Determination type: ALIGNMENT_NO_GAPS
 ```
 
-The expected optional **blast** file content for this test data is as follows (to generate this file, use the --blast option):
+The expected optional **blast** file content for this test data is as follows
+(to generate this file, use the --blast option):
 
 ```
 query id,query seq,subject id,subject titles,s. start,s. end,subject strand,subject seq
