@@ -1535,8 +1535,8 @@ OPTIONAL ARGUMENTS:
       Show this message.
 
 EXAMPLE:
-   perl build_conversion_file_and_position_file.pl -b blast_results.csv \
-   -m BovineSNP50_v3_A1.csv -p position.csv -c conversion.csv \
+   perl build_conversion_file_and_position_file.pl -b blast_results.csv \\
+   -m BovineSNP50_v3_A1.csv -p position.csv -c conversion.csv \\
    -i 'REF=ARS-UCD1.2' 'PANEL=SNP50_v3'
 
 BLOCK
