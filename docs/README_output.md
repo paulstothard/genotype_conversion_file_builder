@@ -4,22 +4,49 @@
 
 ### Position file
 
-The **position** file describes the location of each marker on the new reference genome.
+The **position** file describes the location of each marker on the new
+reference genome.
 
 There is one data row per marker in the input manifest file.
 
 The columns are as follows:
 
 * **marker\_name** - the name of the marker, from the manifest file.
-* **alt\_marker\_name** - the additional name of the marker, from the manifest file.
-* **chromosome** - the chromosome containing the marker, determined using BLAST.
-* **position** - the position of the marker on the chromosome, determined using BLAST.
-* **VCF\_REF** - the allele observed on the forward strand of the reference genome at this position. This allele is extracted from the reference genome sequence. In the vast majority of cases this allele matches one of the two alleles described in the manifest file when they are transformed to the forward strand of the reference genome (referred to as the PLUS format in the conversion file).
-* **VCF\_ALT** - the marker allele(s) described in the manifest file and transformed to the forward strand of the reference that are not observed in the reference genome. In most cases there is one allele in this column, corresponding to the marker allele not detected in the reference genome sequence. In cases where neither allele is observed in the reference genome sequence, both alleles appear here, separated by a forward slash, e.g. "A/G". 
+* **alt\_marker\_name** - the additional name of the marker, from the manifest
+  file.
+* **chromosome** - the chromosome containing the marker, determined using
+  BLAST.
+* **position** - the position of the marker on the chromosome, determined using
+  BLAST.
+* **VCF\_REF** - the allele observed on the forward strand of the reference
+  genome at this position. This allele is extracted from the reference genome
+sequence. In the vast majority of cases this allele matches one of the two
+alleles described in the manifest file when they are transformed to the forward
+strand of the reference genome (referred to as the PLUS format in the
+conversion file).
+* **VCF\_ALT** - the marker allele(s) described in the manifest file and
+  transformed to the forward strand of the reference that are not observed in
+the reference genome. In most cases there is one allele in this column,
+corresponding to the marker allele not detected in the reference genome
+sequence. In cases where neither allele is observed in the reference genome
+sequence, both alleles appear here, separated by a forward slash, e.g. "A/G".
 
-**Note**: Indel positions and alleles are described according to the [VCF specification](https://samtools.github.io/hts-specs/VCFv4.2.pdf).
+**Note**: Indel positions and alleles are described according to the [VCF
+specification](https://samtools.github.io/hts-specs/VCFv4.2.pdf).
 
-**Note**: In cases where the SNP aligns with a gap in the reference genome, probe information in the manifest file is examined to determine whether the base on the left or right side of the gap is assayed by the probe, and the position and reference base are selected accordingly. In cases where probe information is not available, the reference-genome bases to the left and right of the gap(s) are examined. If the left base matches one of the forward-strand-transformed SNP alleles, it is selected as **VCF\_REF** and its position is used as the position value. If the left base does not match one of the forward-strand-transformed SNP alleles but the right base does, the right base is selected as **VCF\_REF** and its position is used. If neither the left or right bases match, the left base and position are used. The optional **alignment** file output can be viewed for any marker to see how position and allele information were derived from the BLAST results and probe information. 
+**Note**: In cases where the SNP aligns with a gap in the reference genome,
+probe information in the manifest file is examined to determine whether the
+base on the left or right side of the gap is assayed by the probe, and the
+position and reference base are selected accordingly. In cases where probe
+information is not available, the reference-genome bases to the left and right
+of the gap(s) are examined. If the left base matches one of the
+forward-strand-transformed SNP alleles, it is selected as **VCF\_REF** and its
+position is used as the position value. If the left base does not match one of
+the forward-strand-transformed SNP alleles but the right base does, the right
+base is selected as **VCF\_REF** and its position is used. If neither the left
+or right bases match, the left base and position are used. The optional
+**alignment** file output can be viewed for any marker to see how position and
+allele information were derived from the BLAST results and probe information.
 
 #### Sample position file content
 
@@ -39,32 +66,54 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,14,29573682,T,C
 
 ### Conversion file
 
-The **conversion** file describes how genotypes can be converted from one format to another, including to the forward strand of the reference genome (i.e. the PLUS format).
+The **conversion** file describes how genotypes can be converted from one
+format to another, including to the forward strand of the reference genome
+(i.e. the PLUS format).
 
 There are two data rows per marker.
 
-One row contains the various representations of allele A ('allele A' referring to 'allele A' in Illumina's A/B allele nomenclature), while the other contains the various representations of allele B ('allele B' referring to 'allele B' in Illumina's A/B allele nomenclature).
+One row contains the various representations of allele A ('allele A' referring
+to 'allele A' in Illumina's A/B allele nomenclature), while the other contains
+the various representations of allele B ('allele B' referring to 'allele B' in
+Illumina's A/B allele nomenclature).
 
 The columns are as follows:
 
 * **marker\_name** - the name of the marker, from the manifest file.
-* **alt\_marker\_name** - the additional name of the marker, from the manifest file.
-* **AB** - the allele in Illumina's A/B format. This value is always **A** or **B** for SNPs.
+* **alt\_marker\_name** - the additional name of the marker, from the manifest
+  file.
+* **AB** - the allele in Illumina's A/B format. This value is always **A** or
+  **B** for SNPs.
 * **TOP** - the allele in Illumina's TOP format.
 * **FORWARD** - the allele in Illumina's FORWARD format.
 * **DESIGN** - the allele in Illumina's DESIGN format.
-* **PLUS** - the allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
-* **VCF** - a value of **REF** in this column indicates that this allele appears on the forward strand of the reference genome, while a value of **ALT** indicates that it does not.
+* **PLUS** - the allele in Illumina's PLUS format. This value is not parsed
+  from the manifest file but instead determined by a BLAST alignment between
+the variant flanking sequence and the reference genome. This value represents
+how the allele would appear following transformation to the forward strand of
+the reference genome. Note that this value does not indicate whether the
+reference genome sequence actually contains this allele.
+* **VCF** - a value of **REF** in this column indicates that this allele
+  appears on the forward strand of the reference genome, while a value of
+**ALT** indicates that it does not.
 
-**Note**: To transform a marker's genotype from one representation to another (e.g. a genotype of 'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to 'TOP' format):
+**Note**: To transform a marker's genotype from one representation to another
+(e.g. a genotype of 'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to
+'TOP' format):
 
 1. Find the two rows for marker 'ARS-BFGL-BAC-10867'.
-2. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the value of 'FORWARD' is 'G': the 'TOP' transformation is simply the value in the 'TOP' column of this row.
-3. Examine the 'FORWARD' column in the two rows from step 1 to find the row where the value of 'FORWARD' is 'C': the 'TOP' transformation is simply the value in the 'TOP' column of this row.
+2. Examine the 'FORWARD' column in the two rows from step 1 to find the row
+   where the value of 'FORWARD' is 'G': the 'TOP' transformation is simply the
+value in the 'TOP' column of this row.
+3. Examine the 'FORWARD' column in the two rows from step 1 to find the row
+   where the value of 'FORWARD' is 'C': the 'TOP' transformation is simply the
+value in the 'TOP' column of this row.
 
-**Note**: the TOP, FORWARD, and DESIGN values are not provided for Affymetrix panels.
+**Note**: the TOP, FORWARD, and DESIGN values are not provided for Affymetrix
+panels.
 
-**Note**: Indel alleles in the TOP, FORWARD, DESIGN, and PLUS columns are given as D (deletion) or I (insertion).
+**Note**: Indel alleles in the TOP, FORWARD, DESIGN, and PLUS columns are given
+as D (deletion) or I (insertion).
 
 #### Sample conversion file content
 
@@ -94,42 +143,97 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,B,G,G,G,C,ALT
 
 ### Wide file
 
-The **wide** file describes the location of each marker on the new reference genome, and provides the various representations of the A and B alleles. 
+The **wide** file describes the location of each marker on the new reference
+genome, and provides the various representations of the A and B alleles.
 
 There is one data row per marker in the input manifest file.
 
 The columns are as follows:
 
 * **marker\_name** - the name of the marker, from the manifest file.
-* **alt\_marker\_name** - the additional name of the marker, from the manifest file.
-* **chromosome** - the chromosome containing the marker, determined using BLAST.
-* **position** - the position of the marker on the chromosome, determined using BLAST.
-* **VCF\_REF** - the allele observed on the forward strand of the reference genome at this position. This allele is extracted from the reference genome sequence. In the vast majority of cases this allele matches one of the two alleles described in the manifest file when they are transformed to the forward strand of the reference genome (referred to as the PLUS format in the conversion file).
-* **VCF\_ALT** - the marker allele(s) described in the manifest file and transformed to the forward strand of the reference that are not observed in the reference genome. In most cases there is one allele in this column, corresponding to the marker allele not detected in the reference genome sequence. In cases where neither allele is observed in the reference genome sequence, both alleles appear here, separated by a forward slash, e.g. "A/G".
-* **AB_A** - the A allele in Illumina's A/B format. This value is always **A** for SNPs.
-* **AB_B** - the B allele in Illumina's A/B format. This value is always **B** for SNPs. 
+* **alt\_marker\_name** - the additional name of the marker, from the manifest
+  file.
+* **chromosome** - the chromosome containing the marker, determined using
+  BLAST.
+* **position** - the position of the marker on the chromosome, determined using
+  BLAST.
+* **VCF\_REF** - the allele observed on the forward strand of the reference
+  genome at this position. This allele is extracted from the reference genome
+sequence. In the vast majority of cases this allele matches one of the two
+alleles described in the manifest file when they are transformed to the forward
+strand of the reference genome (referred to as the PLUS format in the
+conversion file).
+* **VCF\_ALT** - the marker allele(s) described in the manifest file and
+  transformed to the forward strand of the reference that are not observed in
+the reference genome. In most cases there is one allele in this column,
+corresponding to the marker allele not detected in the reference genome
+sequence. In cases where neither allele is observed in the reference genome
+sequence, both alleles appear here, separated by a forward slash, e.g. "A/G".
+* **AB_A** - the A allele in Illumina's A/B format. This value is always **A**
+  for SNPs.
+* **AB_B** - the B allele in Illumina's A/B format. This value is always **B**
+  for SNPs.
 * **TOP_A** - the A allele in Illumina's TOP format.
 * **TOP_B** - the B allele in Illumina's TOP format.
 * **FORWARD_A** - the A allele in Illumina's FORWARD format.
 * **FORWARD_B** - the B allele in Illumina's FORWARD format.
 * **DESIGN_A** - the A allele in Illumina's DESIGN format.
 * **DESIGN_B** - the A allele in Illumina's DESIGN format.
-* **PLUS_A** - the A allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
-* **PLUS_B** - the B allele in Illumina's PLUS format. This value is not parsed from the manifest file but instead determined by a BLAST alignment between the variant flanking sequence and the reference genome. This value represents how the allele would appear following transformation to the forward strand of the reference genome. Note that this value does not indicate whether the reference genome sequence actually contains this allele.
-* **VCF_A** - a value of **REF** in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of **ALT** indicates that it does not.
-* **VCF_B** - a value of **REF** in this column indicates that the A allele appears on the forward strand of the reference genome, while a value of **ALT** indicates that it does not.
+* **PLUS_A** - the A allele in Illumina's PLUS format. This value is not parsed
+  from the manifest file but instead determined by a BLAST alignment between
+the variant flanking sequence and the reference genome. This value represents
+how the allele would appear following transformation to the forward strand of
+the reference genome. Note that this value does not indicate whether the
+reference genome sequence actually contains this allele.
+* **PLUS_B** - the B allele in Illumina's PLUS format. This value is not parsed
+  from the manifest file but instead determined by a BLAST alignment between
+the variant flanking sequence and the reference genome. This value represents
+how the allele would appear following transformation to the forward strand of
+the reference genome. Note that this value does not indicate whether the
+reference genome sequence actually contains this allele.
+* **VCF_A** - a value of **REF** in this column indicates that the A allele
+  appears on the forward strand of the reference genome, while a value of
+**ALT** indicates that it does not.
+* **VCF_B** - a value of **REF** in this column indicates that the A allele
+  appears on the forward strand of the reference genome, while a value of
+**ALT** indicates that it does not.
 
-**Note**: Indel positions and alleles are described according to the [VCF specification](https://samtools.github.io/hts-specs/VCFv4.2.pdf).
+**Note**: Indel positions and alleles are described according to the [VCF
+specification](https://samtools.github.io/hts-specs/VCFv4.2.pdf).
 
-**Note**: In cases where the SNP aligns with a gap in the reference genome, probe information in the manifest file is examined to determine whether the base on the left or right side of the gap is assayed by the probe, and the position and reference base are selected accordingly. In cases where probe information is not available, the reference-genome bases to the left and right of the gap(s) are examined. If the left base matches one of the forward-strand-transformed SNP alleles, it is selected as **VCF\_REF** and its position is used as the position value. If the left base does not match one of the forward-strand-transformed SNP alleles but the right base does, the right base is selected as **VCF\_REF** and its position is used. If neither the left or right bases match, the left base and position are used. The optional **alignment** file output can be viewed for any marker to see how position and allele information were derived from the BLAST results and probe information.
+**Note**: In cases where the SNP aligns with a gap in the reference genome,
+probe information in the manifest file is examined to determine whether the
+base on the left or right side of the gap is assayed by the probe, and the
+position and reference base are selected accordingly. In cases where probe
+information is not available, the reference-genome bases to the left and right
+of the gap(s) are examined. If the left base matches one of the
+forward-strand-transformed SNP alleles, it is selected as **VCF\_REF** and its
+position is used as the position value. If the left base does not match one of
+the forward-strand-transformed SNP alleles but the right base does, the right
+base is selected as **VCF\_REF** and its position is used. If neither the left
+or right bases match, the left base and position are used. The optional
+**alignment** file output can be viewed for any marker to see how position and
+allele information were derived from the BLAST results and probe information.
 
-**Note**: To transform a marker's genotype from one representation to another (e.g. a genotype of 'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to 'TOP' format):
+**Note**: To transform a marker's genotype from one representation to another
+(e.g. a genotype of 'GC' for marker 'ARS-BFGL-BAC-10867' in 'FORWARD' format to
+'TOP' format):
 
 1. Find the row for marker 'ARS-BFGL-BAC-10867'.
-2. Examine the 'FORWARD\_A' and 'FORWARD\_B' columns in the row from step 1 to determine which contains 'G': if it is the 'FORWARD\_A' column then the 'TOP' transformation is the value in the 'TOP\_A' column of this row; if it is the 'FORWARD\_B' column then the 'TOP' transformation is the value given in the 'TOP\_B' column.
-3. Examine the 'FORWARD\_A' and 'FORWARD\_B' columns in the row from step 1 to determine which contains 'C': if it is the 'FORWARD\_A' column then the 'TOP' transformation is the value in the 'TOP\_A' column of this row; if it is the 'FORWARD\_B' column then the 'TOP' transformation is the value given in the 'TOP\_B' column.
+2. Examine the 'FORWARD\_A' and 'FORWARD\_B' columns in the row from step 1 to
+   determine which contains 'G': if it is the 'FORWARD\_A' column then the
+'TOP' transformation is the value in the 'TOP\_A' column of this row; if it is
+the 'FORWARD\_B' column then the 'TOP' transformation is the value given in the
+'TOP\_B' column.
+3. Examine the 'FORWARD\_A' and 'FORWARD\_B' columns in the row from step 1 to
+   determine which contains 'C': if it is the 'FORWARD\_A' column then the
+'TOP' transformation is the value in the 'TOP\_A' column of this row; if it is
+the 'FORWARD\_B' column then the 'TOP' transformation is the value given in the
+'TOP\_B' column.
 
-Note: Indel alleles in the AB\_A, AB\_B, TOP\_A, TOP\_B, FORWARD\_A, FORWARD\_B, DESIGN\_A, DESIGN\_B, PLUS\_A, and PLUS\_B columns are given as D (deletion) or I (insertion).
+Note: Indel alleles in the AB\_A, AB\_B, TOP\_A, TOP\_B, FORWARD\_A,
+FORWARD\_B, DESIGN\_A, DESIGN\_B, PLUS\_A, and PLUS\_B columns are given as D
+(deletion) or I (insertion).
 
 #### Sample wide file content
 
@@ -149,11 +253,12 @@ ARS-BFGL-BAC-10919,ARS-BFGL-BAC-10919-0_T_F_1511658221,14,29573682,T,C,A,B,A,G,A
 
 ### Alignment file
 
-The optional **alignment** file shows how BLAST alignments were parsed to determine variant position and alleles for use in the other output files.
+The optional **alignment** file shows how BLAST alignments were parsed to
+determine variant position and alleles for use in the other output files.
 
 #### Sample alignment file content
 
-The following alignment file content depicts several easy-to-parse alignments.  
+The following alignment file content depicts several easy-to-parse alignments.
 
 ```
 ========================================================================================
@@ -190,7 +295,7 @@ ARS-BFGL-BAC-10172
 Type: SNP
       QUERY TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATNACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
     SUBJECT TTTCAATTGTTTTAAAAATTTCAATATTAACAAAAATATTACTAAAAGAATATTCTGGATCACTTGAGTGATGACTTACATAAGTAAGTGCTACCACATACTTTGGGGACCAACTTCTGAG
-    5342598   |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .   
+    5342598   |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                      5342658|
@@ -204,7 +309,7 @@ ARS-BFGL-BAC-1020
 Type: SNP
       QUERY TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGNACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
     SUBJECT TTTAGCTTTAGGATTTTCTTCAATGTTGTTTCAGTGGCATCCTTTATTTGACTGGAATAGTACTCAATGTTTGGGCTTCCCAGATGGCTCAGTGAGAAATCAGGAGACCTGAGTTCAATCC
-    6889596     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    . 
+    6889596     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                      6889656|
@@ -218,7 +323,7 @@ ARS-BFGL-BAC-10245
 Type: SNP
       QUERY TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCANAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
     SUBJECT TCCTTTCTAGGAGGACAGGCCTGAGTGGGGGCCTGGGAGGGGAAGAGACACTGGTCACCAGAGGGCAGAGAGAAAGAGAACAGGAAGAGAGAAGAAGAAAAACAGAAGGCGGGGAAGTGGG
-   30124074  .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    
+   30124074  .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                             G
     ALLELE2                                                             A
    POSITION                                                     30124134|
@@ -232,7 +337,7 @@ ARS-BFGL-BAC-10345
 Type: SNP
       QUERY TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTNTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
     SUBJECT TACATCTTTTAACGGGGTTTTTAAAAAGTAGGGGTCAGGAAAACATGAGATGTTTTCTTTTTAGGTTTATTTGCAGGAGTACTTGAAGCACAAAGCAATAGAATGAATGGTGCCCTATACC
-    5105667    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .  
+    5105667    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                             G
     ALLELE2                                                             T
    POSITION                                                      5105727|
@@ -260,7 +365,7 @@ ARS-BFGL-BAC-10591
 Type: SNP
       QUERY AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCNAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
     SUBJECT AGTTCTTGCAAAAAAAGATGTTTATACAGTAATGCTTATTGTAGCACCATTTATAGTAGCAAAATAAATCAGAACAAAAATATCAGGGGCTAGTTAAATATTACATGATACATATCACATA
-   15956764  .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    
+   15956764  .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                     15956824|
@@ -288,7 +393,7 @@ ARS-BFGL-BAC-10919
 Type: SNP
       QUERY CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGNGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
     SUBJECT CTCAAGCTTGAACATGATAGTCCCGATGGCCAGAGTGCAGAGACTTCCTTGAACACCAAGTGCACTCAGTAAAGCTTCCGTCAAGATCATGACCTAGGAGTTTAGTACCAAACTTCACCAT
-   29573622    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |  
+   29573622    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                             C
     ALLELE2                                                             T
    POSITION                                                     29573682|
@@ -298,7 +403,8 @@ Type: SNP
 Determination type: ALIGNMENT_NO_GAPS
 ```
 
-The following alignment file content depicts more complex alignment results and their parsing.
+The following alignment file content depicts more complex alignment results and
+their parsing.
 
 ```
 ========================================================================================
@@ -308,7 +414,7 @@ Type: SNP
       QUERY TCATTGAAACTAAGTATAACTTAACTGTGAAATGTACAATCACCACATTGAAATCTGAGC-NCAAATGAAATTTGATTAGCTCGCCTGAGAATATATAGTTAACAAGAAAGTATTAGCTAA
     SUBJECT TCATTGAAACTAAGTATAACTTAACTGTGAAATGTACAATCACCACATTGAAATCTGAGCTGCAAATGAAATTTGATTAGCTCGCCTGAGAATATATAGTTAACAAGAAAGTATTAGCTAA
       PROBE           TAAGTATAACTTAACTGTGAAATGTACAATCACCACATTGAAATCTGAGC
-   78907101     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    | 
+   78907101     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                             T
     ALLELE2                                                             G
    POSITION                                                     78907161|
@@ -323,7 +429,7 @@ Type: SNP
       QUERY CCGGCGGCGGCGCGCACGTCATCCCAGCGGAAGTCCACCGGCCAGCCTCGGAAGTTGTA-NTGTAGTTGGCTGTCAGGTAGATCTTGAACACGTGCACCAGCGCTTTCACGAAGCAGCACC
     SUBJECT CCGGCGGCGGCGCGCACGTCATCCCAGCGGAAGTCCACCGGCCAGCCTCGGAAGTTGTAGGTGTAGTTGGCTGTCAGGTAGATCTTGAACACGTGCACCAGCGCTTTCACGAAGCAG-ACC
       PROBE                                                              TGTAGTTGGCTGTCAGGTAGATCTTGAACACGTGCACCAGCGCTTTCACG
-   53958427    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |     . 
+   53958427    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |     .
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                     53958487|
@@ -338,7 +444,7 @@ Type: SNP
       QUERY AGACACTTGTTGGATAAATGAATGCTCGACTGGGGTCAGGTCCCTCAGTGGAGCTGGCAGN-AACAGCTCGCAAGGGGCCACTTGCTGCCATGGGCCAGGCCAGGACAGAGAGACCCAGGCC
     SUBJECT AGACAC-T-TTGGATAAATGAATGCTCAACTGGGGTCAGGTCCCTCAGTGGAGCTGGCAGGAAACAGCTCGCAAGGGGCCACTTGCTGCCAGGGGCCAGGCCAGGACAGAGAGACCCAGGCC
       PROBE           TGGATAAATGAATGCTCGACTGGGGTCAGGTCCCTCAGTGGAGCTGGCAG
-  107645848   |      .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .  
+  107645848   |      .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                             A
     ALLELE2                                                             G
    POSITION                                                    107645906|
@@ -353,7 +459,7 @@ Type: SNP
       QUERY GGGTAGGTTTCTAGGGCCCCTGCTGCC-TTCTGCCCCTGGGCCTCTGGTTGATGCCCAGCTN-GGGGGTGGTCAGGTCTCACACGCATTTTGCGAATGGGAATGCTAGCTACGAGGGATGACC
     SUBJECT GGGTAGGTTTCTAGGGCCCCTGCTGCCTTTCTGCCCCTGGGCCTCTGGTTGATGCCCAGCTTCGGGGGTGGTCAGGTCTCGCACGCATTTTGCGAATGGGAATGCTAGCTACGAGGGATGACC
       PROBE                                                                GGGGGTGGTCAGGTCTCACACGCATTTTGCGAATGGGAATGCTAGCTACG
-   48717031     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |   
+   48717031     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                               T
     ALLELE2                                                               C
    POSITION                                                       48717093|
@@ -367,7 +473,7 @@ BTB-00361571
 Type: SNP
       QUERY GCCAGGTGTGAGATGCTTCTGCAACAAGAGCATCATGGAGGCTCCTTTCCAAAGAAG-AAANGGTGATAAAAAATGAGAAAAAATTCAAGTGACAAAAAAAATTGAATAGAACAGGCTTTTT
     SUBJECT GCCAGGTGTGAGATGCTTCTGCAACAAGAGCAGCATGGAGGCTCCTTTCCAAAGAAGAAAAGGGTGATAAAAAATGAGAAAAAATTCAAGTGACAAAAAAAATTGAATAGAACAGGCTTTTT
-   79617810 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    | 
+   79617810 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                              G
     ALLELE2                                                              A
    POSITION                                                      79617871|
@@ -381,7 +487,7 @@ BTB-00799479
 Type: SNP
       QUERY TCCCTTTATATCTGCCGTGCGCTTCACTTTACTGTTTTTGCAATCTATCATTTCAGCTTTNAAAAAAAAAAGGGGGATATTTCTTATTATCTGATCTTCCCTAGATGTACTTAACTTTGTG
     SUBJECT TCCCTTTATATCTGCCGTGCGCTTCACTTTACTG-TTTTGCAATCTATCATTTCAGCTTT-AAAAAAAAAA-GGGGATATTTCTTATTATCTGATCTTCCCTAGATGTACTTAACTTTGTG
-   68543240 |    .    |    .    |    .    |     .    |    .    |    .     |    .     |    .    |    .    |    .    |    .    |    .  
+   68543240 |    .    |    .    |    .    |     .    |    .    |    .     |    .     |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                              G
     ALLELE2                                                              A
    POSITION                                                      68543299|
@@ -395,7 +501,7 @@ BTB-00891865
 Type: SNP
       QUERY ACTTTATTCTACTTTTACTATCCTAAGTCATCTATCAGTGAGTTAAACCTTTCTTTATGTNCCTAAAGAACGTATGTGCCATGTAATATTTCTACTA-TTTTTTCCTTTTTCTCTCTGAAAC
     SUBJECT ACTTTATTCTACTTTTACTATCCTAAGTCATCTATCAGTGAGTTAAACCTTTCTTTATGT-CCTAAAGAACGTATGTGCCATGTAATATTTCTACTACTTTTTTCCTTTTTCTCTCTGAAAC
-   56070147    |    .    |    .    |    .    |    .    |    .    |    .     |    .    |    .    |    .    |    .    |    .    |    .  
+   56070147    |    .    |    .    |    .    |    .    |    .    |    .     |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                            T
     ALLELE2                                                            C
    POSITION                                                    56070206|
@@ -409,7 +515,7 @@ ARS-BFGL-NGS-64032
 Type: SNP
       QUERY CAGAGGAGTGGAGACGTGTCTTCAGCCTGCAAAGGCTGCAAAGGCCTGCAAAGGCCATCANCAGGGGAGTCACACTGAAAGCAGCCAACCAGAAAGCAGAGCTAGGAGCAGAGGGTGGATG
     SUBJECT CAGAGGAGTGGAGACGTGTCTTCAGCCTGCAAAGGCTGCAAAGGCCTGCAA--G----CA--AGGGGAGTCACACTGAAAGCAGCCAACCAGAAAGCAGAGCTAGGAGCAGAGGGTGGATG
-   32267991     .    |    .    |    .    |    .    |    .    |            .    |    .    |    .    |    .    |    .    |    .    |   
+   32267991     .    |    .    |    .    |    .    |    .    |            .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                            T
     ALLELE2                                                            G
    POSITION                                                    32268044|
@@ -437,7 +543,7 @@ MRC2_2
 Type: INDEL
       QUERY TCACTTTTCACAGAGGACTGGGGGGACCAGAGGTGCACAACAGCCTTGCCTTACATCTGCAAGCGGCGCAACAGCACCAG-NAGCAGCAGCCCCCAGACCTGCCGCCCACAGGGGGCTGCCCCTCTGGCTGGAGCCAGTTCCTGAACAAGGTAGGGAGTAG
     SUBJECT TCACTTTTCACAGAGGACTGGGGGGACCAGAGGTGCACAACAGCCTTGCCTTACATCTGCAAGCGGCGCAACAGCACCAGAGAGCAGCAGCCCCCAGACCTGCCGCCCACAGGGGGCTGCCCCTCTGGCTGGAGCCAGTTCCTGAACAAGGTAGGGAGTAG
-   47095066     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    . 
+   47095066     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                                              -
     ALLELE2                                                                             AG
    POSITION                                                                      47095143|
@@ -451,7 +557,7 @@ TYR
 Type: INDEL
       QUERY CAGCTTTATCCATGGAACCTGATTCATACTGGGTCAAACTCAGGCAAAACTCCACATCAGCCGAGGAGGGGAGCCTCGGGGNTCCTGGCTTTGTCGTGGTTTCCAGGATTGCGCAGTAATGGTCCCTCAGACGTCCCGTTGCATAAAGCCTGGCGACTGTTG
     SUBJECT CAGCTTTATCCATGGAACCTGATTCATACTGGGTCAAACTCAGGCAAAACTCCACATCAGCCGAGGAGGGGAGCCTCGGGG-TCCTGGCTTTGTCGTGGTTTCCAGGATTGCGCAGTAATGGTCCCTCAGACGTCCCGTTGCATAAAGCCTGGCGACTGTTG
-    6424891     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    | 
+    6424891     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |     .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
     ALLELE1                                                                             -
     ALLELE2                                                                             G
    POSITION                                                                      6424967|
@@ -465,7 +571,7 @@ F11
 Type: INDEL
       QUERY AGTCACCTAATGTGTTGCGTGTCTATAGCGGCATTTTGAATCAATCAGAAATAAAAGAGGATACATCTTTCTTTGGGGTTCAAGAAATAATAATTCANTGATCAATATGAAAAGGCAGAAAGTGGATATGACATTGCCTTGTTGAAACTAGAAA--GCAATGAATTATACAGGTATGGGAAACTTTAAACAGAACGTTGTCTACAGTGATGCCGGGCTTCACACTCCCA
     SUBJECT AGTCACCTAATGTGTTGCGTGTCTATAGCGGCATTTTGAATCAATCAGAAATAAAAGAGGATACATCTTTCTTTGGGGTTCAAGAAATAATAATTCA-TGATCAATATGAAAAGGCAGAAAGTGGATATGACATTGCCTTGTTGAAACTAGAAACGGCAATGAATTATACAGGTATGGGAAACTTTAAACAGAACGTTGTCTACAGTGATGCCGGGCTTCACACTCCCA
-   16310249  |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    . 
+   16310249  |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .     |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .
     ALLELE1                                                                                                 -
     ALLELE2                      ATAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAGGAAATAATAATTCA
    POSITION                                                                                         16310345|
@@ -477,7 +583,8 @@ Determination type: DETECTION_OF_DELETION_ALLELE_AT_VARIANT_SITE
 
 ### Blast file
 
-The optional **blast** file provides raw BLAST results that were generated by the pipeline.
+The optional **blast** file provides raw BLAST results that were generated by
+the pipeline.
 
 #### Sample blast file content
 
@@ -497,21 +604,29 @@ ARS-BFGL-BAC-10919,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGCN
 
 ## Creating new output formats
 
-The **wide** output format can easily be manipulated using standard command-line utilities in order to generate other useful formats.
+The **wide** output format can easily be manipulated using standard
+command-line utilities in order to generate other useful formats.
 
 ### To create a MAP file for PLINK
 
-For example, the two commands below can be used to generate a MAP file for PLINK. 
+For example, the two commands below can be used to generate a MAP file for
+PLINK.
 
-The first command does the following: skip comment lines; skip the header row; and, when position information is available, print the position, marker name, '0', and chromosome:
+The first command does the following: skip comment lines; skip the header row;
+and, when position information is available, print the position, marker name,
+'0', and chromosome:
 
     $ cat manifest.reference.wide.csv | grep -v '#' | tail -n +2 | awk -F, '{ if ($4 != "") { print $3,$1,'0',$4 } }' OFS="\t" > temp
 
-The second command recodes chromosomes to integers (the specific recoding needed will depend on the species and chromosome names obtained). Specifically, it changes 'X' to '30', 'Y' to '31', 'MT' to '32', and any non-integer-represented chromosomes remaining to '0':
+The second command recodes chromosomes to integers (the specific recoding
+needed will depend on the species and chromosome names obtained). Specifically,
+it changes 'X' to '30', 'Y' to '31', 'MT' to '32', and any
+non-integer-represented chromosomes remaining to '0':
 
     $ cat temp | awk '{ $1 = ($1 == "X" ? 30 : $1); $1 = ($1 == "Y" ? 31 : $1); $1 = ($1 == "MT" ? 32 : $1); $1 = (match($1, /[^0-9]/) ? 0 : $1 )}  1' OFS="\t" > manifest.reference.map
-    
-Using the sample **wide** file output above as input, these commands produce the following:
+
+Using the sample **wide** file output above as input, these commands produce
+the following:
 
 ```
 2	ABCA12	0	103030489
