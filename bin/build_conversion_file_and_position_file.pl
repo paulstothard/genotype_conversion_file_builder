@@ -1501,29 +1501,34 @@ sub get_time {
 sub print_usage {
     print <<BLOCK;
 USAGE:
-   perl build_conversion_file_and_position_file.pl -b FILE -m FILE -p FILE -c FILE [Options]
+   perl build_conversion_file_and_position_file.pl -b FILE -m FILE -p FILE
+   -c FILE [Options]
 
 DESCRIPTION:
-   Accepts an Illumina or Affymetrix manifest file and BLAST results for variant flanking
-   sequences and generates a file describing the position of each variant (position file)
-   and a file describing how to convert between genotype formats (conversion file).
+   Accepts an Illumina or Affymetrix manifest file and BLAST results for
+   variant flanking sequences and generates a file describing the position of
+   each variant (position file) and a file describing how to convert between
+   genotype formats (conversion file).
 
 REQUIRED ARGUMENTS:
    -b, --blast [FILE]
-      Input file containing BLAST results for the variants in the manifest file.
+      Input file containing BLAST results for the variants in the manifest
+      file.
    -m, --manifest [File]
       Input Illumina or Affymetrix manifest file.
    -p, --position [FILE]
-      Output CSV file to create describing variant positions determined by BLAST.
+      Output CSV file to create describing variant positions determined by
+      BLAST.
    -c, --conversion [FILE]
-      Output CSV file to create describing how to convert between genotype formats.
+      Output CSV file to create describing how to convert between genotype
+      formats.
       
 OPTIONAL ARGUMENTS:
    -w, --wide [FILE]
       Output CSV file to create describing position and conversion information.
    -a, --alignment [FILE]
-      Output text file showing how BLAST alignments were used to determine variant 
-      position and alleles.
+      Output text file showing how BLAST alignments were used to determine
+      variant position and alleles.
    -i, --info [STRINGS]
       Additional text to appear in the header of output files.
    -h, --help
