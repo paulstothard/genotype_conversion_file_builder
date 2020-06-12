@@ -1,6 +1,6 @@
-# genotype_conversion_file_builder
+# genotype\_conversion\_file\_builder
 
-The genotype_conversion_file_builder is a pipeline for determining the
+The genotype\_conversion\_file\_builder is a pipeline for determining the
 genomic location and transformation rules for the variants described in
 Illumina or Affymetrix genotype panel manifest files.
 
@@ -29,7 +29,7 @@ Install the Nextflow runtime by running the following command:
 
     $ curl -fsSL get.nextflow.io | bash
 
-When done, you can execute the genotype_conversion_file_builder pipeline by
+When done, you can execute the genotype\_conversion\_file\_builder pipeline by
 entering the following command:
 
     $ ./nextflow run genotype_conversion_file_builder
@@ -113,12 +113,12 @@ README](docs/README_output.md).
 ##### --manifest
 
 - The manifest file (default:
-  genotype_conversion_file_builder/data/manifest.csv).
+  genotype\_conversion\_file\_builder/data/manifest.csv).
 
 ##### --reference
 
 - The reference genome (default:
-  genotype_conversion_file_builder/data/reference.fa).
+  genotype\_conversion\_file\_builder/data/reference.fa).
 
 ##### --species
 
@@ -127,7 +127,7 @@ README](docs/README_output.md).
 ##### --outdir
 
 - Output directory to hold the results (default:
-  genotype_conversion_file_builder/results).
+  genotype\_conversion\_file\_builder/results).
 
 ##### --chunksize
 
@@ -148,7 +148,7 @@ README](docs/README_output.md).
 - Whether to include a BLAST results file in the output directory (default:
   false).
 
-##### Sample commands
+##### Sample command
 
     $ ./nextflow run genotype_conversion_file_builder \
     --manifest BovineSNP50_v3_A1.csv \
