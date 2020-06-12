@@ -1,6 +1,6 @@
-# genotype\_conversion\_file\_builder
+# genotype_conversion_file_builder
 
-The genotype\_conversion\_file\_builder is a pipeline for determining the
+The genotype_conversion_file_builder is a pipeline for determining the
 genomic location and transformation rules for the variants described in
 Illumina or Affymetrix genotype panel manifest files.
 
@@ -29,13 +29,13 @@ Install the Nextflow runtime by running the following command:
 
     $ curl -fsSL get.nextflow.io | bash
 
-When done, you can execute the genotype\_conversion\_file\_builder pipeline by
+When done, you can execute the genotype_conversion_file_builder pipeline by
 entering the following command:
 
     $ ./nextflow run genotype_conversion_file_builder
 
 By default the pipeline is executed by using a small data set included with the
-project. Check the *Pipeline parameters* section below to see how to process
+project. Check the _Pipeline parameters_ section below to see how to process
 your input data.
 
 ## Input
@@ -112,40 +112,40 @@ README](docs/README_output.md).
 
 ##### --manifest
 
-* The manifest file (default:
-  genotype\_conversion\_file\_builder/data/manifest.csv).
+- The manifest file (default:
+  genotype_conversion_file_builder/data/manifest.csv).
 
 ##### --reference
 
-* The reference genome (default:
-  genotype\_conversion\_file\_builder/data/reference.fa).
+- The reference genome (default:
+  genotype_conversion_file_builder/data/reference.fa).
 
 ##### --species
 
-* Name of the species (used for organizing output files) (default: all).
+- Name of the species (used for organizing output files) (default: all).
 
 ##### --outdir
 
-* Output directory to hold the results (default:
-  genotype\_conversion\_file\_builder/results).
+- Output directory to hold the results (default:
+  genotype_conversion_file_builder/results).
 
 ##### --chunksize
 
-* Number of variant sequences to process per BLAST job (default: 10000).
+- Number of variant sequences to process per BLAST job (default: 10000).
 
 ##### --dev
 
-* Whether to process a small number of markers and then exit (default: false).
+- Whether to process a small number of markers and then exit (default: false).
 
 ##### --align
 
-* Whether to include an alignment file in the output directory showing how
+- Whether to include an alignment file in the output directory showing how
   BLAST alignments were parsed to determine position, allele, and strand
-information (default: false).
+  information (default: false).
 
 ##### --blast
 
-* Whether to include a BLAST results file in the output directory (default:
+- Whether to include a BLAST results file in the output directory (default:
   false).
 
 ##### Sample commands
@@ -155,7 +155,6 @@ information (default: false).
     --reference ARS-UCD1.2_Btau5.0.1Y.fa \
     --species bos_taurus \
     --outdir results
-
 
 ## Output folder structure
 
@@ -172,6 +171,6 @@ outdir
 
 ## Dependencies
 
-* Nextflow (20.01.0 or higher)
-* Perl
-* BLAST+
+- Nextflow (20.01.0 or higher)
+- Perl
+- BLAST+
