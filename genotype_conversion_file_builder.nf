@@ -1,5 +1,23 @@
 #!/bin/env nextflow
 
+#    genotype_conversion_file_builder. A pipeline for determining the 
+#    genomic location and transformation rules for the variants described in
+#    Illumina or Affymetrix genotype panel manifest files.
+#    Copyright (C) 2020 Paul Stothard stothard@ualberta.ca
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 params.manifest = "$baseDir/data/manifest.csv"
 params.reference = "$baseDir/data/reference.fa"
 params.species = 'all'
