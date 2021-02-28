@@ -99,7 +99,7 @@ conversion <- rename(conversion, ID = marker_name)
 #add columns from conversion file to genotypes
 genotypes_with_conversion_info <- left_join(genotypes, conversion, by="ID")
 
-#recode genotypes to AB
+#function to recode genotypes to AB
 genotype_to_AB <- function (df, col, format) {
   df[[col]] <-
     ifelse(df[[col]] == paste(df[[paste(format, "A", sep = "_")]], df[[paste(format, "A", sep = "_")]], sep = ""),
@@ -116,7 +116,7 @@ genotype_to_AB <- function (df, col, format) {
   return(df)
 }
 
-#recode genotypes from AB
+#function to recode genotypes from AB
 genotype_from_AB <- function (df, col, format) {
   df[[col]] <-
     ifelse(df[[col]] == "AA",
@@ -139,7 +139,7 @@ for (sample in sample_names) {
 }
 
 for (sample in sample_names) {
-  genotypes_with_conversion_info   <- genotype_from_AB(genotypes_with_conversion_info, sample, "VCF")
+  genotypes_with_conversion_info <- genotype_from_AB(genotypes_with_conversion_info, sample, "VCF")
 }
 
 #recode REF and ALT as 0 and 1
@@ -227,30 +227,28 @@ The VCF can be further processed using Picard, to add a complete header:
 
 ```bash
 #create the sequence dictionary for the reference genome
-java -jar ~/bin/picard.jar CreateSequenceDictionary \
+java -jar picard.jar CreateSequenceDictionary \
 R=ARS-UCD1.2_Btau5.0.1Y.fa O=ARS-UCD1.2_Btau5.0.1Y.dict
 
 #update the sequence dictionary in the VCF
-java -jar ~/bin/picard.jar UpdateVcfSequenceDictionary \
+java -jar picard.jar UpdateVcfSequenceDictionary \
 --INPUT genotypes.vcf --OUTPUT genotypes_updated.vcf \
 --SEQUENCE_DICTIONARY ARS-UCD1.2_Btau5.0.1Y.fa
 
 #complete the VCF header
-java -jar ~/bin/picard.jar FixVcfHeader \
+java -jar picard.jar FixVcfHeader \
 I=genotypes_updated.vcf O=genotypes_updated_fixed.vcf
 
 #sort the VCF
-java -jar ~/bin/picard.jar SortVcf \
+java -jar picard.jar SortVcf \
 I=genotypes_updated_fixed.vcf O=genotypes_updated_fixed_sorted.vcf
 ```
 
 Comparisons can be conducated against other VCF files, to assess concordance:
 
 ```bash
-java -jar ~/bin/picard.jar GenotypeConcordance \
-       CALL_VCF=some_other.vcf \
-       CALL_SAMPLE=Sample1 \
-       O=Sample1_concordance \
-       TRUTH_VCF=genotypes_updated_fixed_sorted.vcf \
-       TRUTH_SAMPLE=Sample1
+java -jar picard.jar GenotypeConcordance \
+CALL_VCF=some_other.vcf CALL_SAMPLE=Sample1 \
+TRUTH_VCF=genotypes_updated_fixed_sorted.vcf TRUTH_SAMPLE=Sample1 \
+O=Sample1_concordance
 ```
