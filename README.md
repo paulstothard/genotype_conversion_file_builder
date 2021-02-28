@@ -18,7 +18,9 @@ as **position** and **conversion** files, respectively. An additional **wide**
 file provides the position and conversion information together in a format that
 can be easily converted to files used by downstream tools like PLINK. See the
 [output file documentation](docs/README_output.md) for detailed descriptions of
-the output files and sample output.
+the output files and sample output. See the [conversion
+example documentation](docs/README_conversion.md) for an example of using a
+conversion file.
 
 ## Quick start
 
