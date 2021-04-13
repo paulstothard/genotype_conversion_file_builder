@@ -178,7 +178,7 @@ The columns are as follows:
 - **FORWARD\_A** - the A allele in Illumina's FORWARD format.
 - **FORWARD\_B** - the B allele in Illumina's FORWARD format.
 - **DESIGN\_A** - the A allele in Illumina's DESIGN format.
-- **DESIGN\_B** - the A allele in Illumina's DESIGN format.
+- **DESIGN\_B** - the B allele in Illumina's DESIGN format.
 - **PLUS\_A** - the A allele in Illumina's PLUS format. This value is not parsed
   from the manifest file but instead determined by a BLAST alignment between
   the variant flanking sequence and the reference genome. This value represents
@@ -194,7 +194,7 @@ The columns are as follows:
 - **VCF\_A** - a value of **REF** in this column indicates that the A allele
   appears on the forward strand of the reference genome, while a value of
   **ALT** indicates that it does not.
-- **VCF\_B** - a value of **REF** in this column indicates that the A allele
+- **VCF\_B** - a value of **REF** in this column indicates that the B allele
   appears on the forward strand of the reference genome, while a value of
   **ALT** indicates that it does not.
 
