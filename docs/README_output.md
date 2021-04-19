@@ -21,8 +21,8 @@ The columns are as follows:
 - **VCF\_REF** - the allele observed on the forward strand of the reference
   genome at this position. This allele is extracted from the reference genome
   sequence. In the vast majority of cases this allele matches one of the two
-  alleles described in the manifest file when they are transformed to the forward
-  strand of the reference genome (referred to as the PLUS format in the
+  alleles described in the manifest file when they are transformed to the
+  forward strand of the reference genome (referred to as the PLUS format in the
   conversion file).
 - **VCF\_ALT** - the marker allele(s) described in the manifest file and
   transformed to the forward strand of the reference that are not observed in
@@ -72,26 +72,23 @@ format to another, including to the forward strand of the reference genome
 
 There are two data rows per marker.
 
-One row contains the various representations of allele A ('allele A' referring
-to 'allele A' in Illumina's A/B allele nomenclature), while the other contains
-the various representations of allele B ('allele B' referring to 'allele B' in
-Illumina's A/B allele nomenclature).
+One row contains the various representations of allele A, while the other
+contains the various representations of allele B.
 
 The columns are as follows:
 
 - **marker\_name** - the name of the marker, from the manifest file.
 - **alt\_marker\_name** - the additional name of the marker, from the manifest
   file.
-- **AB** - the allele in Illumina's A/B format. This value is always **A** or
-  **B** for SNPs.
-- **TOP** - the allele in Illumina's TOP format.
-- **FORWARD** - the allele in Illumina's FORWARD format.
-- **DESIGN** - the allele in Illumina's DESIGN format.
-- **PLUS** - the allele in Illumina's PLUS format. This value is not parsed
-  from the manifest file but instead determined by a BLAST alignment between
-  the variant flanking sequence and the reference genome. This value represents
-  how the allele would appear following transformation to the forward strand of
-  the reference genome. Note that this value does not indicate whether the
+- **AB** - the allele in A/B format.
+- **TOP** - the allele in TOP format.
+- **FORWARD** - the allele in FORWARD format.
+- **DESIGN** - the allele in DESIGN format.
+- **PLUS** - the allele in PLUS format. This value is not parsed from the
+  manifest file but instead determined by a BLAST alignment between the variant
+  flanking sequence and the reference genome. This value represents how the
+  allele would appear following transformation to the forward strand of the
+  reference genome. Note that this value does not indicate whether the
   reference genome sequence actually contains this allele.
 - **VCF** - a value of **REF** in this column indicates that this allele
   appears on the forward strand of the reference genome, while a value of
@@ -109,8 +106,10 @@ The columns are as follows:
    where the value of 'FORWARD' is 'C': the 'TOP' transformation is simply the
    value in the 'TOP' column of this row.
 
-**Note**: the TOP, FORWARD, and DESIGN values are not provided for Affymetrix
-panels.
+**Note**: The TOP and DESIGN values are not provided for Affymetrix panels. The
+precise meaning of AB and FORWARD is not consistent between Illumina and
+Affymetrix panels. Use the PLUS format when combining data from Illumina and
+Affymetrix panels.
 
 **Note**: Indel alleles in the TOP, FORWARD, DESIGN, and PLUS columns are given
 as D (deletion) or I (insertion).
@@ -160,8 +159,8 @@ The columns are as follows:
 - **VCF\_REF** - the allele observed on the forward strand of the reference
   genome at this position. This allele is extracted from the reference genome
   sequence. In the vast majority of cases this allele matches one of the two
-  alleles described in the manifest file when they are transformed to the forward
-  strand of the reference genome (referred to as the PLUS format in the
+  alleles described in the manifest file when they are transformed to the
+  forward strand of the reference genome (referred to as the PLUS format in the
   conversion file).
 - **VCF\_ALT** - the marker allele(s) described in the manifest file and
   transformed to the forward strand of the reference that are not observed in
@@ -169,27 +168,27 @@ The columns are as follows:
   corresponding to the marker allele not detected in the reference genome
   sequence. In cases where neither allele is observed in the reference genome
   sequence, both alleles appear here, separated by a forward slash, e.g. "A/G".
-- **AB\_A** - the A allele in Illumina's A/B format. This value is always **A**
+- **AB\_A** - the A allele in A/B format. This value is always **A**
   for SNPs.
-- **AB\_B** - the B allele in Illumina's A/B format. This value is always **B**
+- **AB\_B** - the B allele in A/B format. This value is always **B**
   for SNPs.
-- **TOP\_A** - the A allele in Illumina's TOP format.
-- **TOP\_B** - the B allele in Illumina's TOP format.
-- **FORWARD\_A** - the A allele in Illumina's FORWARD format.
-- **FORWARD\_B** - the B allele in Illumina's FORWARD format.
-- **DESIGN\_A** - the A allele in Illumina's DESIGN format.
-- **DESIGN\_B** - the B allele in Illumina's DESIGN format.
-- **PLUS\_A** - the A allele in Illumina's PLUS format. This value is not parsed
-  from the manifest file but instead determined by a BLAST alignment between
-  the variant flanking sequence and the reference genome. This value represents
-  how the allele would appear following transformation to the forward strand of
-  the reference genome. Note that this value does not indicate whether the
+- **TOP\_A** - the A allele in TOP format.
+- **TOP\_B** - the B allele in TOP format.
+- **FORWARD\_A** - the A allele in FORWARD format.
+- **FORWARD\_B** - the B allele in FORWARD format.
+- **DESIGN\_A** - the A allele in DESIGN format.
+- **DESIGN\_B** - the B allele in DESIGN format.
+- **PLUS\_A** - the A allele in PLUS format. This value is not parsed from the
+  manifest file but instead determined by a BLAST alignment between the variant
+  flanking sequence and the reference genome. This value represents how the
+  allele would appear following transformation to the forward strand of the
+  reference genome. Note that this value does not indicate whether the
   reference genome sequence actually contains this allele.
-- **PLUS\_B** - the B allele in Illumina's PLUS format. This value is not parsed
-  from the manifest file but instead determined by a BLAST alignment between
-  the variant flanking sequence and the reference genome. This value represents
-  how the allele would appear following transformation to the forward strand of
-  the reference genome. Note that this value does not indicate whether the
+- **PLUS\_B** - the B allele in PLUS format. This value is not parsed from the
+  manifest file but instead determined by a BLAST alignment between the variant
+  flanking sequence and the reference genome. This value represents how the
+  allele would appear following transformation to the forward strand of the
+  reference genome. Note that this value does not indicate whether the
   reference genome sequence actually contains this allele.
 - **VCF\_A** - a value of **REF** in this column indicates that the A allele
   appears on the forward strand of the reference genome, while a value of
@@ -222,16 +221,21 @@ allele information were derived from the BLAST results and probe information.
 1. Find the row for marker 'ARS-BFGL-BAC-10867'.
 2. Examine the 'FORWARD\_A' and 'FORWARD\_B' columns in the row from step 1 to
    determine which contains 'G': if it is the 'FORWARD\_A' column then the
-   'TOP' transformation is the value in the 'TOP\_A' column of this row; if it is
-   the 'FORWARD\_B' column then the 'TOP' transformation is the value given in the
-   'TOP\_B' column.
+   'TOP' transformation is the value in the 'TOP\_A' column of this row; if it
+   is the 'FORWARD\_B' column then the 'TOP' transformation is the value given
+   in the 'TOP\_B' column.
 3. Examine the 'FORWARD\_A' and 'FORWARD\_B' columns in the row from step 1 to
    determine which contains 'C': if it is the 'FORWARD\_A' column then the
-   'TOP' transformation is the value in the 'TOP\_A' column of this row; if it is
-   the 'FORWARD\_B' column then the 'TOP' transformation is the value given in the
-   'TOP\_B' column.
+   'TOP' transformation is the value in the 'TOP\_A' column of this row; if it
+   is the 'FORWARD\_B' column then the 'TOP' transformation is the value given
+   in the 'TOP\_B' column.
 
-Note: Indel alleles in the AB\_A, AB\_B, TOP\_A, TOP\_B, FORWARD\_A,
+**Note**: The TOP and DESIGN values are not provided for Affymetrix panels. The
+precise meaning of AB and FORWARD is not consistent between Illumina and
+Affymetrix panels. Use the PLUS format when combining data from Illumina and
+Affymetrix panels.
+
+**Note**: Indel alleles in the AB\_A, AB\_B, TOP\_A, TOP\_B, FORWARD\_A,
 FORWARD\_B, DESIGN\_A, DESIGN\_B, PLUS\_A, and PLUS\_B columns are given as D
 (deletion) or I (insertion).
 

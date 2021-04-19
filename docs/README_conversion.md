@@ -3,7 +3,9 @@
 
 ## Converting genotypes using a conversion file
 
-The R code below demonstrates the conversion of some Illumina genotypes in FORWARD format to AB format and then to the forward strand of the reference genome. The converted genotypes are written to a VCF file. 
+The R code below demonstrates the conversion of some Illumina genotypes in
+FORWARD format to AB format and then to the forward strand of the reference
+genome. The converted genotypes are written to a VCF file. 
 
 #### Sample input genotypes
 
