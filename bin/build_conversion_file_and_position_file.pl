@@ -340,7 +340,7 @@ sub get_genotype_conversion_hash {
         'SourceSeq_A'                     => undef,
         'SourceSeq_B'                     => undef,
         'Probe_to_SourceSeq'              => undef,
-        'IlmnID_TBPM_FR'                  => undef,
+        'IlmnID_TBPM_FRU'                  => undef,
         'is_indel'                        => undef,
         'is_snp'                          => undef,
         'flanking'                        => undef,
@@ -415,18 +415,18 @@ sub populate_conversion_hash_illumina {
     #need IlmnID top / bottom / plus / minus - forward / reverse designation
     #ARS-BFGL-BAC-10172-0_T_F_1511662585
     if ( $manifest_entry->{IlmnID} =~
-        m/\Q$manifest_entry->{Name}\E\-\d_([TBMP]_[FR])/ )
+        m/\Q$manifest_entry->{Name}\E\-\d_([TBMP]_[FRU])/ )
     {
-        $output_hash->{IlmnID_TBPM_FR} = $1;
+        $output_hash->{IlmnID_TBPM_FRU} = $1;
     }
-    elsif ( $manifest_entry->{IlmnID} =~ m/([TBMP]_[FR])_\d+$/ ) {
-        $output_hash->{IlmnID_TBPM_FR} = $1;
+    elsif ( $manifest_entry->{IlmnID} =~ m/([TBMP]_[FRU])_\d+$/ ) {
+        $output_hash->{IlmnID_TBPM_FRU} = $1;
     }
-    elsif ( $manifest_entry->{IlmnID} =~ m/([TBMP]_[FR])/ ) {
-        $output_hash->{IlmnID_TBPM_FR} = $1;
+    elsif ( $manifest_entry->{IlmnID} =~ m/([TBMP]_[FRU])/ ) {
+        $output_hash->{IlmnID_TBPM_FRU} = $1;
     }
     else {
-        die("couldn't parse 'IlmnID_TBPM_FR' from $manifest_entry->{IlmnID}");
+        die("couldn't parse 'IlmnID_TBPM_FRU' from $manifest_entry->{IlmnID}");
     }
 
     if ( $manifest_entry->{SourceStrand} eq $manifest_entry->{IlmnStrand} ) {
@@ -501,25 +501,37 @@ sub populate_conversion_hash_illumina_snp {
     }
 
     if (   ( $manifest_entry->{IlmnStrand} eq 'TOP' )
-        && ( $output_hash->{IlmnID_TBPM_FR} eq 'T_F' ) )
+        && ( $output_hash->{IlmnID_TBPM_FRU} eq 'T_F' ) )
     {
         $output_hash->{FORWARD_A} = $output_hash->{TOP_A};
         $output_hash->{FORWARD_B} = $output_hash->{TOP_B};
     }
     elsif (( $manifest_entry->{IlmnStrand} eq 'TOP' )
-        && ( $output_hash->{IlmnID_TBPM_FR} eq 'T_R' ) )
+        && ( $output_hash->{IlmnID_TBPM_FRU} eq 'T_R' ) )
+    {
+        $output_hash->{FORWARD_A} = $output_hash->{BOT_A};
+        $output_hash->{FORWARD_B} = $output_hash->{BOT_B};
+    }
+    elsif (( $manifest_entry->{IlmnStrand} eq 'TOP' )
+        && ( $output_hash->{IlmnID_TBPM_FRU} eq 'T_U' ) )
     {
         $output_hash->{FORWARD_A} = $output_hash->{BOT_A};
         $output_hash->{FORWARD_B} = $output_hash->{BOT_B};
     }
     elsif (( $manifest_entry->{IlmnStrand} eq 'BOT' )
-        && ( $output_hash->{IlmnID_TBPM_FR} eq 'B_F' ) )
+        && ( $output_hash->{IlmnID_TBPM_FRU} eq 'B_F' ) )
     {
         $output_hash->{FORWARD_A} = $output_hash->{BOT_A};
         $output_hash->{FORWARD_B} = $output_hash->{BOT_B};
     }
     elsif (( $manifest_entry->{IlmnStrand} eq 'BOT' )
-        && ( $output_hash->{IlmnID_TBPM_FR} eq 'B_R' ) )
+        && ( $output_hash->{IlmnID_TBPM_FRU} eq 'B_U' ) )
+    {
+        $output_hash->{FORWARD_A} = $output_hash->{BOT_A};
+        $output_hash->{FORWARD_B} = $output_hash->{BOT_B};
+    }
+    elsif (( $manifest_entry->{IlmnStrand} eq 'BOT' )
+        && ( $output_hash->{IlmnID_TBPM_FRU} eq 'B_R' ) )
     {
         $output_hash->{FORWARD_A} = $output_hash->{TOP_A};
         $output_hash->{FORWARD_B} = $output_hash->{TOP_B};
