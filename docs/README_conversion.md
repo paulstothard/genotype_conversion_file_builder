@@ -4,9 +4,9 @@
 
 The R code below demonstrates the conversion of some Illumina genotypes in
 FORWARD format to AB format and then to the forward strand of the reference
-genome. The converted genotypes are written to a VCF file. 
+genome. The converted genotypes are written to a VCF file.
 
-#### Sample input genotypes
+### Sample input genotypes
 
 ```text
 [Header]
@@ -42,7 +42,7 @@ ARS-BFGL-BAC-11025	GG	TG	GG	TG	TG	TG	TG	GG	GG	GG
 ARS-BFGL-BAC-11028	AA	AA	AA	AA	AA	AG	AA	AA	AA	AA
 ```
 
-#### Sample **wide** file
+### Sample **wide** file
 
 ```text
 #SPECIES=bos_taurus
@@ -76,7 +76,7 @@ ARS-BFGL-BAC-11025,ARS-BFGL-BAC-11025-0_B_F_1511663050,10,84139423,G,T,A,B,A,C,T
 ARS-BFGL-BAC-11028,ARS-BFGL-BAC-11028-0_T_F_1511657863,10,85258477,T,C,A,B,A,G,A,G,A,G,T,C,REF,ALT
 ```
 
-#### R code converting FORWARD to AB and then AB to VCF
+### R code converting FORWARD to AB and then AB to VCF
 
 ```r
 library(tidyverse)
@@ -196,7 +196,7 @@ writeLines(c("##fileformat=VCFv4.2", paste(names(vcf), collapse = "\t")), con = 
 write.table(vcf, file = "genotypes.vcf", row.names = FALSE, col.names = FALSE, quote = FALSE, sep = "\t", append=TRUE)
 ```
 
-#### VCF output
+### VCF output
 
 ```text
 ##fileformat=VCFv4.2

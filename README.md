@@ -45,7 +45,7 @@ project and writes the results to the `output` directory.
 The pipeline requires an Illumina or Affymetrix manifest file and reference
 genome as input.
 
-#### Sample Illumina manifest file content
+### Sample Illumina manifest file content
 
 ```text
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
@@ -61,7 +61,7 @@ ARS-BFGL-BAC-10867-0_B_F_1511658130,ARS-BFGL-BAC-10867,BOT,[G/C],0058642429,TAAT
 ARS-BFGL-BAC-10919-0_T_F_1511658221,ARS-BFGL-BAC-10919,TOP,[A/G],0031683470,TTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC,,,3,14,31267746,diploid,Bos taurus,UM3,0,TOP,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC[A/G]CTTGGTGTTCAAGGAAGTCTCTGCACTCTGGCCATCGGGACTATCATGTTCAAGCTTGAG,ATGGTGAAGTTTGGTACTAAACTCCTAGGTCATGATCTTGACGGAAGCTTTACTGAGTGC[A/G]CTTGGTGTTCAAGGAAGTCTCTGCACTCTGGCCATCGGGACTATCATGTTCAAGCTTGAG,1241
 ```
 
-#### Sample Affymetrix manifest / annotation file content
+### Sample Affymetrix manifest / annotation file content
 
 ```text
 Probe Set ID	Affy SNP ID	dbSNP RS ID	Chromosome	Physical Position	Strand	Flank	Allele A	Allele B	cust_snpid	ChrX pseudo-autosomal region 1	ChrX pseudo-autosomal region 2	Genetic Map
@@ -77,7 +77,7 @@ AX-116661930	Affx-115319167	---	---	---	+	GGGACCAGCTCCACCCCACTCCAGGGCCCGGTGAC[C/
 AX-116661931	Affx-114835802	---	---	---	+	GGAACTCGGCCAGCACCGATGGAGTCCCAGGTTTC[A/G]AAGCTCCTGCTGCATTGAGGAGACTGGTCCAAAGG	A	G	"2""WU_10_2_1_813652"	---	---	---
 ```
 
-#### Sample reference genome file content
+### Sample reference genome file content
 
 ```text
 >1 dna:chromosome chromosome:Sscrofa11.1:1:1:274330532:1 REF
@@ -111,41 +111,41 @@ README](docs/README_output.md).
 
 ## Pipeline parameters
 
-##### --manifest
+### --manifest
 
 - The manifest file (required).
 
-##### --reference
+### --reference
 
 - The reference genome (required).
 
-##### --species
+### --species
 
 - Name of the species (used for organizing output files) (default: all).
 
-##### --outdir
+### --outdir
 
 - Output directory to hold the results (default: output).
 
-##### --chunksize
+### --chunksize
 
 - Number of variant sequences to process per BLAST job (default: 10000).
 
-##### --dev
+### --dev
 
 - Process a small number of markers and then exit.
 
-##### --align
+### --align
 
 - Include an alignment file in the output directory showing how BLAST
   alignments were parsed to determine position, allele, and strand
   information.
 
-##### --blast
+### --blast
 
 - Include a BLAST results file in the output directory.
 
-##### Sample command
+### Sample command
 
 ```bash
 nextflow main.nf \
