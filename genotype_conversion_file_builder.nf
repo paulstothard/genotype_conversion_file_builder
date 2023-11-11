@@ -1,7 +1,5 @@
 #!/bin/env nextflow
 
-nextflowVersion '20.01.0'
-
 /* genotype_conversion_file_builder. A pipeline for determining the 
    genomic location and transformation rules for the variants described in
    Illumina or Affymetrix genotype panel manifest files.

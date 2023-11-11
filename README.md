@@ -24,20 +24,18 @@ conversion file.
 
 ## Quick start
 
-Make sure you have installed the required dependencies listed at the end of
-this document.
-
-Install the Nextflow runtime by running the following command:
+Create and activate a conda environment with the required dependencies, e.g.:
 
 ```bash
-curl -fsSL get.nextflow.io | bash
+mamba create -y -c conda-forge -c bioconda --name gcfb perl blast nextflow=20.01.0
+mamba activate gcfb
 ```
 
 When done, you can execute the genotype\_conversion\_file\_builder pipeline by
-entering the following command:
+entering the following command in the project directory:
 
 ```bash
-./nextflow run genotype_conversion_file_builder
+nextflow run main.nf
 ```
 
 By default the pipeline is executed by using a small data set included with the
@@ -155,17 +153,19 @@ README](docs/README_output.md).
 ##### Sample command
 
 ```bash
-./nextflow run genotype_conversion_file_builder \
+nextflow run genotype_conversion_file_builder \
 --manifest BovineSNP50_v3_A1.csv \
 --reference ARS-UCD1.2_Btau5.0.1Y.fa \
 --species bos_taurus \
+--align \
+--blast \
 --outdir results
 ```
 
 ## Output folder structure
 
 ```text
-outdir
+results
   ├── species
       ├── reference
           ├── manifest.reference.conversion.csv
