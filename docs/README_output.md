@@ -50,7 +50,7 @@ allele information were derived from the BLAST results and probe information.
 
 #### Sample position file content
 
-```
+```text
 marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT
 ABCA12,ABCA12_r2-1_T_F_2277749139,2,103030489,T,C
 APAF1,APAF1_dup-1_B_F_2327661418,5,62810245,C,T
@@ -116,7 +116,7 @@ as D (deletion) or I (insertion).
 
 #### Sample conversion file content
 
-```
+```text
 marker_name,alt_marker_name,AB,TOP,FORWARD,DESIGN,PLUS,VCF
 ABCA12,ABCA12_r2-1_T_F_2277749139,A,A,A,A,T,REF
 ABCA12,ABCA12_r2-1_T_F_2277749139,B,G,G,G,C,ALT
@@ -241,7 +241,7 @@ FORWARD\_B, DESIGN\_A, DESIGN\_B, PLUS\_A, and PLUS\_B columns are given as D
 
 #### Sample wide file content
 
-```
+```text
 marker_name,alt_marker_name,chromosome,position,VCF_REF,VCF_ALT,AB_A,AB_B,TOP_A,TOP_B,FORWARD_A,FORWARD_B,DESIGN_A,DESIGN_B,PLUS_A,PLUS_B,VCF_A,VCF_B
 ABCA12,ABCA12_r2-1_T_F_2277749139,2,103030489,T,C,A,B,A,G,A,G,A,G,T,C,REF,ALT
 APAF1,APAF1_dup-1_B_F_2327661418,5,62810245,C,T,A,B,A,G,T,C,T,C,T,C,ALT,REF
@@ -264,7 +264,7 @@ determine variant position and alleles for use in the other output files.
 
 The following alignment file content depicts several easy-to-parse alignments.
 
-```
+```text
 ========================================================================================
 ABCA12,ABCA12_r2-1_T_F_2277749139
 ABCA12
@@ -410,7 +410,7 @@ Determination type: ALIGNMENT_NO_GAPS
 The following alignment file content depicts more complex alignment results and
 their parsing.
 
-```
+```text
 ========================================================================================
 ARS-BFGL-BAC-11000,ARS-BFGL-BAC-11000_dup-0_B_F_2328966422
 ARS-BFGL-BAC-11000
@@ -592,7 +592,7 @@ the pipeline.
 
 #### Sample blast file content
 
-```
+```text
 query id,query seq,subject id,subject titles,s. start,s. end,subject strand,subject seq
 ABCA12,ACTCTGGTGGATGGTTCATAATCTGCTAAGATGAATAAGTTACTGGGGAAACTGGTGCATTTATTTTAAATATAAATTATATAGTCTGTAAGATATAAAGACTGCCTAATTTATTTGAACACCATACTGATCTTGTCTTCTTTTGGAATGTTACAGGTATGGTATGATCCAGAAGGCTATCNCTCCCTTCCAGCTTACCTCAACAGCCTGAATAATTTCCTCCTGCGAGTTAACATGTCAAAATATGATGCTGCCCGACATGGTAAAGTTATTTACATAGGAGCTCCTTGTATTGAAACTCTTGCTACTCTCCATGTGAAAATATACATTAGACCCCATTTTCCTCCCTGTGGCAGCTAT,2,2,103030670,103030311,minus,ACTCTGGTGGATGGTTCATAATCTGCTAAGATGAATAAGTTACTGGGGAAACTGGTGCATTTATTTTAAATATAAATTATATAGTCTGTAAGATATAAAGACTGCCTAATTTATTTGAACACCATACTGATCTTGTCTTCTTTTGGAATGTTACAGGTATGGTATGATCCAGAAGGCTATCACTCCCTTCCAGCTTACCTCAACAGCCTGAATAATTTCCTCCTGCGAGTTAACATGTCAAAATATGATGCTGCCCGACATGGTAAAGTTATTTACATAGGAGCTCCTTGTATTGAAACTCTTGCTACTCTCCATGTGAAAATATACATTAGACCCCATTTTCCTCCCTGTGGCAGCTAT
 APAF1,CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGNAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT,5,5,62810185,62810305,plus,CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGGCAAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT
@@ -620,19 +620,23 @@ The first command does the following: skip comment lines; skip the header row;
 and, when position information is available, print the position, marker name,
 '0', and chromosome:
 
-    $ cat manifest.reference.wide.csv | grep -v '#' | tail -n +2 | awk -F, '{ if ($4 != "") { print $3,$1,'0',$4 } }' OFS="\t" > temp
+```bash
+cat manifest.reference.wide.csv | grep -v '#' | tail -n +2 | awk -F, '{ if ($4 != "") { print $3,$1,'0',$4 } }' OFS="\t" > temp
+```
 
 The second command recodes chromosomes to integers (the specific recoding
 needed will depend on the species and chromosome names obtained). Specifically,
 it changes 'X' to '30', 'Y' to '31', 'MT' to '32', and any
 non-integer-represented chromosomes remaining to '0':
 
-    $ cat temp | awk '{ $1 = ($1 == "X" ? 30 : $1); $1 = ($1 == "Y" ? 31 : $1); $1 = ($1 == "MT" ? 32 : $1); $1 = (match($1, /[^0-9]/) ? 0 : $1 )}  1' OFS="\t" > manifest.reference.map
+```bash
+cat temp | awk '{ $1 = ($1 == "X" ? 30 : $1); $1 = ($1 == "Y" ? 31 : $1); $1 = ($1 == "MT" ? 32 : $1); $1 = (match($1, /[^0-9]/) ? 0 : $1 )}  1' OFS="\t" > manifest.reference.map
+```
 
 Using the sample **wide** file output above as input, these commands produce
 the following:
 
-```
+```text
 2	ABCA12	0	103030489
 5	APAF1	0	62810245
 14	ARS-BFGL-BAC-10172	0	5342658

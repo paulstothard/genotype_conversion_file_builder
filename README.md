@@ -29,12 +29,16 @@ this document.
 
 Install the Nextflow runtime by running the following command:
 
-    $ curl -fsSL get.nextflow.io | bash
+```bash
+curl -fsSL get.nextflow.io | bash
+```
 
 When done, you can execute the genotype\_conversion\_file\_builder pipeline by
 entering the following command:
 
-    $ ./nextflow run genotype_conversion_file_builder
+```bash
+./nextflow run genotype_conversion_file_builder
+```
 
 By default the pipeline is executed by using a small data set included with the
 project. Check the _Pipeline parameters_ section below to see how to process
@@ -47,7 +51,7 @@ genome as input.
 
 #### Sample Illumina manifest file content
 
-```
+```text
 IlmnID,Name,IlmnStrand,SNP,AddressA_ID,AlleleA_ProbeSeq,AddressB_ID,AlleleB_ProbeSeq,GenomeBuild,Chr,MapInfo,Ploidy,Species,Source,SourceVersion,SourceStrand,SourceSeq,TopGenomicSeq,BeadSetID
 ABCA12_r2-1_T_F_2277749139,ABCA12,TOP,[A/G],0059616496,CTTGTCTTCTTTTGGAATGTTACAGGTATGGTATGATCCAGAAGGCTATC,,,0,2,103548215,diploid,Bos taurus,UMD3.1,1,TOP,ACTCTGGTGGATGGTTCATAATCTGCTAAGATGAATAAGTTACTGGGGAAACTGGTGCATTTATTTTAAATATAAATTATATAGTCTGTAAGATATAAAGACTGCCTAATTTATTTGAACACCATACTGATCTTGTCTTCTTTTGGAATGTTACAGGTATGGTATGATCCAGAAGGCTATC[A/G]CTCCCTTCCAGCTTACCTCAACAGCCTGAATAATTTCCTCCTGCGAGTTAACATGTCAAAATATGATGCTGCCCGACATGGTAAAGTTATTTACATAGGAGCTCCTTGTATTGAAACTCTTGCTACTCTCCATGTGAAAATATACATTAGACCCCATTTTCCTCCCTGTGGCAGCTAT,ACTCTGGTGGATGGTTCATAATCTGCTAAGATGAATAAGTTACTGGGGAAACTGGTGCATTTATTTTAAATATAAATTATATAGTCTGTAAGATATAAAGACTGCCTAATTTATTTGAACACCATACTGATCTTGTCTTCTTTTGGAATGTTACAGGTATGGTATGATCCAGAAGGCTATC[A/G]CTCCCTTCCAGCTTACCTCAACAGCCTGAATAATTTCCTCCTGCGAGTTAACATGTCAAAATATGATGCTGCCCGACATGGTAAAGTTATTTACATAGGAGCTCCTTGTATTGAAACTCTTGCTACTCTCCATGTGAAAATATACATTAGACCCCATTTTCCTCCCTGTGGCAGCTAT,1241
 APAF1_dup-1_B_F_2327661418,APAF1,BOT,[T/C],0041654401,ATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGG,,,0,5,63150400,diploid,Bos taurus,UMD3.1,1,BOT,CCATTTCCTAATATTGTGCAACTGGGCCTCTGTGAACTGGAAACTTCAGAGGTTTATCGG[T/C]AAGCTAAGCTGCAGGCCAAGCAGGAGGTCGATAACGGAATGCTTTACCTGGAGTGGGTGT,ACACCCACTCCAGGTAAAGCATTCCGTTATCGACCTCCTGCTTGGCCTGCAGCTTAGCTT[A/G]CCGATAAACCTCTGAAGTTTCCAGTTCACAGAGGCCCAGTTGCACAATATTAGGAAATGG,1241
@@ -63,7 +67,7 @@ ARS-BFGL-BAC-10919-0_T_F_1511658221,ARS-BFGL-BAC-10919,TOP,[A/G],0031683470,TTGG
 
 #### Sample Affymetrix manifest / annotation file content
 
-```
+```text
 Probe Set ID	Affy SNP ID	dbSNP RS ID	Chromosome	Physical Position	Strand	Flank	Allele A	Allele B	cust_snpid	ChrX pseudo-autosomal region 1	ChrX pseudo-autosomal region 2	Genetic Map
 AX-116097640	Affx-114782366	---	---	---	+	GAGCACAGGACCTTAGTTTTATGCTGAGCTCATCA[C/T]TTTGTGAGCTACCTTGCATTTCAGGAGCTCTTTTG	T	C	"2""WU_10_2_1_286933"	---	---	---
 AX-116097655	Affx-115251634	---	---	---	+	TGAGAAGACAGCAGAGCAGGAAACAACAGGAGCTG[A/C]TCTCTCTCCCTGTCTGGGCAACACTGGCACCTCCA	A	C	"2""WU_10_2_1_342481"	---	---	---
@@ -79,7 +83,7 @@ AX-116661931	Affx-114835802	---	---	---	+	GGAACTCGGCCAGCACCGATGGAGTCCCAGGTTTC[A/
 
 #### Sample reference genome file content
 
-```
+```text
 >1 dna:chromosome chromosome:Sscrofa11.1:1:1:274330532:1 REF
 GCTTAATTTTTGTCATTTCTCACCCCTGCTCTTGAGAGCTTTTGTTGATAATGTTGTTAT
 TGCTTTCATTCTGCTTTTATTTTGTAAGCCCTGCACTCATTCATCGCTGTACCCGAATAT
@@ -136,30 +140,31 @@ README](docs/README_output.md).
 
 ##### --dev
 
-- Whether to process a small number of markers and then exit (default: false).
+- Process a small number of markers and then exit.
 
 ##### --align
 
-- Whether to include an alignment file in the output directory showing how
-  BLAST alignments were parsed to determine position, allele, and strand
+- Include an alignment file in the output directory showing how BLAST
+  alignments were parsed to determine position, allele, and strand
   information (default: false).
 
 ##### --blast
 
-- Whether to include a BLAST results file in the output directory (default:
-  false).
+- Include a BLAST results file in the output directory (default: false).
 
 ##### Sample command
 
-    $ ./nextflow run genotype_conversion_file_builder \
-    --manifest BovineSNP50_v3_A1.csv \
-    --reference ARS-UCD1.2_Btau5.0.1Y.fa \
-    --species bos_taurus \
-    --outdir results
+```bash
+./nextflow run genotype_conversion_file_builder \
+--manifest BovineSNP50_v3_A1.csv \
+--reference ARS-UCD1.2_Btau5.0.1Y.fa \
+--species bos_taurus \
+--outdir results
+```
 
 ## Output folder structure
 
-```
+```text
 outdir
   ├── species
       ├── reference
@@ -172,6 +177,6 @@ outdir
 
 ## Dependencies
 
-- Nextflow (20.01.0 or higher)
+- Nextflow version 20.01.0
 - Perl
 - BLAST+

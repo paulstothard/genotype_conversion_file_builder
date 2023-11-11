@@ -1,6 +1,5 @@
 # genotype\_conversion\_file\_builder
 
-
 ## Converting genotypes using a conversion file
 
 The R code below demonstrates the conversion of some Illumina genotypes in
@@ -9,7 +8,7 @@ genome. The converted genotypes are written to a VCF file.
 
 #### Sample input genotypes
 
-```
+```text
 [Header]
 GSGT Version	2.0.4
 Processing Date	6/14/2019 3:19 PM
@@ -45,7 +44,7 @@ ARS-BFGL-BAC-11028	AA	AA	AA	AA	AA	AG	AA	AA	AA	AA
 
 #### Sample **wide** file
 
-```
+```text
 #SPECIES=bos_taurus
 #REF=ARS-UCD1_2_Btau5_0_1Y
 #PANEL=BovineSNP50_v3_A1
@@ -199,7 +198,7 @@ write.table(vcf, file = "genotypes.vcf", row.names = FALSE, col.names = FALSE, q
 
 #### VCF output
 
-```
+```text
 ##fileformat=VCFv4.2
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Sample1	Sample2	Sample3	Sample4	Sample5	Sample6	Sample7	Sample8	Sample9	Sample10
 2	103030489	ABCA12	T	C	.	.	.	GT	0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0

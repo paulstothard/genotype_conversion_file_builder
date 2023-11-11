@@ -4,3 +4,7 @@ work/
 results/
 test/
 data/reference.fa.*
+.vscode/*
+.history/
+*.vsix
+*.code-workspace
