@@ -1,0 +1,77 @@
+#SPECIES=bos_taurus
+#REF=reference
+#PANEL=manifest
+#
+#Alignment file generated on Saturday November 11 13:17:03 2023.
+#Using genotype_conversion_file_builder, written by Paul Stothard, stothard@ualberta.ca.
+#
+========================================================================================
+SNP1,SNP1-0_T_F_1511658221
+SNP1
+Type: SNP
+      QUERY ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATNTCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
+    SUBJECT ACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATATCTTTAACATCGGGAGAATCATCCGTCGACCTTGTGGCACGGTTTGCCGGCGCGAATAGGGTGGACGTAGATATTAGACGGAGACGGTTGAAGCTTACCT
+        200 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
+    ALLELE1                                                                                                     A
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  300|
+        REF                                                                                                     A
+    VCF_REF                                                                                                     A
+    VCF_ALT                                                                                                     G
+Determination type: ALIGNMENT_NO_GAPS
+========================================================================================
+SNP2,SNP2-0_B_F_1511663050
+SNP2
+Type: SNP
+      QUERY ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTANAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
+    SUBJECT ACGCAGTGATGCAATGGATGTAGGTCTCTAGCGAAGCCAAGTCTAGTCGCGCCTCCGCGCGCAAGTCTGCGATAATGGGCAAGTGCCTGCAGTCTAAGTATAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTT
+        600 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
+    ALLELE1                                                                                                     T
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  700|
+        REF                                                                                                     T
+    VCF_REF                                                                                                     T
+    VCF_ALT                                                                                                     G
+Determination type: ALIGNMENT_NO_GAPS
+========================================================================================
+SNP3,SNP3-0_B_F_1511657910
+SNP3
+Type: SNP
+      QUERY TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTANCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
+    SUBJECT TAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAGCCGTCAAAGGTCTTTTGCCGAGATGACTACTACAACCGTATAGACAAAGCGTGCACATTACATGGGGAGTACCTACTTCCAGAACCTGTGTCTTCCTAGT
+        800 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
+    ALLELE1                                                                                                     T
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  900|
+        REF                                                                                                     G
+    VCF_REF                                                                                                     G
+    VCF_ALT                                                                                                     T
+Determination type: ALIGNMENT_NO_GAPS
+========================================================================================
+SNP4,SNP4_dup-0_B_F_2328966441
+SNP4
+Type: SNP
+      QUERY AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAANCAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
+    SUBJECT AGTGAGGACCTGGTGTATTACGTTGGATTACCCTGTGACAGCTCAGGCACACACCAGGATTAGGAAATTAGCATCGTAAGACTAGTCCGTACAAACAAAAACAAAAAATAGAAGTTTCAAGTGGTTCCCGTTGTTGGAGCGCGTAAGGGATACGTAATAATAGGTCAGGTCAGAAAGAAGCGGCTTGGAGCCCCATTTATA
+        100 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
+    ALLELE1                                                                                                     G
+    ALLELE2                                                                                                     A
+   POSITION                                                                                                  200|
+        REF                                                                                                     A
+    VCF_REF                                                                                                     A
+    VCF_ALT                                                                                                     G
+Determination type: ALIGNMENT_NO_GAPS
+========================================================================================
+SNP5,SNP5-0_T_R_1511657699
+SNP5
+Type: SNP
+      QUERY TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTNAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
+    SUBJECT TAACTCGTCGCCAGATGCGGCATAGGATTATGAGCGTTTCCCCTGCGCGTTATGGTACCCGGACCGGGCCCGCGACACACGGTGCACAGGTAGAGCTAGTTAGGCGTAACGACGCCAGAATTATGTTTATTATTTACCTGTGACGCAAGCTAACAGTAGTGCCCCGGGGTGCTAGTAAGTAAGCAGAGAACTGGGATGTAG
+        700 |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |    .    |
+    ALLELE1                                                                                                     T
+    ALLELE2                                                                                                     G
+   POSITION                                                                                                  800|
+        REF                                                                                                     T
+    VCF_REF                                                                                                     T
+    VCF_ALT                                                                                                     G
+Determination type: ALIGNMENT_NO_GAPS
