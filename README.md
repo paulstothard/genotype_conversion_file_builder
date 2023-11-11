@@ -27,20 +27,18 @@ conversion file.
 Create and activate a conda environment with the required dependencies, e.g.:
 
 ```bash
-mamba create -y -c conda-forge -c bioconda --name gcfb perl blast nextflow=20.01.0
-mamba activate gcfb
+conda create -y -c conda-forge -c bioconda --name gcfb perl blast nextflow=20.01.0
+conda activate gcfb
 ```
 
-When done, you can execute the genotype\_conversion\_file\_builder pipeline by
-entering the following command in the project directory:
+You can then execute the pipeline from within the project directory:
 
 ```bash
 nextflow run main.nf
 ```
 
 By default the pipeline is executed by using a small data set included with the
-project. Check the _Pipeline parameters_ section below to see how to process
-your input data.
+project and writes the results to the `output` directory.
 
 ## Input
 
@@ -115,13 +113,11 @@ README](docs/README_output.md).
 
 ##### --manifest
 
-- The manifest file (default:
-  genotype\_conversion\_file\_builder/data/manifest.csv).
+- The manifest file (required).
 
 ##### --reference
 
-- The reference genome (default:
-  genotype\_conversion\_file\_builder/data/reference.fa).
+- The reference genome (required).
 
 ##### --species
 
@@ -129,8 +125,7 @@ README](docs/README_output.md).
 
 ##### --outdir
 
-- Output directory to hold the results (default:
-  genotype\_conversion\_file\_builder/results).
+- Output directory to hold the results (default: output).
 
 ##### --chunksize
 
@@ -144,35 +139,37 @@ README](docs/README_output.md).
 
 - Include an alignment file in the output directory showing how BLAST
   alignments were parsed to determine position, allele, and strand
-  information (default: false).
+  information.
 
 ##### --blast
 
-- Include a BLAST results file in the output directory (default: false).
+- Include a BLAST results file in the output directory.
 
 ##### Sample command
 
 ```bash
-nextflow run genotype_conversion_file_builder \
---manifest BovineSNP50_v3_A1.csv \
---reference ARS-UCD1.2_Btau5.0.1Y.fa \
+nextflow main.nf \
+--manifest data/manifest.csv \
+--reference data/reference.fa \
 --species bos_taurus \
 --align \
 --blast \
---outdir results
+--outdir test_output
 ```
 
 ## Output folder structure
 
+The above command will create the following folder structure:
+
 ```text
-results
-  ├── species
-      ├── reference
-          ├── manifest.reference.conversion.csv
-          ├── manifest.reference.position.csv
-          ├── manifest.reference.wide.csv
-          ├── manifest.reference.alignment.txt
-          ├── manifest.reference.blast.csv
+output
+└── bos_taurus
+    └── reference
+        ├── manifest.reference.alignment.txt
+        ├── manifest.reference.blast.csv
+        ├── manifest.reference.conversion.csv
+        ├── manifest.reference.position.csv
+        └── manifest.reference.wide.csv
 ```
 
 ## Dependencies

@@ -21,7 +21,7 @@
 params.manifest = "$baseDir/data/manifest.csv"
 params.reference = "$baseDir/data/reference.fa"
 params.species = 'all'
-params.outdir = "$baseDir/results"
+params.outdir = "$baseDir/output"
 
 params.chunksize = 10000
 params.dev = false

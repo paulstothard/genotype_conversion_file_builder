@@ -2,7 +2,7 @@ deploy/
 .DS_Store
 .nextflow*
 work/
-results/
+output/
 test/
 data/reference.fa.*
 .vscode/*
