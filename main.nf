@@ -123,7 +123,7 @@ process split_csv {
     cat ID_seq_no_header_sample | split -l !{params.chunksize} - split_
     for file in split_*
     do
-        echo -e "Name,Sequence" > temp1
+        printf "Name,Sequence\\n" > temp1
         cat "$file" >> temp1
         mv temp1 "$file"
     done
@@ -169,7 +169,7 @@ process blast {
     if [ "header" -gt 0 ]; then
       sed 's/# Fields: //' temp1 > temp2
     else
-      echo "query id,query seq,subject id,subject titles,s. start,s. end,subject strand,subject seq" > temp2
+      printf "query id,query seq,subject id,subject titles,s. start,s. end,subject strand,subject seq\\n" > temp2
     fi
     sed 's/, /,/g' temp2 > top_hits.txt
     sed 's/,//g' blast_result > blast_result_no_commas

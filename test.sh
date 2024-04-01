@@ -16,9 +16,9 @@ find "$DIR1" -type f | while read -r file; do
 
     # Check if the corresponding file exists in DIR2
     if [ -e "$DIR2/$relative_path" ]; then
-        echo "Comparing $file with $DIR2/$relative_path"
+        printf "Comparing %s with %s\n" "$file" "$DIR2/$relative_path"
         diff "$file" "$DIR2/$relative_path"
     else
-        echo "$relative_path does not exist in $DIR2"
+        printf "%s does not exist in %s\n" "$relative_path" "$DIR2"
     fi
 done
