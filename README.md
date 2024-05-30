@@ -40,6 +40,18 @@ nextflow run main.nf
 By default the pipeline is executed by using a small data set included with the
 project and writes the results to the `output` directory.
 
+If Nextflow reports an error about the version of Java being used, you may need
+to set the `JAVA_CMD` and `JAVA_HOME` environment variables to point to the Java
+installation in the conda environment before running the pipeline. For example:
+
+```bash
+conda activate gcfb
+export CONDA_PREFIX=$(conda info --base)/envs/gcfb
+export JAVA_CMD="$CONDA_PREFIX/lib/jvm/bin/java"
+export JAVA_HOME="$CONDA_PREFIX/lib/jvm"
+nextflow run main.nf
+```
+
 ## Input
 
 The pipeline requires an Illumina or Affymetrix manifest file and reference
