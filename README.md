@@ -52,6 +52,42 @@ export JAVA_HOME="$CONDA_PREFIX/lib/jvm"
 nextflow run main.nf
 ```
 
+## Using the genotype\_conversion\_file\_builder Docker image
+
+Pull the Docker image:
+
+```bash
+docker pull pstothard/genotype_conversion_file_builder
+```
+
+Run the Docker image against the included sample data (after cloning the repository, run from the repo root):
+
+```bash
+docker run --rm \
+  -v "$(pwd)":/data \
+  -u "$(id -u)":"$(id -g)" \
+  -w /data \
+  pstothard/genotype_conversion_file_builder \
+  --manifest /data/data/manifest.csv \
+  --reference /data/data/reference.fa \
+  --outdir /data/test_output_docker
+```
+
+The output files are written to the `test_output_docker` directory on the host system. Nextflow also creates a `work/` directory in the current directory for intermediate files.
+
+To use your own manifest and reference files (place them in the current directory first):
+
+```bash
+docker run --rm \
+  -v "$(pwd)":/data \
+  -u "$(id -u)":"$(id -g)" \
+  -w /data \
+  pstothard/genotype_conversion_file_builder \
+  --manifest /data/manifest.csv \
+  --reference /data/reference.fa \
+  --outdir /data/output
+```
+
 ## Input
 
 The pipeline requires an Illumina or Affymetrix manifest file and reference

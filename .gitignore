@@ -1,9 +1,11 @@
+.claude/
 deploy/
 deploy
 .DS_Store
 .nextflow*
 work/
 output/
+test_output_docker/
 test/
 data/reference.fa.*
 .vscode/*
