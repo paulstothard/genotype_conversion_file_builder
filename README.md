@@ -66,11 +66,10 @@ Run the Docker image against the included sample data (after cloning the reposit
 docker run --rm \
   -v "$(pwd)":/data \
   -u "$(id -u)":"$(id -g)" \
-  -w /data \
   pstothard/genotype_conversion_file_builder \
-  --manifest /data/data/manifest.csv \
-  --reference /data/data/reference.fa \
-  --outdir /data/test_output_docker
+  --manifest data/manifest.csv \
+  --reference data/reference.fa \
+  --outdir test_output_docker
 ```
 
 The output files are written to the `test_output_docker` directory on the host system. Nextflow also creates a `work/` directory in the current directory for intermediate files.
@@ -81,11 +80,10 @@ To use your own manifest and reference files (place them in the current director
 docker run --rm \
   -v "$(pwd)":/data \
   -u "$(id -u)":"$(id -g)" \
-  -w /data \
   pstothard/genotype_conversion_file_builder \
-  --manifest /data/manifest.csv \
-  --reference /data/reference.fa \
-  --outdir /data/output
+  --manifest manifest.csv \
+  --reference reference.fa \
+  --outdir output
 ```
 
 ## Input
